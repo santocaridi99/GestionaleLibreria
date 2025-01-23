@@ -18,5 +18,7 @@ namespace GestionaleLibreria.Data.Models
         public decimal Prezzo { get; set; }
 
         public int Quantita { get; set; }
+
+        //poi aggiungere altre caratteristiche
     }
 }

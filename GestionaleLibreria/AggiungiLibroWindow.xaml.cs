@@ -14,12 +14,12 @@ namespace GestionaleLibreria
             _libroService = new LibroService();
         }
 
-        // Metodo per il pulsante "Aggiungi"
+        //"Aggiungi Libro"
         private void AggiungiButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                // Creazione di un nuovo libro con i dati inseriti
+               
                 var nuovoLibro = new Libro
                 {
                     Titolo = TitoloTextBox.Text,
@@ -28,7 +28,7 @@ namespace GestionaleLibreria
                     Quantita = int.Parse(QuantitaTextBox.Text)
                 };
 
-                // Aggiungi il libro al database tramite il servizio
+               
                 _libroService.AggiungiLibro(nuovoLibro);
 
                 // Mostra un messaggio di conferma
