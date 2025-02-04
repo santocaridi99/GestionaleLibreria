@@ -7,45 +7,31 @@ namespace GestionaleLibreria.Business.Services
 {
     public class LibroService
     {
-        private readonly LibraryContext _context;
+        private readonly ILibroRepository _libroRepository;
 
-        public LibroService()
+        public LibroService(ILibroRepository libroRepository)
         {
-            _context = new LibraryContext();
+            _libroRepository = libroRepository;
         }
 
         public List<Libro> GetAllLibri()
         {
-            return _context.Libri.ToList();
+            return _libroRepository.GetAllLibri();
         }
 
         public void AggiungiLibro(Libro libro)
         {
-            _context.Libri.Add(libro);
-            _context.SaveChanges();
+            _libroRepository.AddLibro(libro);
         }
 
         public void ModificaLibro(Libro libro)
         {
-            var existing = _context.Libri.Find(libro.Id);
-            if (existing != null)
-            {
-                existing.Titolo = libro.Titolo;
-                existing.Autore = libro.Autore;
-                existing.Prezzo = libro.Prezzo;
-                existing.Quantita = libro.Quantita;
-                _context.SaveChanges();
-            }
+            _libroRepository.UpdateLibro(libro);
         }
 
         public void EliminaLibro(int id)
         {
-            var libro = _context.Libri.Find(id);
-            if (libro != null)
-            {
-                _context.Libri.Remove(libro);
-                _context.SaveChanges();
-            }
+            _libroRepository.DeleteLibro(id);
         }
     }
 }

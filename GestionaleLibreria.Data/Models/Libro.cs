@@ -1,24 +1,31 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace GestionaleLibreria.Data.Models
 {
-    public class Libro
+    public class Libro : IVendibile
     {
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [MaxLength(200)]
-        public string Titolo { get; set; }
+        [Required, MaxLength(200)]
+        public string Titolo { get; set; } = string.Empty;
 
         [Required]
-        public string Autore { get; set; }
+        public string Autore { get; set; } = string.Empty;
+
+        [Required]
+        public string ISBN { get; set; } = string.Empty;
 
         [Required]
         public decimal Prezzo { get; set; }
 
-        public int Quantita { get; set; }
+        // Relazione: un libro può essere presente in uno o più record di LibroMagazzino
+        public virtual ICollection<LibroMagazzino> LibriMagazzino { get; set; } = new List<LibroMagazzino>();
 
-        //poi aggiungere altre caratteristiche
+        // Metodo virtual per consentire l'override nelle classi derivate
+        public virtual decimal CalcolaPrezzo() => Prezzo;
     }
+
+
 }

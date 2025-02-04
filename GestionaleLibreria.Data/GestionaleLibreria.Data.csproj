@@ -51,9 +51,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ILibroRepository.cs" />
+    <Compile Include="Models\Audiobook.cs" />
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="LibraryContext.cs" />
+    <Compile Include="Models\Ebook.cs" />
+    <Compile Include="Models\IVendible.cs" />
     <Compile Include="Models\Libro.cs" />
+    <Compile Include="Models\LibroMagazzino.cs" />
+    <Compile Include="Models\Magazzino.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Vendita.cs" />
   </ItemGroup>

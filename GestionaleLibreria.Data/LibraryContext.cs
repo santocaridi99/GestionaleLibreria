@@ -15,5 +15,6 @@ namespace GestionaleLibreria.Data
         public DbSet<Libro> Libri { get; set; }
         public DbSet<Cliente> Clienti { get; set; }
         public DbSet<Vendita> Vendite { get; set; }
+        public DbSet<LibroMagazzino> LibriMagazzino { get; set; }
     }
 }
