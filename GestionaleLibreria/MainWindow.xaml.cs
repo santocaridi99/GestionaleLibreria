@@ -1,33 +1,38 @@
-﻿using GestionaleLibreria.Business.Services;
-using GestionaleLibreria.Data.Models;
+﻿using System.Windows;
+using GestionaleLibreria.Business.Services;
+using GestionaleLibreria.Data;
 using System.Collections.Generic;
-using System.Windows;
+using GestionaleLibreria.Data.Models;
 
-namespace GestionaleLibreria
+namespace GestionaleLibreria.WPF
 {
     public partial class MainWindow : Window
     {
+        // Iniettiamo il servizio tramite l'interfaccia del repository (DIP)
         private readonly LibroService _libroService;
 
         public MainWindow()
         {
             InitializeComponent();
-            _libroService = new LibroService();
+            // Creiamo l'istanza del repository e la passiamo al servizio
+            ILibroRepository libroRepository = new LibroRepository();
+            _libroService = new LibroService(libroRepository);
             CaricaLibri();
         }
 
         private void CaricaLibri()
         {
-            var libri = _libroService.GetAllLibri();
+            // Recupera la lista dei libri
+            List<Libro> libri = _libroService.GetAllLibri();
             LibriDataGrid.ItemsSource = libri;
         }
 
         private void AggiungiLibro_Click(object sender, RoutedEventArgs e)
         {
-            // Mostra una finestra di dialogo per aggiungere un nuovo libro
+            // Mostra la finestra per aggiungere un nuovo libro
             var aggiungiFinestra = new AggiungiLibroWindow();
             aggiungiFinestra.ShowDialog();
-            CaricaLibri();  // Ricarica i libri dopo aver aggiunto uno nuovo
+            CaricaLibri();
         }
 
         private void ModificaLibro_Click(object sender, RoutedEventArgs e)
@@ -36,7 +41,7 @@ namespace GestionaleLibreria
             {
                 var modificaFinestra = new ModificaLibroWindow(libroSelezionato);
                 modificaFinestra.ShowDialog();
-                CaricaLibri();  // Ricarica i libri dopo la modifica
+                CaricaLibri();
             }
             else
             {
@@ -49,7 +54,7 @@ namespace GestionaleLibreria
             if (LibriDataGrid.SelectedItem is Libro libroSelezionato)
             {
                 _libroService.EliminaLibro(libroSelezionato.Id);
-                CaricaLibri();  // Ricarica i libri dopo aver eliminato uno
+                CaricaLibri();
             }
             else
             {

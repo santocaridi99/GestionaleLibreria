@@ -1,54 +1,62 @@
 ﻿using GestionaleLibreria.Business.Services;
+using GestionaleLibreria.Data;
 using GestionaleLibreria.Data.Models;
+using System;
 using System.Windows;
 
-namespace GestionaleLibreria
+namespace GestionaleLibreria.WPF
 {
     public partial class AggiungiLibroWindow : Window
     {
         private readonly LibroService _libroService;
+        // Se vuoi gestire le scorte, potresti avere anche un'istanza di MagazzinoService
+        // private readonly MagazzinoService _magazzinoService;
 
         public AggiungiLibroWindow()
         {
             InitializeComponent();
-            _libroService = new LibroService();
+            // Iniezione manuale delle dipendenze
+            ILibroRepository libroRepository = new LibroRepository();
+            _libroService = new LibroService(libroRepository);
+
+            // Se hai un magazzino e un magazzino service:
+            // var magazzino = new Magazzino();
+            // _magazzinoService = new MagazzinoService(magazzino);
         }
 
-        //"Aggiungi Libro"
         private void AggiungiButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-               
                 var nuovoLibro = new Libro
                 {
                     Titolo = TitoloTextBox.Text,
                     Autore = AutoreTextBox.Text,
-                    Prezzo = decimal.Parse(PrezzoTextBox.Text),
-                    Quantita = int.Parse(QuantitaTextBox.Text)
+                    ISBN = ISBNTextBox.Text,
+                    Prezzo = decimal.Parse(PrezzoTextBox.Text)
+                    // Nota: La quantità per il magazzino verrà gestita tramite MagazzinoService
                 };
 
-               
+                int quantita = int.Parse(QuantitaTextBox.Text);
+
+                // Aggiunge il libro nel repository
                 _libroService.AggiungiLibro(nuovoLibro);
 
-                // Mostra un messaggio di conferma
-                MessageBox.Show("Libro aggiunto con successo!");
+                // Se vuoi aggiornare anche le scorte nel magazzino, potresti fare:
+                // _magazzinoService.AggiungiLibroFisico(nuovoLibro, quantita);
 
-                // Chiudi la finestra
+                MessageBox.Show("Libro aggiunto con successo!");
                 DialogResult = true;
                 Close();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                // Mostra un messaggio di errore in caso di problemi
                 MessageBox.Show("Errore durante l'aggiunta del libro: " + ex.Message);
             }
         }
 
-        // Metodo per il pulsante "Annulla"
         private void AnnullaAggiungi_Click(object sender, RoutedEventArgs e)
         {
-            // Chiudi la finestra senza fare nulla
             Close();
         }
     }
