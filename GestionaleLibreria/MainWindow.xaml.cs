@@ -1,20 +1,18 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using GestionaleLibreria.Business.Services;
 using GestionaleLibreria.Data;
-using System.Collections.Generic;
 using GestionaleLibreria.Data.Models;
 
 namespace GestionaleLibreria.WPF
 {
     public partial class MainWindow : Window
     {
-        // Iniettiamo il servizio tramite l'interfaccia del repository (DIP)
         private readonly LibroService _libroService;
 
         public MainWindow()
         {
             InitializeComponent();
-            // Creiamo l'istanza del repository e la passiamo al servizio
             ILibroRepository libroRepository = new LibroRepository();
             _libroService = new LibroService(libroRepository);
             CaricaLibri();
@@ -22,14 +20,12 @@ namespace GestionaleLibreria.WPF
 
         private void CaricaLibri()
         {
-            // Recupera la lista dei libri
             List<Libro> libri = _libroService.GetAllLibri();
             LibriDataGrid.ItemsSource = libri;
         }
 
         private void AggiungiLibro_Click(object sender, RoutedEventArgs e)
         {
-            // Mostra la finestra per aggiungere un nuovo libro
             var aggiungiFinestra = new AggiungiLibroWindow();
             aggiungiFinestra.ShowDialog();
             CaricaLibri();
@@ -60,6 +56,30 @@ namespace GestionaleLibreria.WPF
             {
                 MessageBox.Show("Seleziona un libro per eliminarlo.");
             }
+        }
+
+        private void GestioneClienti_Click(object sender, RoutedEventArgs e)
+        {
+            var clientiWindow = new ClientiWindow();
+            clientiWindow.ShowDialog();
+        }
+
+        private void RegistraVendita_Click(object sender, RoutedEventArgs e)
+        {
+            var venditaWindow = new VenditaWindow();
+            venditaWindow.ShowDialog();
+        }
+
+        private void GeneraReport_Click(object sender, RoutedEventArgs e)
+        {
+            //var reportWindow = new ReportWindow();
+            //reportWindow.ShowDialog();
+        }
+
+        private void GestioneMagazzino_Click(object sender, RoutedEventArgs e)
+        {
+            //var magazzinoWindow = new MagazzinoWindow();
+            //magazzinoWindow.ShowDialog();
         }
     }
 }

@@ -1,0 +1,25 @@
+﻿<Window x:Class="GestionaleLibreria.WPF.ClientiWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Gestione Clienti" Height="450" Width="600" Background="#F9F9F9">
+    <Grid Margin="20">
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="Gestione Clienti" FontSize="24" FontWeight="Bold" 
+                       HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#333333"/>
+            <DataGrid x:Name="ClientiDataGrid" AutoGenerateColumns="False" Height="250" Margin="10">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="*"/>
+                    <DataGridTextColumn Header="Cognome" Binding="{Binding Cognome}" Width="*"/>
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
+                    <DataGridTextColumn Header="Telefono" Binding="{Binding Telefono}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,20,0,0">
+            <Button Content="Aggiungi Cliente" Width="140" Margin="10" Click="AggiungiCliente_Click" 
+                    Background="#4CAF50" Foreground="White"/>
+            <Button Content="Modifica Cliente" Width="140" Margin="10" Click="ModificaCliente_Click" 
+                    Background="#2196F3" Foreground="White"/>
+        </StackPanel>
+    </Grid>
+</Window>

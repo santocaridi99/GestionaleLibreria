@@ -32,11 +32,6 @@
                 <TextBox x:Name="PrezzoTextBox" Width="200" Height="25"/>
             </StackPanel>
 
-            <!-- Campo per Quantità -->
-            <StackPanel Orientation="Horizontal" Margin="0,5">
-                <Label Content="Quantità:" Width="100" VerticalAlignment="Center"/>
-                <TextBox x:Name="QuantitaTextBox" Width="200" Height="25"/>
-            </StackPanel>
         </StackPanel>
 
         <!-- Bottoni per Aggiungi e Annulla -->

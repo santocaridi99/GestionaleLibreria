@@ -16,5 +16,22 @@ namespace GestionaleLibreria.Data
         public DbSet<Cliente> Clienti { get; set; }
         public DbSet<Vendita> Vendite { get; set; }
         public DbSet<LibroMagazzino> LibriMagazzino { get; set; }
+        public DbSet<Magazzino> Magazzini { get; set; }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Configurazione della relazione: Un libro ha molti LibroMagazzino
+            modelBuilder.Entity<Libro>()
+                .HasMany(l => l.LibriMagazzino)
+                .WithRequired(lm => lm.Libro)
+                .HasForeignKey(lm => lm.LibroId);
+
+            // Configurazione della relazione: Un magazzino ha molti LibroMagazzino
+            modelBuilder.Entity<Magazzino>()
+                .HasMany(m => m.LibriMagazzino)
+                .WithRequired(lm => lm.Magazzino)
+                .HasForeignKey(lm => lm.MagazzinoId);
+        }
     }
 }

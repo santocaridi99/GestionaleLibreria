@@ -51,9 +51,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClienteService.cs" />
     <Compile Include="LibroService.cs" />
     <Compile Include="MagazzinoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VenditaService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GestionaleLibreria.Data\GestionaleLibreria.Data.csproj">

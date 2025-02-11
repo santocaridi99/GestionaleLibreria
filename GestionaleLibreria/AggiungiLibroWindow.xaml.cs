@@ -37,7 +37,7 @@ namespace GestionaleLibreria.WPF
                     // Nota: La quantità per il magazzino verrà gestita tramite MagazzinoService
                 };
 
-                int quantita = int.Parse(QuantitaTextBox.Text);
+                //int quantita = int.Parse(QuantitaTextBox.Text);
 
                 // Aggiunge il libro nel repository
                 _libroService.AggiungiLibro(nuovoLibro);

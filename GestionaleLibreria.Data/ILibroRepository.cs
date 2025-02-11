@@ -17,36 +17,45 @@ namespace GestionaleLibreria.Data
 
     public class LibroRepository : ILibroRepository
     {
-        private readonly List<Libro> _libri = new List<Libro>();
+        private readonly LibraryContext _context;
+
+        public LibroRepository()
+        {
+            _context = new LibraryContext();
+        }
 
         public List<Libro> GetAllLibri()
         {
-            return _libri;
+            return _context.Libri.ToList();
         }
 
         public void AddLibro(Libro libro)
         {
-            libro.Id = _libri.Count > 0 ? _libri.Max(l => l.Id) + 1 : 1;
-            _libri.Add(libro);
+            _context.Libri.Add(libro);
+            _context.SaveChanges();
         }
 
         public void UpdateLibro(Libro libro)
         {
-            var existing = _libri.FirstOrDefault(l => l.Id == libro.Id);
+            var existing = _context.Libri.FirstOrDefault(l => l.Id == libro.Id);
             if (existing != null)
             {
                 existing.Titolo = libro.Titolo;
                 existing.Autore = libro.Autore;
                 existing.ISBN = libro.ISBN;
                 existing.Prezzo = libro.Prezzo;
+                _context.SaveChanges();
             }
         }
 
         public void DeleteLibro(int id)
         {
-            var libro = _libri.FirstOrDefault(l => l.Id == id);
+            var libro = _context.Libri.FirstOrDefault(l => l.Id == id);
             if (libro != null)
-                _libri.Remove(libro);
+            {
+                _context.Libri.Remove(libro);
+                _context.SaveChanges();
+            }
         }
     }
 }
