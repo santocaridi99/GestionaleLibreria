@@ -5,39 +5,19 @@
     <Grid Margin="20">
         <!-- Intestazione -->
         <TextBlock Text="Gestionale Libreria" FontSize="28" FontWeight="Bold" 
-                   HorizontalAlignment="Center" Margin="0,20,0,20" Foreground="#333333"/>
+                   HorizontalAlignment="Center" Margin="0,30,0,0" Foreground="#333333"/>
 
-        <!-- DataGrid per visualizzare i libri -->
-        <DataGrid x:Name="LibriDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Top" 
-                  Margin="10,80,10,100" AutoGenerateColumns="False" Height="250" BorderBrush="#D3D3D3" BorderThickness="1">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Titolo" Binding="{Binding Titolo}" Width="*"/>
-                <DataGridTextColumn Header="Autore" Binding="{Binding Autore}" Width="*"/>
-                <DataGridTextColumn Header="ISBN" Binding="{Binding ISBN}" Width="*"/>
-                <DataGridTextColumn Header="Prezzo" Binding="{Binding Prezzo}" Width="*"/>
-                <!-- Se necessario, puoi visualizzare quantità calcolata dal Magazzino -->
-            </DataGrid.Columns>
-        </DataGrid>
-
-        <!-- Bottoni per operazioni sui libri -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,20,0,60">
-            <Button Content="Aggiungi Libro" Width="120" Height="40" Margin="10" Click="AggiungiLibro_Click" 
+        <!-- Pannello centrale per la navigazione -->
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" >
+            <Button Content="Gestione Libri" Width="200" Height="40" Margin="10" Click="GestioneLibri_Click" 
                     Background="#4CAF50" Foreground="White"/>
-            <Button Content="Modifica Libro" Width="120" Height="40" Margin="10" Click="ModificaLibro_Click" 
-                    Background="#2196F3" Foreground="White"/>
-            <Button Content="Elimina Libro" Width="120" Height="40" Margin="10" Click="EliminaLibro_Click" 
-                    Background="#F44336" Foreground="White"/>
-        </StackPanel>
-
-        <!-- Bottoni di navigazione alle altre funzionalità -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10,0,10">
-            <Button Content="Gestione Clienti" Width="140" Height="40" Margin="10" Click="GestioneClienti_Click" 
+            <Button Content="Gestione Clienti" Width="200" Height="40" Margin="10" Click="GestioneClienti_Click" 
                     Background="#FF9800" Foreground="White"/>
-            <Button Content="Registra Vendita" Width="140" Height="40" Margin="10" Click="RegistraVendita_Click" 
+            <Button Content="Registra Vendita" Width="200" Height="40" Margin="10" Click="RegistraVendita_Click" 
                     Background="#9C27B0" Foreground="White"/>
-            <Button Content="Genera Report" Width="140" Height="40" Margin="10" Click="GeneraReport_Click" 
+            <Button Content="Genera Report" Width="200" Height="40" Margin="10" Click="GeneraReport_Click" 
                     Background="#03A9F4" Foreground="White"/>
-            <Button Content="Gestione Magazzino" Width="140" Height="40" Margin="10" Click="GestioneMagazzino_Click" 
+            <Button Content="Gestione Magazzino" Width="200" Height="40" Margin="10" Click="GestioneMagazzino_Click" 
                     Background="#E91E63" Foreground="White"/>
         </StackPanel>
 

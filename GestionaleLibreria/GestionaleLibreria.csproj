@@ -77,6 +77,9 @@
     <Compile Include="ClientiWindow.xaml.cs">
       <DependentUpon>ClientiWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LibriWondow.xaml.cs">
+      <DependentUpon>LibriWondow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VenditaWindow.xaml.cs">
       <DependentUpon>VenditaWindow.xaml</DependentUpon>
     </Compile>
@@ -85,6 +88,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ClientiWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LibriWondow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
