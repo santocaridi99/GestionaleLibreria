@@ -1,29 +1,43 @@
 ﻿<Window x:Class="GestionaleLibreria.WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Gestionale Libreria" Height="500" Width="800" Background="#F5F5F5">
-    <Grid Margin="20">
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Gestionale Libreria" Height="500" Width="800" Background="#ECEFF1"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid>
         <!-- Intestazione -->
-        <TextBlock Text="Gestionale Libreria" FontSize="28" FontWeight="Bold" 
-                   HorizontalAlignment="Center" Margin="0,30,0,0" Foreground="#333333"/>
+        <TextBlock Text="📚 Gestionale Libreria" FontSize="28" FontWeight="Bold"
+                   HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,30,0,0"
+                   Foreground="#37474F"/>
 
         <!-- Pannello centrale per la navigazione -->
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" >
-            <Button Content="Gestione Libri" Width="200" Height="40" Margin="10" Click="GestioneLibri_Click" 
-                    Background="#4CAF50" Foreground="White"/>
-            <Button Content="Gestione Clienti" Width="200" Height="40" Margin="10" Click="GestioneClienti_Click" 
-                    Background="#FF9800" Foreground="White"/>
-            <Button Content="Registra Vendita" Width="200" Height="40" Margin="10" Click="RegistraVendita_Click" 
-                    Background="#9C27B0" Foreground="White"/>
-            <Button Content="Genera Report" Width="200" Height="40" Margin="10" Click="GeneraReport_Click" 
-                    Background="#03A9F4" Foreground="White"/>
-            <Button Content="Gestione Magazzino" Width="200" Height="40" Margin="10" Click="GestioneMagazzino_Click" 
-                    Background="#E91E63" Foreground="White"/>
+            
+            <Button Content="📖 Gestione Libri" Click="GestioneLibri_Click"
+                    Width="250" Height="50" Background="#4CAF50" Foreground="White"
+                    FontSize="16" FontWeight="Bold" Margin="0,0,0,10" Cursor="Hand"/>
+
+            <Button Content="👤 Gestione Clienti" Click="GestioneClienti_Click"
+                    Width="250" Height="50" Background="#FF9800" Foreground="White"
+                    FontSize="16" FontWeight="Bold" Margin="0,0,0,10" Cursor="Hand"/>
+
+            <Button Content="💰 Registra Vendita" Click="RegistraVendita_Click"
+                    Width="250" Height="50" Background="#9C27B0" Margin="0,0,0,10" Foreground="White"
+                    FontSize="16" FontWeight="Bold" Cursor="Hand"/>
+
+            <Button Content="📊 Genera Report" Click="GeneraReport_Click"
+                    Width="250" Height="50" Background="#03A9F4" Margin="0,0,0,10" Foreground="White"
+                    FontSize="16" FontWeight="Bold" Cursor="Hand"/>
+
+            <Button Content="📦 Gestione Magazzino" Click="GestioneMagazzino_Click"
+                    Width="250" Height="50" Background="#E91E63" Margin="0,0,0,10" Foreground="White"
+                    FontSize="16" FontWeight="Bold" Cursor="Hand"/>
         </StackPanel>
 
         <!-- Footer -->
-        <StatusBar VerticalAlignment="Bottom" Background="#F5F5F5" BorderBrush="#D3D3D3" BorderThickness="0,1,0,0">
-            <StatusBarItem Content="Pronto" Foreground="#333333"/>
+        <StatusBar VerticalAlignment="Bottom" Background="#CFD8DC" BorderBrush="#B0BEC5" BorderThickness="0,1,0,0">
+            <StatusBarItem Content="Pronto" Foreground="#37474F"/>
         </StatusBar>
     </Grid>
 </Window>
