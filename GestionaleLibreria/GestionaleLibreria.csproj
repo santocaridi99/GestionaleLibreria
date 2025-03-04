@@ -74,24 +74,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ClientiWindow.xaml.cs">
+    <Compile Include="FormClienti\ClientiWindow.xaml.cs">
       <DependentUpon>ClientiWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LibriWondow.xaml.cs">
-      <DependentUpon>LibriWondow.xaml</DependentUpon>
+    <Compile Include="FormLibri\LibriWindow.xaml.cs">
+      <DependentUpon>LibriWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VenditaWindow.xaml.cs">
+    <Compile Include="FormVendite\VenditaWindow.xaml.cs">
       <DependentUpon>VenditaWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="AggiungiLibroWindow.xaml">
+    <Page Include="FormLibri\AggiungiLibroWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ClientiWindow.xaml">
+    <Page Include="FormClienti\ClientiWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LibriWondow.xaml">
+    <Page Include="FormLibri\LibriWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -99,7 +99,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AggiungiLibroWindow.xaml.cs">
+    <Compile Include="FormLibri\AggiungiLibroWindow.xaml.cs">
       <DependentUpon>AggiungiLibroWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
@@ -110,17 +110,17 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ModificaLibroWindow.xaml">
+    <Page Include="FormLibri\ModificaLibroWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="VenditaWindow.xaml">
+    <Page Include="FormVendite\VenditaWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModificaLibroWindow.xaml.cs">
+    <Compile Include="FormLibri\ModificaLibroWindow.xaml.cs">
       <DependentUpon>ModificaLibroWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -158,6 +158,9 @@
       <Project>{5b2954be-d7c9-43c3-95e3-7f638e764236}</Project>
       <Name>GestionaleLibreria.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="FormMagazzino\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
