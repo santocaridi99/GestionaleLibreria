@@ -1,27 +1,41 @@
 ﻿<Window x:Class="GestionaleLibreria.WPF.LibriWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Gestione Libri" Height="500" Width="800" Background="#F5F5F5">
+        Title="Gestione Libri" Height="500" Width="850" Background="#ECEFF1"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+
     <Grid Margin="20">
-        <TextBlock Text="Gestione Libri" FontSize="28" FontWeight="Bold" 
-                   HorizontalAlignment="Center" Margin="0,20,0,20" Foreground="#333333"/>
-        <DataGrid x:Name="LibriDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Top" 
-                  Margin="10,80,10,100" AutoGenerateColumns="False" Height="300" BorderBrush="#D3D3D3" BorderThickness="1">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Titolo" Binding="{Binding Titolo}" Width="*"/>
-                <DataGridTextColumn Header="Autore" Binding="{Binding Autore}" Width="*"/>
-                <DataGridTextColumn Header="ISBN" Binding="{Binding ISBN}" Width="*"/>
-                <DataGridTextColumn Header="Prezzo" Binding="{Binding Prezzo}" Width="*"/>
-                <!-- Puoi aggiungere ulteriori colonne se necessario -->
-            </DataGrid.Columns>
-        </DataGrid>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10,0,20">
-            <Button Content="Aggiungi Libro" Width="120" Height="40" Margin="10" Click="AggiungiLibro_Click" 
-                    Background="#4CAF50" Foreground="White"/>
-            <Button Content="Modifica Libro" Width="120" Height="40" Margin="10" Click="ModificaLibro_Click" 
-                    Background="#2196F3" Foreground="White"/>
-            <Button Content="Elimina Libro" Width="120" Height="40" Margin="10" Click="EliminaLibro_Click" 
-                    Background="#F44336" Foreground="White"/>
+
+        <!-- Titolo -->
+        <TextBlock Text="📚 Gestione Libri" FontSize="28" FontWeight="Bold" 
+                   HorizontalAlignment="Center" Margin="0,10,0,20" Foreground="#37474F"/>
+
+        <!-- Tabella con Libri -->
+        <Border Background="White" CornerRadius="10" Padding="10" BorderBrush="#B0BEC5" BorderThickness="1"
+                Effect="{DynamicResource MaterialDesignElevationShadow}">
+            <DataGrid x:Name="LibriDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Top" 
+                      AutoGenerateColumns="False" Height="300" BorderThickness="0" 
+                      RowBackground="White" AlternatingRowBackground="#ECEFF1">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Titolo" Binding="{Binding Titolo}" Width="*"/>
+                    <DataGridTextColumn Header="Autore" Binding="{Binding Autore}" Width="*"/>
+                    <DataGridTextColumn Header="ISBN" Binding="{Binding ISBN}" Width="*"/>
+                    <DataGridTextColumn Header="Prezzo (€)" Binding="{Binding Prezzo}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <!-- Pulsanti Azione -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,20,0,0">
+            <Button Content="➕ Aggiungi" Width="130" Height="45" Margin="10" Click="AggiungiLibro_Click"
+                    Background="#4CAF50" Foreground="White" FontSize="14" FontWeight="Bold" Cursor="Hand"/>
+
+            <Button Content="✏️ Modifica" Width="130" Height="45" Margin="10" Click="ModificaLibro_Click"
+                    Background="#2196F3" Foreground="White" FontSize="14" FontWeight="Bold" Cursor="Hand"/>
+
+            <Button Content="🗑️ Elimina" Width="130" Height="45" Margin="10" Click="EliminaLibro_Click"
+                    Background="#F44336" Foreground="White" FontSize="14" FontWeight="Bold" Cursor="Hand"/>
         </StackPanel>
+
     </Grid>
 </Window>

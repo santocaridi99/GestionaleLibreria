@@ -1,45 +1,51 @@
 ﻿<Window x:Class="GestionaleLibreria.WPF.AggiungiLibroWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Aggiungi Nuovo Libro" Height="400" Width="400" Background="#F9F9F9">
+        Title="Aggiungi Nuovo Libro" Height="450" Width="450" Background="#F5F5F5"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+
     <Grid Margin="20">
-        <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+
             <!-- Intestazione -->
-            <TextBlock Text="Aggiungi Nuovo Libro" FontSize="24" FontWeight="Bold" 
+            <TextBlock Text="📖 Aggiungi Nuovo Libro" FontSize="24" FontWeight="Bold" 
                        HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#333333"/>
 
             <!-- Campo per Titolo -->
-            <StackPanel Orientation="Horizontal" Margin="0,5">
-                <Label Content="Titolo:" Width="100" VerticalAlignment="Center"/>
-                <TextBox x:Name="TitoloTextBox" Width="200" Height="25"/>
+            <StackPanel Orientation="Vertical" Margin="0,5">
+                <Label Content="Titolo" FontWeight="Bold"/>
+                <TextBox x:Name="TitoloTextBox" Width="280" Height="30" Background="White"/>
             </StackPanel>
 
             <!-- Campo per Autore -->
-            <StackPanel Orientation="Horizontal" Margin="0,5">
-                <Label Content="Autore:" Width="100" VerticalAlignment="Center"/>
-                <TextBox x:Name="AutoreTextBox" Width="200" Height="25"/>
+            <StackPanel Orientation="Vertical" Margin="0,5">
+                <Label Content="Autore" FontWeight="Bold"/>
+                <TextBox x:Name="AutoreTextBox" Width="280" Height="30" Background="White"/>
             </StackPanel>
 
             <!-- Campo per ISBN -->
-            <StackPanel Orientation="Horizontal" Margin="0,5">
-                <Label Content="ISBN:" Width="100" VerticalAlignment="Center"/>
-                <TextBox x:Name="ISBNTextBox" Width="200" Height="25"/>
+            <StackPanel Orientation="Vertical" Margin="0,5">
+                <Label Content="ISBN" FontWeight="Bold"/>
+                <TextBox x:Name="ISBNTextBox" Width="280" Height="30" Background="White"/>
             </StackPanel>
 
             <!-- Campo per Prezzo -->
-            <StackPanel Orientation="Horizontal" Margin="0,5">
-                <Label Content="Prezzo:" Width="100" VerticalAlignment="Center"/>
-                <TextBox x:Name="PrezzoTextBox" Width="200" Height="25"/>
+            <StackPanel Orientation="Vertical" Margin="0,5">
+                <Label Content="Prezzo (€)" FontWeight="Bold"/>
+                <TextBox x:Name="PrezzoTextBox" Width="280" Height="30" Background="White"/>
             </StackPanel>
 
-        </StackPanel>
+            <!-- Bottoni per Aggiungi e Annulla -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                <Button Content="✅ Aggiungi" Width="120" Height="40" Margin="10"
+                        Background="#4CAF50" Foreground="White" FontSize="14" FontWeight="Bold"
+                        Cursor="Hand" Click="AggiungiButton_Click"/>
 
-        <!-- Bottoni per Aggiungi e Annulla -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,20,0,0">
-            <Button Content="Aggiungi" Width="100" Margin="10" Click="AggiungiButton_Click" 
-                    Background="#4CAF50" Foreground="White"/>
-            <Button Content="Annulla" Width="100" Margin="10" Click="AnnullaAggiungi_Click" 
-                    Background="#F44336" Foreground="White"/>
+                <Button Content="❌ Annulla" Width="120" Height="40" Margin="10"
+                        Background="#F44336" Foreground="White" FontSize="14" FontWeight="Bold"
+                        Cursor="Hand" Click="AnnullaAggiungi_Click"/>
+            </StackPanel>
+
         </StackPanel>
     </Grid>
 </Window>
