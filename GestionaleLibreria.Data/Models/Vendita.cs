@@ -21,6 +21,7 @@ namespace GestionaleLibreria.Data.Models
         public DateTime DataVendita { get; set; }
 
         public int QuantitaVenduta { get; set; }
+        public string MetodoPagamento { get; set; }
 
         public decimal Totale { get; set; }
     }

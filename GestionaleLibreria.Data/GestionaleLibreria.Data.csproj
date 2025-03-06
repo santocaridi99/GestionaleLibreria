@@ -66,6 +66,18 @@
     <Compile Include="Migrations\202502071615348_AggiornamentoModello1.Designer.cs">
       <DependentUpon>202502071615348_AggiornamentoModello1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202503051436257_AggiuntaMetodoPagamento.cs" />
+    <Compile Include="Migrations\202503051436257_AggiuntaMetodoPagamento.Designer.cs">
+      <DependentUpon>202503051436257_AggiuntaMetodoPagamento.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503051501176_AggiuntaCasaEditrice.cs" />
+    <Compile Include="Migrations\202503051501176_AggiuntaCasaEditrice.Designer.cs">
+      <DependentUpon>202503051501176_AggiuntaCasaEditrice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503051627065_Aggiuntatipo.cs" />
+    <Compile Include="Migrations\202503051627065_Aggiuntatipo.Designer.cs">
+      <DependentUpon>202503051627065_Aggiuntatipo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Audiobook.cs" />
     <Compile Include="Models\Cliente.cs" />
@@ -91,6 +103,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202502071615348_AggiornamentoModello1.resx">
       <DependentUpon>202502071615348_AggiornamentoModello1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503051436257_AggiuntaMetodoPagamento.resx">
+      <DependentUpon>202503051436257_AggiuntaMetodoPagamento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503051501176_AggiuntaCasaEditrice.resx">
+      <DependentUpon>202503051501176_AggiuntaCasaEditrice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503051627065_Aggiuntatipo.resx">
+      <DependentUpon>202503051627065_Aggiuntatipo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

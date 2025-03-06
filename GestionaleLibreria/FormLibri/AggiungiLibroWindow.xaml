@@ -1,15 +1,25 @@
 ﻿<Window x:Class="GestionaleLibreria.WPF.AggiungiLibroWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Aggiungi Nuovo Libro" Height="450" Width="450" Background="#F5F5F5"
+        Title="Aggiungi Nuovo Libro" Height="600" Width="500" Background="#F5F5F5"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
 
-    <Grid Margin="20">
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+    <Grid Margin="20,20,20,-41">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="0,28,0,-28">
 
             <!-- Intestazione -->
             <TextBlock Text="📖 Aggiungi Nuovo Libro" FontSize="24" FontWeight="Bold" 
                        HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#333333"/>
+
+            <!-- Campo per Tipo di Libro -->
+            <StackPanel Orientation="Vertical" Margin="0,5">
+                <Label Content="Tipo di Libro" FontWeight="Bold"/>
+                <ComboBox x:Name="TipoLibroComboBox" Width="280" Height="30" SelectionChanged="TipoLibroComboBox_SelectionChanged">
+                    <ComboBoxItem Content="Libro Tradizionale" IsSelected="True"/>
+                    <ComboBoxItem Content="Ebook"/>
+                    <ComboBoxItem Content="Audiobook"/>
+                </ComboBox>
+            </StackPanel>
 
             <!-- Campo per Titolo -->
             <StackPanel Orientation="Vertical" Margin="0,5">
@@ -23,6 +33,12 @@
                 <TextBox x:Name="AutoreTextBox" Width="280" Height="30" Background="White"/>
             </StackPanel>
 
+            <!-- Campo per Casa Editrice -->
+            <StackPanel Orientation="Vertical" Margin="0,5">
+                <Label Content="Casa Editrice" FontWeight="Bold"/>
+                <TextBox x:Name="CasaEditriceTextBox" Width="280" Height="30" Background="White"/>
+            </StackPanel>
+
             <!-- Campo per ISBN -->
             <StackPanel Orientation="Vertical" Margin="0,5">
                 <Label Content="ISBN" FontWeight="Bold"/>
@@ -33,6 +49,32 @@
             <StackPanel Orientation="Vertical" Margin="0,5">
                 <Label Content="Prezzo (€)" FontWeight="Bold"/>
                 <TextBox x:Name="PrezzoTextBox" Width="280" Height="30" Background="White"/>
+            </StackPanel>
+
+            <StackPanel x:Name="EbookFields" Visibility="Collapsed">
+                <StackPanel Orientation="Vertical" Margin="0,5">
+                    <Label Content="Formato (PDF, EPUB, MOBI...)" FontWeight="Bold"/>
+                    <TextBox x:Name="FormatoEbookTextBox" Width="280" Height="30" Background="White"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="0,5">
+                    <Label Content="Dimensione File (MB)" FontWeight="Bold"/>
+                    <TextBox x:Name="DimensioneEbookTextBox" Width="280" Height="30" Background="White"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="0,5">
+                    <Label Content="Sconto (%)" FontWeight="Bold"/>
+                    <TextBox x:Name="ScontoEbookTextBox" Width="280" Height="30" Background="White"/>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel x:Name="AudiobookFields" Visibility="Collapsed">
+                <StackPanel Orientation="Vertical" Margin="0,5">
+                    <Label Content="Durata (Ore)" FontWeight="Bold"/>
+                    <TextBox x:Name="DurataAudiobookTextBox" Width="280" Height="30" Background="White"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="0,5">
+                    <Label Content="Narratore" FontWeight="Bold"/>
+                    <TextBox x:Name="NarratoreAudiobookTextBox" Width="280" Height="30" Background="White"/>
+                </StackPanel>
             </StackPanel>
 
             <!-- Bottoni per Aggiungi e Annulla -->

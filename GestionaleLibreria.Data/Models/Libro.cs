@@ -20,6 +20,12 @@ namespace GestionaleLibreria.Data.Models
         [Required]
         public decimal Prezzo { get; set; }
 
+        [Required]
+        public string CasaEditrice { get; set; } = string.Empty;
+
+        public string Tipo => this is Ebook ? "Ebook" : this is Audiobook ? "Audiobook" : "Libro Cartaceo";
+    
+
         // Relazione: un libro può essere presente in uno o più record di LibroMagazzino
         public virtual ICollection<LibroMagazzino> LibriMagazzino { get; set; } = new List<LibroMagazzino>();
 

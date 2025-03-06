@@ -7,6 +7,7 @@ namespace GestionaleLibreria.WPF
         public MainWindow()
         {
             InitializeComponent();
+
         }
 
         private void GestioneLibri_Click(object sender, RoutedEventArgs e)

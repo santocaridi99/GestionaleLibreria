@@ -1,66 +1,97 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Windows;
 using GestionaleLibreria.Business;
+using System.Windows.Controls;
 using GestionaleLibreria.Business.Services;
-using GestionaleLibreria.Data;
 using GestionaleLibreria.Data.Models;
 
 namespace GestionaleLibreria.WPF
 {
     public partial class VenditaWindow : Window
     {
+        private readonly LibroService _libroService;
+        private readonly ClienteService _clienteService;
         private readonly VenditaService _venditaService;
-        // Puoi anche avere un LibroService per cercare i libri, ecc.
+
+        private Cliente _clienteSelezionato;
+        private Libro _libroSelezionato;
 
         public VenditaWindow()
         {
             InitializeComponent();
-            // Iniezione manuale delle dipendenze per VenditaService
-            IVenditaRepository venditaRepository = new VenditaRepository();
-            _venditaService = new VenditaService(venditaRepository);
+         
+        }
+
+        private void CercaLibro_Click(object sender, RoutedEventArgs e)
+        {
+            //string ricerca = RicercaLibroTextBox.Text.Trim();
+            //if (!string.IsNullOrEmpty(ricerca))
+            //{
+            //    LibriVenditaDataGrid.ItemsSource = _libroService.CercaLibri(ricerca);
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Inserisci un titolo per la ricerca.", "Errore", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //}
+        }
+
+        private void SelezionaLibro_Click(object sender, RoutedEventArgs e)
+        {
+            if (LibriVenditaDataGrid.SelectedItem is Libro libro)
+            {
+                _libroSelezionato = libro;
+                MessageBox.Show($"Libro selezionato: {libro.Titolo}", "Libro Selezionato", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Seleziona un libro prima di procedere.", "Attenzione", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void SelezionaCliente_Click(object sender, RoutedEventArgs e)
+        {
+            var finestraClienti = new SelezionaClienteWindow(_clienteService);
+            if (finestraClienti.ShowDialog() == true)
+            {
+                _clienteSelezionato = finestraClienti.ClienteSelezionato;
+                ClienteTextBox.Text = $"{_clienteSelezionato.Nome} {_clienteSelezionato.Cognome}";
+            }
         }
 
         private void RegistraVendita_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (_libroSelezionato == null)
             {
-                // Esempio: prendi il libro selezionato da un DataGrid (assicurati di aver implementato la ricerca)
-                if (LibriVenditaDataGrid.SelectedItem is Libro libroSelezionato)
-                {
-                    // In un'applicazione reale, il cliente verrebbe selezionato da una lista o cercato
-                    Cliente cliente = new Cliente { Nome = "Mario", Cognome = "Rossi" };
-
-                    // Supponiamo di vendere 1 copia per semplicità
-                    int quantitaVenduta = 1;
-
-                    var vendita = new Vendita
-                    {
-                        Libro = libroSelezionato,
-                        LibroId = libroSelezionato.Id,
-                        Cliente = cliente,
-                        ClienteId = cliente.Id, // In un caso reale, questo sarebbe recuperato dal DB
-                        QuantitaVenduta = quantitaVenduta
-                    };
-
-                    _venditaService.RegistraVendita(vendita);
-                    MessageBox.Show("Vendita registrata con successo!");
-                    Close();
-                }
-                else
-                {
-                    MessageBox.Show("Seleziona un libro per la vendita.");
-                }
+                MessageBox.Show("Seleziona un libro prima di registrare la vendita.", "Errore", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            catch (Exception ex)
+
+            string metodoPagamento = (MetodoPagamentoComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+            if (string.IsNullOrEmpty(metodoPagamento))
             {
-                MessageBox.Show("Errore durante la registrazione della vendita: " + ex.Message);
+                MessageBox.Show("Seleziona un metodo di pagamento.", "Errore", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
+
+            var nuovaVendita = new Vendita
+            {
+                LibroId = _libroSelezionato.Id,
+                ClienteId = _clienteSelezionato.Id,
+                DataVendita = DateTime.Now,
+                MetodoPagamento = metodoPagamento
+            };
+
+            _venditaService.RegistraVendita(nuovaVendita);
+            MessageBox.Show("Vendita registrata con successo!", "Successo", MessageBoxButton.OK, MessageBoxImage.Information);
+            this.DialogResult = true;
+            this.Close();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Annulla_Click(object sender, RoutedEventArgs e)
         {
-
+            this.DialogResult = false;
+            this.Close();
         }
     }
 }

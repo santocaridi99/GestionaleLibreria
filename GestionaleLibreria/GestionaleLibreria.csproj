@@ -86,6 +86,9 @@
     <Compile Include="FormLibri\LibriWindow.xaml.cs">
       <DependentUpon>LibriWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FormVendite\SelezionaClienteWindow.xaml.cs">
+      <DependentUpon>SelezionaClienteWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FormVendite\VenditaWindow.xaml.cs">
       <DependentUpon>VenditaWindow.xaml</DependentUpon>
     </Compile>
@@ -106,6 +109,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FormLibri\LibriWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FormVendite\SelezionaClienteWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
