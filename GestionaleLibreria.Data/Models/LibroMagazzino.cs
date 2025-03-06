@@ -16,7 +16,7 @@ namespace GestionaleLibreria.Data.Models
         [ForeignKey("MagazzinoId")]
         public virtual Magazzino Magazzino { get; set; }
 
-        public int Quantita { get; private set; }
+        public int Quantita { get;  set; }
 
         public LibroMagazzino() { }  // Costruttore vuoto per Entity Framework
 

@@ -17,8 +17,12 @@ namespace GestionaleLibreria.WPF
         public LibriWindow()
         {
             InitializeComponent();
+            var context = new LibraryContext();
             ILibroRepository libroRepository = new LibroRepository();
-            _libroService = new LibroService(libroRepository);
+            IMagazzinoRepository magazzinoRepository = new MagazzinoRepository(new LibraryContext());
+            MagazzinoService magazzinoService = new MagazzinoService(magazzinoRepository);
+            _libroService = new LibroService(libroRepository, magazzinoService);
+
             CaricaLibri();
         }
 

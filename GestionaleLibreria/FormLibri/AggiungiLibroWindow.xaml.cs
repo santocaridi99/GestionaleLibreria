@@ -10,16 +10,17 @@ namespace GestionaleLibreria.WPF
     public partial class AggiungiLibroWindow : Window
     {
         private readonly LibroService _libroService;
-      
 
         public AggiungiLibroWindow()
         {
             InitializeComponent();
-            // Iniezione manuale delle dipendenze
-            ILibroRepository libroRepository = new LibroRepository();
-            _libroService = new LibroService(libroRepository);
 
-           
+            var context = new LibraryContext();
+            var libroRepository = new LibroRepository();
+            var magazzinoRepository = new MagazzinoRepository(context);
+            var magazzinoService = new MagazzinoService(magazzinoRepository);
+
+            _libroService = new LibroService(libroRepository, magazzinoService);
         }
 
         private void TipoLibroComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

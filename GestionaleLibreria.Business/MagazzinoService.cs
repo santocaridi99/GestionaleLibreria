@@ -1,52 +1,52 @@
 ﻿using GestionaleLibreria.Data;
 using GestionaleLibreria.Data.Models;
-using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace GestionaleLibreria.Business
+namespace GestionaleLibreria.Business.Services
 {
     public class MagazzinoService
     {
-        private readonly Magazzino _magazzino;
+        private readonly IMagazzinoRepository _magazzinoRepository;
 
-        public MagazzinoService(Magazzino magazzino)
+        public MagazzinoService(IMagazzinoRepository magazzinoRepository)
         {
-            _magazzino = magazzino;
+            _magazzinoRepository = magazzinoRepository;
         }
 
-        // Aggiungi libri fisici al magazzino
+        public List<LibroMagazzino> GetLibriMagazzino()
+        {
+            return _magazzinoRepository.GetAllLibriInMagazzino();
+        }
+
         public void AggiungiLibroFisico(Libro libro, int quantita)
         {
-            var record = _magazzino.LibriMagazzino.FirstOrDefault(lm => lm.Libro.ISBN == libro.ISBN);
-            if (record != null)
+            var libroMagazzino = _magazzinoRepository.GetLibroMagazzinoById(libro.Id);
+            if (libroMagazzino != null)
             {
-                record.AggiungiScorte(quantita);
+                libroMagazzino.AggiungiScorte(quantita);
+                _magazzinoRepository.AggiornaLibroMagazzino(libroMagazzino);
             }
             else
             {
-                _magazzino.LibriMagazzino.Add(new LibroMagazzino(libro, quantita));
+                _magazzinoRepository.AggiungiLibroMagazzino(new LibroMagazzino(libro, quantita));
             }
         }
 
-        // Rimuovi una quantità di un libro
-        public bool RimuoviLibroFisico(string isbn, int quantita)
+        public void RimuoviLibroFisico(int libroId, int quantita)
         {
-            var record = _magazzino.LibriMagazzino.FirstOrDefault(lm => lm.Libro.ISBN == isbn);
-            if (record != null)
+            var libroMagazzino = _magazzinoRepository.GetLibroMagazzinoById(libroId);
+            if (libroMagazzino != null && libroMagazzino.Quantita >= quantita)
             {
-                return record.RimuoviScorte(quantita);
+                libroMagazzino.RimuoviScorte(quantita);
+                _magazzinoRepository.AggiornaLibroMagazzino(libroMagazzino);
             }
-            return false;
         }
 
-        public int OttieniQuantitaLibro(string isbn)
+        public int OttieniQuantitaLibro(int libroId)
         {
-            var record = _magazzino.LibriMagazzino.FirstOrDefault(lm => lm.Libro.ISBN == isbn);
-            return record != null ? record.Quantita : 0;
+            var libroMagazzino = _magazzinoRepository.GetLibroMagazzinoById(libroId);
+            return libroMagazzino != null ? libroMagazzino.Quantita : 0;
         }
     }
 }

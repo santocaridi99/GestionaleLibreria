@@ -16,7 +16,11 @@ namespace GestionaleLibreria.WPF
             InitializeComponent();
             // Iniezione delle dipendenze
             ILibroRepository libroRepository = new LibroRepository();
-            _libroService = new LibroService(libroRepository);
+            var _context = new LibraryContext();    
+            IMagazzinoRepository magazzinoRepository = new MagazzinoRepository(_context);   
+
+            var magazzinoSercive = new MagazzinoService(magazzinoRepository);
+            _libroService = new LibroService(libroRepository, magazzinoSercive);
 
             _libro = libro;
             // Popola i campi con i dati del libro

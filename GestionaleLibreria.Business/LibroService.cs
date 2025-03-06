@@ -8,10 +8,13 @@ namespace GestionaleLibreria.Business.Services
     public class LibroService
     {
         private readonly ILibroRepository _libroRepository;
+        private readonly MagazzinoService _magazzinoService;
 
-        public LibroService(ILibroRepository libroRepository)
+        // Ora il MagazzinoService viene iniettato correttamente.
+        public LibroService(ILibroRepository libroRepository, MagazzinoService magazzinoService)
         {
             _libroRepository = libroRepository;
+            _magazzinoService = magazzinoService;
         }
 
         public List<Libro> GetAllLibri()
@@ -22,6 +25,12 @@ namespace GestionaleLibreria.Business.Services
         public void AggiungiLibro(Libro libro)
         {
             _libroRepository.AddLibro(libro);
+
+            // Se il libro non è un Ebook o Audiobook, lo aggiunge automaticamente al magazzino.
+            if (!(libro is Ebook) && !(libro is Audiobook))
+            {
+                _magazzinoService.AggiungiLibroFisico(libro, 0);
+            }
         }
 
         public void ModificaLibro(Libro libro)

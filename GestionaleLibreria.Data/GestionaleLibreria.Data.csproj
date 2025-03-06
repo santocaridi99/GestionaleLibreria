@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="IClienteRepository.cs" />
     <Compile Include="ILibroRepository.cs" />
+    <Compile Include="IMagazzinoRepository.cs" />
     <Compile Include="IUtenteRepository.cs" />
     <Compile Include="IVenditaRepository.cs" />
     <Compile Include="Migrations\202501211142515_InitialCreate.cs" />

@@ -47,7 +47,8 @@ namespace GestionaleLibreria.WPF
 
         private void GestioneMagazzino_Click(object sender, RoutedEventArgs e)
         {
-            // implementazione futura
+            MagazzinoWindow magazzinoWindow = new MagazzinoWindow();
+            magazzinoWindow.ShowDialog();
         }
 
         private void BtnLogout_Click(object sender, RoutedEventArgs e)
