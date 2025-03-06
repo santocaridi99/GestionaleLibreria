@@ -38,6 +38,8 @@ namespace GestionaleLibreria.Data
                 .HasForeignKey(lm => lm.MagazzinoId);
         }
 
+
+
         private void InizializzaAdmin()
         {
             if (!Utenti.Any(u => u.Ruolo == "Admin"))

@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 
 namespace GestionaleLibreria.Data
 {
-   
+
     public interface IUtenteRepository
     {
-        void AggiungiUtente(Utente utente);
+        void AggiungiUtente(string username, string passwordInChiaro, string ruolo);
         Utente GetUtenteByUsername(string username);
+        bool AnyUserExists(); // Metodo utile per verificare esistenza utenti
     }
+
 
 
     public class UtenteRepository : IUtenteRepository
@@ -23,7 +25,6 @@ namespace GestionaleLibreria.Data
         {
             _context = context;
 
-            // Se non esistono utenti, crea un admin di default
             if (!_context.Utenti.Any())
             {
                 var admin = new Utente
@@ -38,10 +39,16 @@ namespace GestionaleLibreria.Data
             }
         }
 
-        public void AggiungiUtente(Utente utente)
+        public void AggiungiUtente(string username, string passwordInChiaro, string ruolo)
         {
-            utente.PasswordHash = PasswordHelper.HashPassword(utente.PasswordHash);
-            _context.Utenti.Add(utente);
+            var nuovoUtente = new Utente
+            {
+                Username = username,
+                PasswordHash = PasswordHelper.HashPassword(passwordInChiaro),
+                Ruolo = ruolo
+            };
+
+            _context.Utenti.Add(nuovoUtente);
             _context.SaveChanges();
         }
 
@@ -49,5 +56,11 @@ namespace GestionaleLibreria.Data
         {
             return _context.Utenti.FirstOrDefault(u => u.Username == username);
         }
+
+        public bool AnyUserExists()
+        {
+            return _context.Utenti.Any();
+        }
     }
+
 }

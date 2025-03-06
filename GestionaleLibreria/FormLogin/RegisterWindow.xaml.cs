@@ -3,7 +3,6 @@ using System.Windows;
 using GestionaleLibreria.Business;
 using GestionaleLibreria.Business.Services;
 using GestionaleLibreria.Data;
-using GestionaleLibreria.Data.Models;
 
 namespace GestionaleLibreria.WPF
 {
@@ -14,8 +13,7 @@ namespace GestionaleLibreria.WPF
         public RegisterWindow()
         {
             InitializeComponent();
-            IUtenteRepository utenteRepository = new UtenteRepository(new LibraryContext());
-            _utenteService = new UtenteService(utenteRepository);
+            _utenteService = new UtenteService(new UtenteRepository(new LibraryContext()));
         }
 
         private void Registra_Click(object sender, RoutedEventArgs e)
@@ -32,10 +30,9 @@ namespace GestionaleLibreria.WPF
 
             try
             {
-                // Registra solo utenti Operatori
                 _utenteService.RegistraUtente(username, password, "Operatore");
-                MessageBox.Show("Registrazione completata! Ora puoi accedere.", "Successo");
-                this.Close();
+                MessageBox.Show("Registrazione completata!", "Successo");
+                Close();
             }
             catch (Exception ex)
             {
@@ -44,10 +41,10 @@ namespace GestionaleLibreria.WPF
             }
         }
 
+
         private void Annulla_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
-
     }
 }

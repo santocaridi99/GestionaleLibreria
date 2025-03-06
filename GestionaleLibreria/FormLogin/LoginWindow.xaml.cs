@@ -3,7 +3,6 @@ using System.Windows;
 using GestionaleLibreria.Business;
 using GestionaleLibreria.Business.Services;
 using GestionaleLibreria.Data;
-using GestionaleLibreria.Data.Models;
 
 namespace GestionaleLibreria.WPF
 {
@@ -14,25 +13,22 @@ namespace GestionaleLibreria.WPF
         public LoginWindow()
         {
             InitializeComponent();
-            IUtenteRepository utenteRepository = new UtenteRepository(new LibraryContext());
-            _utenteService = new UtenteService(utenteRepository);
-            VerificaRegistrazione();
+            _utenteService = new UtenteService(new UtenteRepository(new LibraryContext()));
+           
         }
 
-        private void VerificaRegistrazione()
-        {
-            using (var context = new LibraryContext())
-            {
-                if (!context.Utenti.Any(u => u.Ruolo == "Operatore"))
-                {
-                    RegistratiButton.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    RegistratiButton.Visibility = Visibility.Collapsed;
-                }
-            }
-        }
+        //private void VerificaRegistrazione()
+        //{
+        //    var context = new LibraryContext();
+        //    if (!context.Utenti.Any(u => u.Ruolo == "Operatore"))
+        //    {
+        //        RegistratiButton.Visibility = Visibility.Visible;
+        //    }
+        //    else
+        //    {
+        //        RegistratiButton.Visibility = Visibility.Collapsed;
+        //    }
+        //}
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
@@ -43,9 +39,9 @@ namespace GestionaleLibreria.WPF
 
             if (utente != null)
             {
-                MainWindow mainWindow = new MainWindow(utente.Ruolo);
+                MainWindow mainWindow = new MainWindow(utente.Ruolo, utente.Username);
                 mainWindow.Show();
-                this.Close();
+                Close();
             }
             else
             {
@@ -54,11 +50,12 @@ namespace GestionaleLibreria.WPF
             }
         }
 
+
         private void ApriFinestraRegistrazione(object sender, RoutedEventArgs e)
         {
-            RegisterWindow registerWindow = new RegisterWindow();
+            var registerWindow = new RegisterWindow();
             registerWindow.ShowDialog();
-            VerificaRegistrazione();
+            //VerificaRegistrazione();
         }
     }
 }
