@@ -1,31 +1,35 @@
 ﻿<Window x:Class="GestionaleLibreria.WPF.RegisterWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Registrazione" Height="400" Width="350" Background="#F5F5F5"
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Registrazione Utente" Height="400" Width="400" Background="#F5F5F5"
+        WindowStartupLocation="CenterScreen">
 
     <Grid Margin="20">
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-            <TextBlock Text="🆕 Registrazione" FontSize="24" FontWeight="Bold"
-                       HorizontalAlignment="Center" Foreground="#333333" Margin="0,0,0,20"/>
+
+            <TextBlock Text="👤 Registrazione Utente" FontSize="24" FontWeight="Bold" Foreground="#333333"
+                       HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
             <Label Content="Username" FontWeight="Bold"/>
             <TextBox x:Name="UsernameTextBox" Width="250" Height="30"/>
 
-            <Label Content="Password" FontWeight="Bold" Margin="0,10,0,0"/>
+            <Label Content="Password" FontWeight="Bold"/>
             <PasswordBox x:Name="PasswordBox" Width="250" Height="30"/>
 
-            <Label Content="Ruolo" FontWeight="Bold" Margin="0,10,0,0"/>
+            <Label Content="Ruolo" FontWeight="Bold"/>
             <ComboBox x:Name="RuoloComboBox" Width="250" Height="30">
-                <ComboBoxItem Content="Admin"/>
-                <ComboBoxItem Content="Operatore"/>
+                <ComboBoxItem Content="Operatore" IsSelected="True"/>
             </ComboBox>
 
-            <TextBlock x:Name="ErroreTextBlock" Foreground="Red" FontSize="12" Visibility="Collapsed" Margin="0,5,0,0"/>
+            <TextBlock x:Name="ErroreTextBlock" Foreground="Red" Visibility="Collapsed" TextAlignment="Center"
+                       Margin="0,10,0,10"/>
 
-            <Button Content="✅ Registra" Click="Registra_Click"
-                    Width="250" Height="40" Background="#4CAF50" Foreground="White"
-                    FontSize="16" FontWeight="Bold" Margin="20,10,0,0" Cursor="Hand"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <Button Content="✅ Registra" Width="120" Height="40" Click="Registra_Click"
+                        Background="#4CAF50" Foreground="White"/>
+                <Button Content="❌ Annulla" Width="120" Height="40" Click="Annulla_Click"
+                        Background="#F44336" Foreground="White"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

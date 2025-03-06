@@ -20,6 +20,10 @@
             <Button Content="🔑 Accedi" Click="Login_Click"
                     Width="250" Height="40" Background="#4CAF50" Foreground="White"
                     FontSize="16" FontWeight="Bold" Margin="20,10,0,0" Cursor="Hand"/>
+            <Button x:Name="RegistratiButton" Content="Registrati" Width="120" Height="40" Margin="10"
+                    Background="#03A9F4" Foreground="White" FontSize="14" FontWeight="Bold"
+                    Cursor="Hand" Click="ApriFinestraRegistrazione"/>
+
         </StackPanel>
     </Grid>
 </Window>

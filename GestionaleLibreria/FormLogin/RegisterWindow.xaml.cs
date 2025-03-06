@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using GestionaleLibreria.Business;
-using System.Windows.Controls;
 using GestionaleLibreria.Business.Services;
 using GestionaleLibreria.Data;
 using GestionaleLibreria.Data.Models;
@@ -23,9 +22,8 @@ namespace GestionaleLibreria.WPF
         {
             string username = UsernameTextBox.Text;
             string password = PasswordBox.Password;
-            string ruolo = (RuoloComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
 
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(ruolo))
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
                 ErroreTextBlock.Text = "Compila tutti i campi!";
                 ErroreTextBlock.Visibility = Visibility.Visible;
@@ -34,8 +32,9 @@ namespace GestionaleLibreria.WPF
 
             try
             {
-                _utenteService.RegistraUtente(username, password, ruolo);
-                MessageBox.Show("Registrazione completata!", "Successo");
+                // Registra solo utenti Operatori
+                _utenteService.RegistraUtente(username, password, "Operatore");
+                MessageBox.Show("Registrazione completata! Ora puoi accedere.", "Successo");
                 this.Close();
             }
             catch (Exception ex)
@@ -44,5 +43,11 @@ namespace GestionaleLibreria.WPF
                 ErroreTextBlock.Visibility = Visibility.Visible;
             }
         }
+
+        private void Annulla_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
     }
 }

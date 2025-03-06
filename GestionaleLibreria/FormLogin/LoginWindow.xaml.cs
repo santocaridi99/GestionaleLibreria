@@ -16,24 +16,22 @@ namespace GestionaleLibreria.WPF
             InitializeComponent();
             IUtenteRepository utenteRepository = new UtenteRepository(new LibraryContext());
             _utenteService = new UtenteService(utenteRepository);
+            VerificaRegistrazione();
+        }
 
-            // Se il database non ha utenti, chiedi di registrare uno
-            if (!HaUtentiRegistrati())
+        private void VerificaRegistrazione()
+        {
+            using (var context = new LibraryContext())
             {
-                MessageBox.Show("Non ci sono utenti registrati. Creiamo un nuovo account.", "Registrazione");
-                ApriRegistrazione();
+                if (!context.Utenti.Any(u => u.Ruolo == "Operatore"))
+                {
+                    RegistratiButton.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    RegistratiButton.Visibility = Visibility.Collapsed;
+                }
             }
-        }
-
-        private bool HaUtentiRegistrati()
-        {
-            return _utenteService.EffettuaLogin("admin", "admin") != null || new LibraryContext().Utenti.Any();
-        }
-
-        private void ApriRegistrazione()
-        {
-            var registerWindow = new RegisterWindow();
-            registerWindow.ShowDialog();
         }
 
         private void Login_Click(object sender, RoutedEventArgs e)
@@ -45,7 +43,6 @@ namespace GestionaleLibreria.WPF
 
             if (utente != null)
             {
-                // Passa il ruolo dell'utente alla MainWindow
                 MainWindow mainWindow = new MainWindow(utente.Ruolo);
                 mainWindow.Show();
                 this.Close();
@@ -57,5 +54,11 @@ namespace GestionaleLibreria.WPF
             }
         }
 
+        private void ApriFinestraRegistrazione(object sender, RoutedEventArgs e)
+        {
+            RegisterWindow registerWindow = new RegisterWindow();
+            registerWindow.ShowDialog();
+            VerificaRegistrazione();
+        }
     }
 }

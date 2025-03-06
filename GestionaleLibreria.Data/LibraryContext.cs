@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using GestionaleLibreria.Data.Models;
 
 namespace GestionaleLibreria.Data
@@ -10,6 +11,8 @@ namespace GestionaleLibreria.Data
         public LibraryContext()
             : base("name=LibraryDB")
         {
+            Database.SetInitializer(new CreateDatabaseIfNotExists<LibraryContext>());
+            InizializzaAdmin();
         }
 
         public DbSet<Libro> Libri { get; set; }
@@ -34,5 +37,22 @@ namespace GestionaleLibreria.Data
                 .WithRequired(lm => lm.Magazzino)
                 .HasForeignKey(lm => lm.MagazzinoId);
         }
+
+        private void InizializzaAdmin()
+        {
+            if (!Utenti.Any(u => u.Ruolo == "Admin"))
+            {
+                var admin = new Utente
+                {
+                    Username = "admin",
+                    PasswordHash = PasswordHelper.HashPassword("admin"),
+                    Ruolo = "Admin"
+                };
+
+                Utenti.Add(admin);
+                SaveChanges();
+            }
+        }
     }
 }
+

@@ -21,5 +21,6 @@ namespace GestionaleLibreria
             LoginWindow loginWindow = new LoginWindow();
             loginWindow.Show();
         }
+
     }
 }

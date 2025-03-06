@@ -1,25 +1,24 @@
 ﻿using System.Windows;
+using GestionaleLibreria.Data.Models;
 
 namespace GestionaleLibreria.WPF
 {
     public partial class MainWindow : Window
     {
-        private string ruoloUtente;
+        private readonly string _ruoloUtente;
 
-        // Costruttore senza parametri richiesto da WPF
-        public MainWindow() : this("Admin") { }  // Imposta "Admin" come valore di default
+        public MainWindow() : this("Operatore") { }
 
-        // Costruttore principale che riceve il ruolo dell'utente
-        public MainWindow(string ruolo)
+        public MainWindow(string ruoloUtente)
         {
             InitializeComponent();
-            ruoloUtente = ruolo;
+            _ruoloUtente = ruoloUtente;
             ConfiguraInterfaccia();
         }
 
         private void ConfiguraInterfaccia()
         {
-            if (ruoloUtente == "Operatore")
+            if (_ruoloUtente == "Operatore")
             {
                 GestioneLibriButton.IsEnabled = false;
                 GestioneLibriButton.Visibility = Visibility.Collapsed;
