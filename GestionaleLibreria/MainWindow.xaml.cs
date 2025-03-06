@@ -4,15 +4,33 @@ namespace GestionaleLibreria.WPF
 {
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private string ruoloUtente;
+
+        // Costruttore senza parametri richiesto da WPF
+        public MainWindow() : this("Admin") { }  // Imposta "Admin" come valore di default
+
+        // Costruttore principale che riceve il ruolo dell'utente
+        public MainWindow(string ruolo)
         {
             InitializeComponent();
+            ruoloUtente = ruolo;
+            ConfiguraInterfaccia();
+        }
 
+        private void ConfiguraInterfaccia()
+        {
+            if (ruoloUtente == "Operatore")
+            {
+                GestioneLibriButton.IsEnabled = false;
+                GestioneLibriButton.Visibility = Visibility.Collapsed;
+
+                GestioneMagazzinoButton.IsEnabled = false;
+                GestioneMagazzinoButton.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void GestioneLibri_Click(object sender, RoutedEventArgs e)
         {
-            // Apri la finestra dedicata alla gestione dei libri
             LibriWindow libriWindow = new LibriWindow();
             libriWindow.ShowDialog();
         }

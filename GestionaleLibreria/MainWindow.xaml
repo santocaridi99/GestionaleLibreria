@@ -13,8 +13,8 @@
 
         <!-- Pannello centrale per la navigazione -->
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" >
-            
-            <Button Content="📖 Gestione Libri" Click="GestioneLibri_Click"
+
+            <Button x:Name="GestioneLibriButton" Content="📖 Gestione Libri" Click="GestioneLibri_Click"
                     Width="250" Height="50" Background="#4CAF50" Foreground="White"
                     FontSize="16" FontWeight="Bold" Margin="0,0,0,10" Cursor="Hand"/>
 
@@ -30,7 +30,7 @@
                     Width="250" Height="50" Background="#03A9F4" Margin="0,0,0,10" Foreground="White"
                     FontSize="16" FontWeight="Bold" Cursor="Hand"/>
 
-            <Button Content="📦 Gestione Magazzino" Click="GestioneMagazzino_Click"
+            <Button x:Name="GestioneMagazzinoButton" Content="📦 Gestione Magazzino" Click="GestioneMagazzino_Click"
                     Width="250" Height="50" Background="#E91E63" Margin="0,0,0,10" Foreground="White"
                     FontSize="16" FontWeight="Bold" Cursor="Hand"/>
         </StackPanel>

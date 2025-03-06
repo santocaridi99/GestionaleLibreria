@@ -17,6 +17,7 @@ namespace GestionaleLibreria.Data
         public DbSet<Vendita> Vendite { get; set; }
         public DbSet<LibroMagazzino> LibriMagazzino { get; set; }
         public DbSet<Magazzino> Magazzini { get; set; }
+        public DbSet<Utente> Utenti { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
