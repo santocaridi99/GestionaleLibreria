@@ -54,6 +54,11 @@ namespace GestionaleLibreria.Data
             var libro = _context.Libri.FirstOrDefault(l => l.Id == id);
             if (libro != null)
             {
+                if(libro.QuantitaMagazzino > 0)
+                {
+                    throw new InvalidOperationException("Impossibile eliminare un libro con quantità in magazzino, gestisci in magazzino");
+                }
+               
                 _context.Libri.Remove(libro);
                 _context.SaveChanges();
             }
