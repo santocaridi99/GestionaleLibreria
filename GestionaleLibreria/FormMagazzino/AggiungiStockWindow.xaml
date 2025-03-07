@@ -1,0 +1,27 @@
+﻿<Window x:Class="GestionaleLibreria.WPF.AggiungiStockWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Aggiungi Scorte" Height="300" Width="400"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+
+    <Grid Margin="20">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+
+            <TextBlock Text="📦 Aggiungi Scorte" FontSize="22" FontWeight="Bold" 
+                       HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#37474F"/>
+
+            <Label Content="Quantità da Aggiungere:" FontWeight="Bold"/>
+            <TextBox x:Name="QuantitaTextBox" Width="200" Height="30" Background="White"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                <Button Content="✅ Aggiungi" Width="120" Height="40" Margin="10"
+                        Background="#4CAF50" Foreground="White" FontSize="14" FontWeight="Bold"
+                        Cursor="Hand" Click="AggiungiButton_Click"/>
+
+                <Button Content="❌ Annulla" Width="120" Height="40" Margin="10"
+                        Background="#F44336" Foreground="White" FontSize="14" FontWeight="Bold"
+                        Cursor="Hand" Click="AnnullaButton_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

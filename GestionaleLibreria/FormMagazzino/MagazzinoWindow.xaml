@@ -32,8 +32,8 @@
         </Border>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
-            <Button Content="➕ Aggiungi Stock" Width="130" Margin="5" Click="AggiungiStock_Click" Background="#4CAF50" Foreground="White"/>
-            <Button Content="➖ Rimuovi Stock" Width="130" Margin="5" Click="RimuoviStock_Click" Background="#F44336" Foreground="White"/>
+            <Button Content="➕ Aggiungi" Width="130" Margin="5" Click="AggiungiStock_Click" Background="#4CAF50" Foreground="White"/>
+            <Button Content="➖ Rimuovi" Width="130" Margin="5" Click="RimuoviStock_Click" Background="#F44336" Foreground="White"/>
         </StackPanel>
     </Grid>
 </Window>

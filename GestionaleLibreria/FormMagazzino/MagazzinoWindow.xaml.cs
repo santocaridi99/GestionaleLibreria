@@ -16,10 +16,12 @@ namespace GestionaleLibreria.WPF
 
             var context = new LibraryContext();
             var magazzinoRepository = new MagazzinoRepository(context);
-            _magazzinoService = new MagazzinoService(magazzinoRepository);
+            var libroRepository = new LibroRepository();  
+            _magazzinoService = new MagazzinoService(magazzinoRepository, libroRepository);
 
             CaricaLibri();
         }
+
 
         private void CaricaLibri()
         {
@@ -39,18 +41,26 @@ namespace GestionaleLibreria.WPF
 
         private void AggiungiStock_Click(object sender, RoutedEventArgs e)
         {
-            //var aggiungiStockWindow = new AggiungiStockWindow(_magazzinoService);
-            //aggiungiStockWindow.ShowDialog();
-            //CaricaLibri();
+            if (MagazzinoDataGrid.SelectedItem is LibroMagazzino libroMagazzinoSelezionato)
+            {
+                var aggiungiStockWindow = new AggiungiStockWindow(_magazzinoService, libroMagazzinoSelezionato);
+                aggiungiStockWindow.ShowDialog();
+                CaricaLibri();
+            }
+            else
+            {
+                MessageBox.Show("Seleziona un libro per aggiungere quantità.");
+            }
         }
+
 
         private void RimuoviStock_Click(object sender, RoutedEventArgs e)
         {
             if (MagazzinoDataGrid.SelectedItem is LibroMagazzino libroMagazzinoSelezionato)
             {
-                //var rimuoviStockWindow = new RimuoviStockWindow(_magazzinoService, libroMagazzinoSelezionato);
-                //rimuoviStockWindow.ShowDialog();
-                //CaricaLibri();
+                var rimuoviStockWindow = new RimuoviStockWindow(_magazzinoService, libroMagazzinoSelezionato);
+                rimuoviStockWindow.ShowDialog();
+                CaricaLibri();
             }
             else
             {

@@ -13,6 +13,7 @@ namespace GestionaleLibreria.Data
         void AddLibro(Libro libro);
         void UpdateLibro(Libro libro);
         void DeleteLibro(int id);
+        Libro GetLibroById(int id);
     }
 
     public class LibroRepository : ILibroRepository
@@ -57,5 +58,11 @@ namespace GestionaleLibreria.Data
                 _context.SaveChanges();
             }
         }
+
+        public Libro GetLibroById(int id)
+        {
+            return _context.Libri.FirstOrDefault(l => l.Id == id);
+        }
+
     }
 }

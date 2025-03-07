@@ -14,14 +14,15 @@ namespace GestionaleLibreria.WPF
         public AggiungiLibroWindow()
         {
             InitializeComponent();
-
             var context = new LibraryContext();
-            var libroRepository = new LibroRepository();
-            var magazzinoRepository = new MagazzinoRepository(context);
-            var magazzinoService = new MagazzinoService(magazzinoRepository);
 
+            ILibroRepository libroRepository = new LibroRepository();
+            IMagazzinoRepository magazzinoRepository = new MagazzinoRepository(context);
+
+            MagazzinoService magazzinoService = new MagazzinoService(magazzinoRepository, libroRepository); // ✅ Ora corretto
             _libroService = new LibroService(libroRepository, magazzinoService);
         }
+
 
         private void TipoLibroComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

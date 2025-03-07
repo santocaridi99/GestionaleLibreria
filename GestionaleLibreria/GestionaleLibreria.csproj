@@ -111,8 +111,14 @@
     <Compile Include="FormLogin\RegisterWindow.xaml.cs">
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FormMagazzino\AggiungiStockWindow.xaml.cs">
+      <DependentUpon>AggiungiStockWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FormMagazzino\MagazzinoWindow.xaml.cs">
       <DependentUpon>MagazzinoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FormMagazzino\RimuoviStockWindow.xaml.cs">
+      <DependentUpon>RimuoviStockWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="FormVendite\SelezionaClienteWindow.xaml.cs">
       <DependentUpon>SelezionaClienteWindow.xaml</DependentUpon>
@@ -148,7 +154,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="FormMagazzino\AggiungiStockWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FormMagazzino\MagazzinoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FormMagazzino\RimuoviStockWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

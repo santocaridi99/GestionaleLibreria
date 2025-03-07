@@ -12,20 +12,21 @@ namespace GestionaleLibreria.WPF
     public partial class LibriWindow : Window
     {
         private readonly LibroService _libroService;
-        private List<Libro> _tuttiLibri; 
+        private List<Libro> _tuttiLibri;
 
         public LibriWindow()
         {
             InitializeComponent();
             var context = new LibraryContext();
+
             ILibroRepository libroRepository = new LibroRepository();
-            IMagazzinoRepository magazzinoRepository = new MagazzinoRepository(new LibraryContext());
-            MagazzinoService magazzinoService = new MagazzinoService(magazzinoRepository);
+            IMagazzinoRepository magazzinoRepository = new MagazzinoRepository(context);
+
+            MagazzinoService magazzinoService = new MagazzinoService(magazzinoRepository, libroRepository); 
             _libroService = new LibroService(libroRepository, magazzinoService);
 
             CaricaLibri();
         }
-
         private void CaricaLibri()
         {
             _tuttiLibri = _libroService.GetAllLibri();
