@@ -16,7 +16,7 @@ namespace GestionaleLibreria.WPF
 
             var context = new LibraryContext();
             var magazzinoRepository = new MagazzinoRepository(context);
-            var libroRepository = new LibroRepository();  
+            var libroRepository = new LibroRepository();
             _magazzinoService = new MagazzinoService(magazzinoRepository, libroRepository);
 
             CaricaLibri();
@@ -25,7 +25,8 @@ namespace GestionaleLibreria.WPF
 
         private void CaricaLibri()
         {
-            MagazzinoDataGrid.ItemsSource = _magazzinoService.GetLibriMagazzino();
+            var libriMagazzino = _magazzinoService.GetLibriMagazzino();
+            MagazzinoDataGrid.ItemsSource = libriMagazzino;
         }
 
         private void FiltraLibri_Click(object sender, RoutedEventArgs e)

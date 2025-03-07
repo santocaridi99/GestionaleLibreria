@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace GestionaleLibreria.Data.Models
 {
@@ -24,8 +25,8 @@ namespace GestionaleLibreria.Data.Models
         public string CasaEditrice { get; set; } = string.Empty;
 
         public string Tipo => this is Ebook ? "Ebook" : this is Audiobook ? "Audiobook" : "Libro Cartaceo";
-    
 
+        public int QuantitaMagazzino => LibriMagazzino?.Sum(lm => lm.Quantita) ?? 0;
         // Relazione: un libro può essere presente in uno o più record di LibroMagazzino
         public virtual ICollection<LibroMagazzino> LibriMagazzino { get; set; } = new List<LibroMagazzino>();
 

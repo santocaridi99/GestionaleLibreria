@@ -8,13 +8,12 @@ namespace GestionaleLibreria.Business.Services
     public class LibroService
     {
         private readonly ILibroRepository _libroRepository;
-        private readonly MagazzinoService _magazzinoService;
+        private readonly IMagazzinoRepository _magazzinoRepository;
 
-        // Ora il MagazzinoService viene iniettato correttamente.
-        public LibroService(ILibroRepository libroRepository, MagazzinoService magazzinoService)
+        public LibroService(ILibroRepository libroRepository, IMagazzinoRepository magazzinoRepository)
         {
             _libroRepository = libroRepository;
-            _magazzinoService = magazzinoService;
+            _magazzinoRepository = magazzinoRepository;
         }
 
         public List<Libro> GetAllLibri()
@@ -26,12 +25,29 @@ namespace GestionaleLibreria.Business.Services
         {
             _libroRepository.AddLibro(libro);
 
-            // Se il libro non è un Ebook o Audiobook, lo aggiunge automaticamente al magazzino.
+            // Se il libro è cartaceo, lo aggiunge in magazzino con quantità zero
             if (!(libro is Ebook) && !(libro is Audiobook))
             {
-                _magazzinoService.AggiungiLibroFisico(libro, 0);
+                // Verifica se esiste un magazzino, altrimenti ne crea uno
+                var magazzino = _magazzinoRepository.GetMagazzinoPrincipale();
+                if (magazzino == null)
+                {
+                    magazzino = new Magazzino { Nome = "Magazzino Principale" };
+                    _magazzinoRepository.AggiungiMagazzino(magazzino);
+                }
+
+                // Ora crea il record in LibroMagazzino con il MagazzinoId corretto
+                var libroMagazzino = new LibroMagazzino
+                {
+                    LibroId = libro.Id,
+                    MagazzinoId = magazzino.Id, // Assicuriamoci che il MagazzinoId sia valido
+                    Quantita = 0
+                };
+                _magazzinoRepository.AggiungiLibroMagazzino(libroMagazzino);
             }
         }
+
+
 
         public void ModificaLibro(Libro libro)
         {

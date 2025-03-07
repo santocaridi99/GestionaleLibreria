@@ -20,9 +20,7 @@ namespace GestionaleLibreria.WPF
             var _context = new LibraryContext();
             IMagazzinoRepository magazzinoRepository = new MagazzinoRepository(_context);
 
-            // ✅ Correzione: passiamo anche libroRepository a MagazzinoService
-            var magazzinoService = new MagazzinoService(magazzinoRepository, libroRepository);
-            _libroService = new LibroService(libroRepository, magazzinoService);
+            _libroService = new LibroService(libroRepository, magazzinoRepository);
 
             _libro = libro;
 

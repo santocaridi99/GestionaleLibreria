@@ -23,7 +23,7 @@ namespace GestionaleLibreria.WPF
             IMagazzinoRepository magazzinoRepository = new MagazzinoRepository(context);
 
             MagazzinoService magazzinoService = new MagazzinoService(magazzinoRepository, libroRepository); 
-            _libroService = new LibroService(libroRepository, magazzinoService);
+            _libroService = new LibroService(libroRepository, magazzinoRepository);
 
             CaricaLibri();
         }
@@ -38,6 +38,7 @@ namespace GestionaleLibreria.WPF
 
             AggiornaDataGrid(_tuttiLibri);
         }
+
 
         private void AggiornaDataGrid(List<Libro> libri)
         {

@@ -12,7 +12,12 @@ namespace GestionaleLibreria.Data
         void AggiornaLibroMagazzino(LibroMagazzino libroMagazzino);
         void RimuoviLibroMagazzino(int libroId);
         void SaveChanges();
+
+       
+        Magazzino GetMagazzinoPrincipale();
+        void AggiungiMagazzino(Magazzino magazzino);
     }
+
 
     public class MagazzinoRepository : IMagazzinoRepository
     {
@@ -25,8 +30,9 @@ namespace GestionaleLibreria.Data
 
         public List<LibroMagazzino> GetAllLibriInMagazzino()
         {
-            return _context.LibriMagazzino.ToList();
+            return _context.LibriMagazzino.Include("Libro").ToList();
         }
+
 
         public LibroMagazzino GetLibroMagazzinoById(int libroId)
         {
@@ -48,6 +54,18 @@ namespace GestionaleLibreria.Data
                 SaveChanges();
             }
         }
+
+        public Magazzino GetMagazzinoPrincipale()
+        {
+            return _context.Magazzini.FirstOrDefault(m => m.Nome == "Magazzino Principale");
+        }
+
+        public void AggiungiMagazzino(Magazzino magazzino)
+        {
+            _context.Magazzini.Add(magazzino);
+            _context.SaveChanges();
+        }
+
 
 
         public void RimuoviLibroMagazzino(int libroId)

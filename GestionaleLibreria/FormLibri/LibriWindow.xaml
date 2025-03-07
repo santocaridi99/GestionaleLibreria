@@ -53,6 +53,7 @@
                     <DataGridTextColumn Header="Casa Editrice" Binding="{Binding CasaEditrice}" Width="*"/>
                     <DataGridTextColumn Header="Prezzo (€)" Binding="{Binding Prezzo}" Width="*"/>
                     <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo, Mode=OneWay}" Width="*"/>
+                    <DataGridTextColumn Header="Quantità Magazzino" Binding="{Binding QuantitaMagazzino, Mode=OneWay}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
