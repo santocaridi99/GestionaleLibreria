@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GestionaleLibreria.Data.Models;
-
+using GestionaleLibreria.Data.Logging;
 
 namespace GestionaleLibreria.Data
 {
@@ -16,6 +17,7 @@ namespace GestionaleLibreria.Data
     public class ClienteRepository : IClienteRepository
     {
         private readonly LibraryContext _context;
+        private static readonly string NomeClasse = nameof(ClienteRepository);
 
         public ClienteRepository()
         {
@@ -24,38 +26,91 @@ namespace GestionaleLibreria.Data
 
         public List<Cliente> GetAllClienti()
         {
-            return _context.Clienti.ToList();   
+            string nomeMetodo = nameof(GetAllClienti);
+            try
+            {
+                Logger.LogInfo(NomeClasse, nomeMetodo, "Recupero di tutti i clienti dal database.");
+                var clienti = _context.Clienti.ToList();
+                Logger.LogInfo(NomeClasse, nomeMetodo, $"Recuperati {clienti.Count} clienti.");
+                return clienti;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(NomeClasse, nomeMetodo, ex);
+                throw;
+            }
         }
 
         public void AddCliente(Cliente cliente)
         {
-            _context.Clienti.Add(cliente);
-            _context.SaveChanges();
+            string nomeMetodo = nameof(AddCliente);
+            try
+            {
+                Logger.LogInfo(NomeClasse, nomeMetodo, $"Tentativo di aggiunta cliente");
+                _context.Clienti.Add(cliente);
+                _context.SaveChanges();
+                Logger.LogInfo(NomeClasse, nomeMetodo, $"Cliente aggiunto con successo");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(NomeClasse, nomeMetodo, ex);
+                throw;
+            }
         }
 
         public void UpdateCliente(Cliente cliente)
         {
-            var existing = _context.Clienti.FirstOrDefault(c => c.Id == cliente.Id);
-            if (existing != null)
+            string nomeMetodo = nameof(UpdateCliente);
+            try
             {
-                existing.Nome = cliente.Nome;
-                existing.Cognome = cliente.Cognome;
-                existing.Email = cliente.Email;
-                existing.Telefono = cliente.Telefono;
-                _context.SaveChanges();
+                Logger.LogInfo(NomeClasse, nomeMetodo, $"Tentativo di aggiornamento cliente ID: {cliente.Id}");
+                var existing = _context.Clienti.FirstOrDefault(c => c.Id == cliente.Id);
+
+                if (existing != null)
+                {
+                    existing.Nome = cliente.Nome;
+                    existing.Cognome = cliente.Cognome;
+                    existing.Email = cliente.Email;
+                    existing.Telefono = cliente.Telefono;
+                    _context.SaveChanges();
+                    Logger.LogInfo(NomeClasse, nomeMetodo, $"Cliente aggiornato");
+                }
+                else
+                {
+                    Logger.LogInfo(NomeClasse, nomeMetodo, $"Cliente con ID {cliente.Id} non trovato per l'aggiornamento.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(NomeClasse, nomeMetodo, ex);
+                throw;
             }
         }
 
         public void DeleteCliente(int id)
         {
-            var cliente = _context.Clienti.FirstOrDefault(c => c.Id == id);
-            if (cliente != null)
+            string nomeMetodo = nameof(DeleteCliente);
+            try
             {
-                _context.Clienti.Remove(cliente);
-                _context.SaveChanges();
+                Logger.LogInfo(NomeClasse, nomeMetodo, $"Tentativo di eliminazione cliente con ID: {id}");
+                var cliente = _context.Clienti.FirstOrDefault(c => c.Id == id);
+
+                if (cliente != null)
+                {
+                    _context.Clienti.Remove(cliente);
+                    _context.SaveChanges();
+                    Logger.LogInfo(NomeClasse, nomeMetodo, $"Cliente eliminato");
+                }
+                else
+                {
+                    Logger.LogInfo(NomeClasse, nomeMetodo, $"Cliente con ID {id} non trovato per l'eliminazione.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(NomeClasse, nomeMetodo, ex);
+                throw;
             }
         }
     }
-
-
 }

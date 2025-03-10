@@ -15,6 +15,7 @@ using System.Windows.Controls;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using GestionaleLibreria.Data.Logging;
 
 namespace GestionaleLibreria.WPF
 {
@@ -24,11 +25,12 @@ namespace GestionaleLibreria.WPF
         private List<LibroMagazzino> _libriSelezionati = new List<LibroMagazzino>();
         private List<LibroMagazzinoViewModel> _listaLibriMagazzino = new List<LibroMagazzinoViewModel>();
         private List<LibroMagazzinoViewModel> _tuttiLibriMagazzino = new List<LibroMagazzinoViewModel>();
-
+        private static readonly string NomeClasse = nameof(MagazzinoWindow);
 
 
         public MagazzinoWindow()
         {
+
             InitializeComponent();
 
             var context = new LibraryContext();
@@ -42,64 +44,77 @@ namespace GestionaleLibreria.WPF
 
         private void CaricaLibri()
         {
-            var libriMagazzino = _magazzinoService.GetLibriMagazzino()
-                .Select(lm => new LibroMagazzinoViewModel { LibroMagazzino = lm, IsSelected = false })
-                .ToList();
-
-            // Mantieni i valori selezionati
-            foreach (var libro in libriMagazzino)
+            string nomeMetodo = nameof(CaricaLibri);
+            try
             {
-                var libroEsistente = _listaLibriMagazzino.FirstOrDefault(l => l.LibroMagazzino.LibroId == libro.LibroMagazzino.LibroId);
-                if (libroEsistente != null)
+                Logger.LogInfo(NomeClasse, nomeMetodo, "Caricamento libri in magazzino.");
+                var libriMagazzino = _magazzinoService.GetLibriMagazzino()
+                    .Select(lm => new LibroMagazzinoViewModel { LibroMagazzino = lm, IsSelected = false })
+                    .ToList();
+
+                foreach (var libro in libriMagazzino)
                 {
-                    libro.IsSelected = libroEsistente.IsSelected;
+                    var libroEsistente = _listaLibriMagazzino.FirstOrDefault(l => l.LibroMagazzino.LibroId == libro.LibroMagazzino.LibroId);
+                    if (libroEsistente != null)
+                    {
+                        libro.IsSelected = libroEsistente.IsSelected;
+                    }
                 }
+
+                _tuttiLibriMagazzino = libriMagazzino;
+                _listaLibriMagazzino = libriMagazzino;
+                MagazzinoDataGrid.ItemsSource = _listaLibriMagazzino;
             }
-
-            _tuttiLibriMagazzino = libriMagazzino; 
-            _listaLibriMagazzino = libriMagazzino;
-            MagazzinoDataGrid.ItemsSource = _listaLibriMagazzino;
+            catch (Exception ex)
+            {
+                Logger.LogError(NomeClasse, nomeMetodo, ex);
+                MessageBox.Show("Errore durante il caricamento dei libri.", "Errore", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
-
         private void FiltraLibriMagazzino_Click(object sender, RoutedEventArgs e)
         {
-            string filtro = FiltroMagazzinoTextBox.Text.Trim();
-            string criterio = ((ComboBoxItem)FiltroCriterioMagazzinoComboBox.SelectedItem)?.Content.ToString();
-
-          
-            if (string.IsNullOrEmpty(filtro))
+            string nomeMetodo = nameof(FiltraLibriMagazzino_Click);
+            try
             {
-                MagazzinoDataGrid.ItemsSource = _tuttiLibriMagazzino;
-                return;
-            }
+                string filtro = FiltroMagazzinoTextBox.Text.Trim();
+                string criterio = ((ComboBoxItem)FiltroCriterioMagazzinoComboBox.SelectedItem)?.Content.ToString();
 
-            int filtroQuantita = 0; // Inizializziamo la variabile per evitare l'errore
-
-            // Se il criterio è "Quantità", controlla che il valore sia numerico
-            if (criterio == "Quantità")
-            {
-                if (!int.TryParse(filtro, out filtroQuantita))
+                if (string.IsNullOrEmpty(filtro))
                 {
-                    MessageBox.Show("Inserisci solo numeri interi per la ricerca della quantità.", "Errore di input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MagazzinoDataGrid.ItemsSource = _tuttiLibriMagazzino;
                     return;
                 }
+
+                int filtroQuantita = 0;
+
+                if (criterio == "Quantità" && !int.TryParse(filtro, out filtroQuantita))
+                {
+                    MessageBox.Show("Inserisci solo numeri interi per la quantità.", "Errore di input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                var risultati = _tuttiLibriMagazzino
+                    .Where(lm =>
+                        (criterio == "Titolo" && lm.LibroMagazzino.Libro.Titolo.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                        (criterio == "Autore" && lm.LibroMagazzino.Libro.Autore.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                        (criterio == "ISBN" && lm.LibroMagazzino.Libro.ISBN == filtro) ||
+                        (criterio == "Quantità" && lm.LibroMagazzino.Quantita == filtroQuantita))
+                    .ToList();
+
+                MagazzinoDataGrid.ItemsSource = risultati;
             }
-
-            var risultati = _tuttiLibriMagazzino
-                .Where(lm =>
-                    (criterio == "Titolo" && lm.LibroMagazzino.Libro.Titolo.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0) ||
-                    (criterio == "Autore" && lm.LibroMagazzino.Libro.Autore.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0) ||
-                    (criterio == "ISBN" && lm.LibroMagazzino.Libro.ISBN == filtro) ||
-                    (criterio == "Quantità" && lm.LibroMagazzino.Quantita == filtroQuantita) 
-                ).ToList();
-
-            MagazzinoDataGrid.ItemsSource = risultati;
+            catch (Exception ex)
+            {
+                Logger.LogError(NomeClasse, nomeMetodo, ex);
+                MessageBox.Show("Errore durante il filtraggio dei libri.", "Errore", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
 
 
         private void FiltroMagazzinoTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-           
+
             string criterio = ((ComboBoxItem)FiltroCriterioMagazzinoComboBox.SelectedItem)?.Content.ToString();
 
             // Se il criterio è "Quantità", consenti solo numeri
@@ -117,130 +132,105 @@ namespace GestionaleLibreria.WPF
 
         private void AggiungiStock_Click(object sender, RoutedEventArgs e)
         {
-            if (MagazzinoDataGrid.SelectedItem is LibroMagazzinoViewModel libroMagazzinoViewModel)
+            string nomeMetodo = nameof(AggiungiStock_Click);
+            try
             {
-              
-                var libroMagazzinoSelezionato = libroMagazzinoViewModel.LibroMagazzino;
-
-                if (libroMagazzinoSelezionato != null)
+                if (MagazzinoDataGrid.SelectedItem is LibroMagazzinoViewModel libroMagazzinoViewModel)
                 {
-                    var aggiungiStockWindow = new AggiungiStockWindow(_magazzinoService, libroMagazzinoSelezionato);
-                    aggiungiStockWindow.ShowDialog();
-                    CaricaLibri(); 
-                    return;
+                    var libroMagazzinoSelezionato = libroMagazzinoViewModel.LibroMagazzino;
+
+                    if (libroMagazzinoSelezionato != null)
+                    {
+                        Logger.LogInfo(NomeClasse, nomeMetodo, $"Apertura finestra per aggiungere stock a '{libroMagazzinoSelezionato.Libro.Titolo}' (ID: {libroMagazzinoSelezionato.LibroId}).");
+                        var aggiungiStockWindow = new AggiungiStockWindow(_magazzinoService, libroMagazzinoSelezionato);
+                        aggiungiStockWindow.ShowDialog();
+                        CaricaLibri();
+                        return;
+                    }
                 }
+
+                MessageBox.Show("Seleziona un libro per aggiungere quantità.");
+                Logger.LogInfo(NomeClasse, nomeMetodo, "Tentativo di aggiungere stock senza selezionare un libro.");
             }
-
-            MessageBox.Show("Seleziona un libro per aggiungere quantità.");
+            catch (Exception ex)
+            {
+                Logger.LogError(NomeClasse, nomeMetodo, ex);
+                MessageBox.Show("Errore durante l'aggiunta dello stock.", "Errore", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
-
-
 
         private void RimuoviStock_Click(object sender, RoutedEventArgs e)
         {
-            if (MagazzinoDataGrid.SelectedItem is LibroMagazzinoViewModel libroMagazzinoViewModel)
+            string nomeMetodo = nameof(RimuoviStock_Click);
+            try
             {
-               
-                var libroMagazzinoSelezionato = libroMagazzinoViewModel.LibroMagazzino;
-
-                if (libroMagazzinoSelezionato != null)
+                if (MagazzinoDataGrid.SelectedItem is LibroMagazzinoViewModel libroMagazzinoViewModel)
                 {
-                    var rimuoviStockWindow = new RimuoviStockWindow(_magazzinoService, libroMagazzinoSelezionato);
-                    rimuoviStockWindow.ShowDialog();
-                    CaricaLibri(); 
-                    return;
-                }
-            }
+                    var libroMagazzinoSelezionato = libroMagazzinoViewModel.LibroMagazzino;
 
-            MessageBox.Show("Seleziona un libro per rimuovere quantità.");
+                    if (libroMagazzinoSelezionato != null)
+                    {
+                        Logger.LogInfo(NomeClasse, nomeMetodo, $"Apertura finestra per rimuovere stock da '{libroMagazzinoSelezionato.Libro.Titolo}' (ID: {libroMagazzinoSelezionato.LibroId}).");
+                        var rimuoviStockWindow = new RimuoviStockWindow(_magazzinoService, libroMagazzinoSelezionato);
+                        rimuoviStockWindow.ShowDialog();
+                        CaricaLibri();
+                        return;
+                    }
+                }
+
+                MessageBox.Show("Seleziona un libro per rimuovere quantità.");
+                Logger.LogInfo(NomeClasse, nomeMetodo, "Tentativo di rimuovere stock senza selezionare un libro.");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(NomeClasse, nomeMetodo, ex);
+                MessageBox.Show("Errore durante la rimozione dello stock.", "Errore", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
 
 
         private void GeneraPDF_Click(object sender, RoutedEventArgs e)
         {
-            _libriSelezionati = _listaLibriMagazzino
-                                 .Where(l => l.IsSelected)
-                                 .Select(l => l.LibroMagazzino)
-                                 .ToList();
-
-            if (_libriSelezionati.Count == 0)
-            {
-                MessageBox.Show("Seleziona almeno un libro per generare il PDF.");
-                return;
-            }
-
+            string nomeMetodo = nameof(GeneraPDF_Click);
             try
             {
-                // Percorso del file PDF
+                _libriSelezionati = _listaLibriMagazzino
+                                    .Where(l => l.IsSelected)
+                                    .Select(l => l.LibroMagazzino)
+                                    .ToList();
+
+                if (_libriSelezionati.Count == 0)
+                {
+                    MessageBox.Show("Seleziona almeno un libro per generare il PDF.");
+                    return;
+                }
+
                 string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Lista_Libri_Selezionati.pdf");
 
-                // Usa un blocco using per garantire che il file venga correttamente chiuso
                 using (FileStream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
                     using (Document pdfDoc = new Document(PageSize.A4))
                     {
                         PdfWriter.GetInstance(pdfDoc, stream);
-
-                       
                         pdfDoc.Open();
 
                         var titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 16);
-                        var title = new Paragraph("Lista Libri Selezionati", titleFont)
-                        {
-                            Alignment = Element.ALIGN_CENTER,
-                            SpacingAfter = 10
-                        };
-                        pdfDoc.Add(title);
-
+                        pdfDoc.Add(new Paragraph("Lista Libri Selezionati", titleFont) { Alignment = Element.ALIGN_CENTER, SpacingAfter = 10 });
                         pdfDoc.Add(new Paragraph(" "));
 
-                        // Creazione tabella
-                        PdfPTable table = new PdfPTable(3)
-                        {
-                            WidthPercentage = 100
-                        };
-
+                        PdfPTable table = new PdfPTable(3) { WidthPercentage = 100 };
                         table.SetWidths(new float[] { 40, 30, 30 });
 
-                        // Intestazioni tabella
-                        PdfPCell cell = new PdfPCell(new Phrase("Titolo", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12)))
-                        {
-                            BackgroundColor = BaseColor.LIGHT_GRAY,
-                            HorizontalAlignment = Element.ALIGN_CENTER
-                        };
-                        table.AddCell(cell);
+                        table.AddCell(new PdfPCell(new Phrase("Titolo", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12))) { BackgroundColor = BaseColor.LIGHT_GRAY, HorizontalAlignment = Element.ALIGN_CENTER });
+                        table.AddCell(new PdfPCell(new Phrase("ISBN", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12))) { BackgroundColor = BaseColor.LIGHT_GRAY, HorizontalAlignment = Element.ALIGN_CENTER });
+                        table.AddCell(new PdfPCell(new Phrase("Quantità", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12))) { BackgroundColor = BaseColor.LIGHT_GRAY, HorizontalAlignment = Element.ALIGN_CENTER });
 
-                        cell = new PdfPCell(new Phrase("ISBN", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12)))
-                        {
-                            BackgroundColor = BaseColor.LIGHT_GRAY,
-                            HorizontalAlignment = Element.ALIGN_CENTER
-                        };
-                        table.AddCell(cell);
-
-                        cell = new PdfPCell(new Phrase("Quantità", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12)))
-                        {
-                            BackgroundColor = BaseColor.LIGHT_GRAY,
-                            HorizontalAlignment = Element.ALIGN_CENTER
-                        };
-                        table.AddCell(cell);
-
-                        // Inserimento dati
                         foreach (var libro in _libriSelezionati)
                         {
-                            table.AddCell(new PdfPCell(new Phrase(libro.Libro.Titolo, FontFactory.GetFont(FontFactory.HELVETICA, 11)))
-                            {
-                                HorizontalAlignment = Element.ALIGN_CENTER
-                            });
-
-                            table.AddCell(new PdfPCell(new Phrase(libro.Libro.ISBN, FontFactory.GetFont(FontFactory.HELVETICA, 11)))
-                            {
-                                HorizontalAlignment = Element.ALIGN_CENTER
-                            });
-
-                            table.AddCell(new PdfPCell(new Phrase(libro.Quantita.ToString(), FontFactory.GetFont(FontFactory.HELVETICA, 11)))
-                            {
-                                HorizontalAlignment = Element.ALIGN_CENTER
-                            });
+                            table.AddCell(new PdfPCell(new Phrase(libro.Libro.Titolo, FontFactory.GetFont(FontFactory.HELVETICA, 11))) { HorizontalAlignment = Element.ALIGN_CENTER });
+                            table.AddCell(new PdfPCell(new Phrase(libro.Libro.ISBN, FontFactory.GetFont(FontFactory.HELVETICA, 11))) { HorizontalAlignment = Element.ALIGN_CENTER });
+                            table.AddCell(new PdfPCell(new Phrase(libro.Quantita.ToString(), FontFactory.GetFont(FontFactory.HELVETICA, 11))) { HorizontalAlignment = Element.ALIGN_CENTER });
                         }
 
                         pdfDoc.Add(table);
@@ -248,26 +238,29 @@ namespace GestionaleLibreria.WPF
                     }
                 }
 
+                Logger.LogInfo(NomeClasse, nomeMetodo, $"PDF generato: {filePath}");
                 MessageBox.Show($"PDF generato con successo!\nFile salvato in: {filePath}");
-
-                // Apri il PDF appena creato
                 System.Diagnostics.Process.Start(filePath);
             }
             catch (IOException ioEx)
             {
-                MessageBox.Show("Errore: il file potrebbe essere già aperto in un altro programma.\nChiudilo e riprova.\n\nDettagli: " + ioEx.Message);
+                Logger.LogError(NomeClasse, nomeMetodo, ioEx);
+                MessageBox.Show("Errore: il file potrebbe essere già aperto in un altro programma.", "Errore", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Errore nella generazione del PDF: " + ex.Message);
+                Logger.LogError(NomeClasse, nomeMetodo, ex);
+                MessageBox.Show("Errore nella generazione del PDF.", "Errore", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+    }
 
 
 
 
 
-        public class LibroMagazzinoViewModel : INotifyPropertyChanged
+
+    public class LibroMagazzinoViewModel : INotifyPropertyChanged
         {
             private bool _isSelected;
 
@@ -294,4 +287,4 @@ namespace GestionaleLibreria.WPF
 
    
 
-}
+

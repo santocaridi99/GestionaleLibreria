@@ -73,6 +73,7 @@
     <Compile Include="IMagazzinoRepository.cs" />
     <Compile Include="IUtenteRepository.cs" />
     <Compile Include="IVenditaRepository.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Migrations\202501211142515_InitialCreate.cs" />
     <Compile Include="Migrations\202501211142515_InitialCreate.Designer.cs">
       <DependentUpon>202501211142515_InitialCreate.cs</DependentUpon>

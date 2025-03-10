@@ -1,9 +1,8 @@
 ﻿using GestionaleLibreria.Data.Models;
+using GestionaleLibreria.Data.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace GestionaleLibreria.Data
@@ -20,6 +19,7 @@ namespace GestionaleLibreria.Data
     public class LibroRepository : ILibroRepository
     {
         private readonly LibraryContext _context;
+        private static readonly string NomeClasse = nameof(LibroRepository);
 
         public LibroRepository()
         {
@@ -28,56 +28,135 @@ namespace GestionaleLibreria.Data
 
         public List<Libro> GetAllLibri()
         {
-            return _context.Libri.ToList();
+            string nomeMetodo = nameof(GetAllLibri);
+            try
+            {
+                Logger.LogInfo(NomeClasse, nomeMetodo, "Recupero di tutti i libri dal database.");
+                var libri = _context.Libri.ToList();
+                Logger.LogInfo(NomeClasse, nomeMetodo, $"Recuperati {libri.Count} libri.");
+                return libri;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(NomeClasse, nomeMetodo, ex);
+                throw;
+            }
         }
 
         public void AddLibro(Libro libro)
         {
-            if (_context.Libri.Any(l => l.ISBN == libro.ISBN))
+            string nomeMetodo = nameof(AddLibro);
+            try
             {
-                throw new Exception($"Esiste già un libro con ISBN: {libro.ISBN}");
+                Logger.LogInfo(NomeClasse, nomeMetodo, $"Tentativo di aggiunta libro: {libro.Titolo} (ISBN: {libro.ISBN})");
+
+                if (_context.Libri.Any(l => l.ISBN == libro.ISBN))
+                {
+                    string errore = $"Esiste già un libro con ISBN: {libro.ISBN}";
+                    Logger.LogError(NomeClasse, nomeMetodo, new Exception(errore));
+                    throw new Exception(errore);
+                }
+
+                _context.Libri.Add(libro);
+                _context.SaveChanges();
+                Logger.LogInfo(NomeClasse, nomeMetodo, $"Libro aggiunto con successo: {libro.Titolo}");
             }
-            _context.Libri.Add(libro);
-            _context.SaveChanges();
+            catch (Exception ex)
+            {
+                Logger.LogError(NomeClasse, nomeMetodo, ex);
+                throw;
+            }
         }
 
         public void UpdateLibro(Libro libro)
         {
-            var existing = _context.Libri.FirstOrDefault(l => l.Id == libro.Id);
-            if (existing != null)
+            string nomeMetodo = nameof(UpdateLibro);
+            try
             {
-                existing.Titolo = libro.Titolo;
-                existing.Autore = libro.Autore;
-                existing.ISBN = libro.ISBN;
-                existing.Prezzo = libro.Prezzo;
-                _context.SaveChanges();
+                Logger.LogInfo(NomeClasse, nomeMetodo, $"Tentativo di aggiornamento libro ID: {libro.Id}");
+
+                var existing = _context.Libri.FirstOrDefault(l => l.Id == libro.Id);
+                if (existing != null)
+                {
+                    existing.Titolo = libro.Titolo;
+                    existing.Autore = libro.Autore;
+                    existing.ISBN = libro.ISBN;
+                    existing.Prezzo = libro.Prezzo;
+                    _context.SaveChanges();
+
+                    Logger.LogInfo(NomeClasse, nomeMetodo, $"Libro aggiornato con successo: {libro.Titolo}");
+                }
+                else
+                {
+                    Logger.LogInfo(NomeClasse, nomeMetodo, $"Libro con ID {libro.Id} non trovato per l'aggiornamento.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(NomeClasse, nomeMetodo, ex);
+                throw;
             }
         }
 
         public void DeleteLibro(int id)
         {
-            var libro = _context.Libri.FirstOrDefault(l => l.Id == id);
-            if (libro != null)
+            string nomeMetodo = nameof(DeleteLibro);
+            try
             {
-                if(libro.QuantitaMagazzino > 0)
+                Logger.LogInfo(NomeClasse, nomeMetodo, $"Tentativo di eliminazione libro con ID: {id}");
+
+                var libro = _context.Libri.FirstOrDefault(l => l.Id == id);
+                if (libro != null)
                 {
-                   
-                    MessageBox.Show("Impossibile eliminare un libro con quantità in magazzino, gestisci in magazzino");
+                    if (libro.QuantitaMagazzino > 0)
+                    {
+                        string messaggio = $"Impossibile eliminare il libro '{libro.Titolo}' con quantità in magazzino.";
+                        Logger.LogInfo(NomeClasse, nomeMetodo, messaggio);
+                        MessageBox.Show(messaggio, "Errore Eliminazione", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    else
+                    {
+                        _context.Libri.Remove(libro);
+                        _context.SaveChanges();
+                        Logger.LogInfo(NomeClasse, nomeMetodo, $"Libro eliminato con successo: {libro.Titolo}");
+                    }
                 }
                 else
                 {
-                    _context.Libri.Remove(libro);
-                    _context.SaveChanges();
+                    Logger.LogInfo(NomeClasse, nomeMetodo, $"Libro con ID {id} non trovato per l'eliminazione.");
                 }
-               
-              
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(NomeClasse, nomeMetodo, ex);
+                throw;
             }
         }
 
         public Libro GetLibroById(int id)
         {
-            return _context.Libri.FirstOrDefault(l => l.Id == id);
-        }
+            string nomeMetodo = nameof(GetLibroById);
+            try
+            {
+                Logger.LogInfo(NomeClasse, nomeMetodo, $"Recupero libro con ID: {id}");
+                var libro = _context.Libri.FirstOrDefault(l => l.Id == id);
 
+                if (libro != null)
+                {
+                    Logger.LogInfo(NomeClasse, nomeMetodo, $"Libro trovato: {libro.Titolo} (ISBN: {libro.ISBN})");
+                }
+                else
+                {
+                    Logger.LogInfo(NomeClasse, nomeMetodo, $"Libro con ID {id} non trovato.");
+                }
+
+                return libro;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(NomeClasse, nomeMetodo, ex);
+                throw;
+            }
+        }
     }
 }
