@@ -95,7 +95,7 @@ namespace GestionaleLibreria.WPF
             }
         }
 
-        private void GeneraPDF_Click(object sender, RoutedEventArgs e)
+        private  void GeneraPDF_Click(object sender, RoutedEventArgs e)
         {
             _libriSelezionati = _listaLibriMagazzino
                                  .Where(l => l.IsSelected)
@@ -118,13 +118,9 @@ namespace GestionaleLibreria.WPF
                 {
                     using (Document pdfDoc = new Document(PageSize.A4))
                     {
-                        PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
+                        PdfWriter.GetInstance(pdfDoc, stream);
 
-                        if (writer == null)
-                        {
-                            throw new Exception("Errore nella creazione dell'istanza di PdfWriter.");
-                        }
-
+                       
                         pdfDoc.Open();
 
                         var titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 16);
