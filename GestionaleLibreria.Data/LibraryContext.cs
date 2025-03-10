@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Linq;
 using GestionaleLibreria.Data.Models;
 
@@ -25,6 +27,13 @@ namespace GestionaleLibreria.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Libro>()
+            .Property(l => l.ISBN)
+            .HasColumnAnnotation(
+                "Index", new IndexAnnotation(new IndexAttribute("IX_ISBN") { IsUnique = true })
+            );
+
+
             // Configurazione della relazione: Un libro ha molti LibroMagazzino
             modelBuilder.Entity<Libro>()
                 .HasMany(l => l.LibriMagazzino)
@@ -36,6 +45,8 @@ namespace GestionaleLibreria.Data
                 .HasMany(m => m.LibriMagazzino)
                 .WithRequired(lm => lm.Magazzino)
                 .HasForeignKey(lm => lm.MagazzinoId);
+
+
         }
 
 

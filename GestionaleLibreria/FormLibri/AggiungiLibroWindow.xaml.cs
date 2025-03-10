@@ -61,55 +61,25 @@ namespace GestionaleLibreria.WPF
                     return;
                 }
 
-                Libro nuovoLibro;
-
-                if (tipoSelezionato == "Ebook")
+                Libro nuovoLibro = new Libro
                 {
-                    nuovoLibro = new Ebook
-                    {
-                        Titolo = TitoloTextBox.Text,
-                        Autore = AutoreTextBox.Text,
-                        CasaEditrice = CasaEditriceTextBox.Text,
-                        ISBN = ISBNTextBox.Text,
-                        Prezzo = prezzo,
-                        Formato = FormatoEbookTextBox.Text,
-                        DimensioneFile = double.Parse(DimensioneEbookTextBox.Text),
-                        Sconto = double.Parse(ScontoEbookTextBox.Text) / 100
-                    };
-                }
-                else if (tipoSelezionato == "Audiobook")
-                {
-                    nuovoLibro = new Audiobook
-                    {
-                        Titolo = TitoloTextBox.Text,
-                        Autore = AutoreTextBox.Text,
-                        CasaEditrice = CasaEditriceTextBox.Text,
-                        ISBN = ISBNTextBox.Text,
-                        Prezzo = prezzo,
-                        DurataOre = double.Parse(DurataAudiobookTextBox.Text),
-                        Narratore = NarratoreAudiobookTextBox.Text
-                    };
-                }
-                else
-                {
-                    nuovoLibro = new Libro
-                    {
-                        Titolo = TitoloTextBox.Text,
-                        Autore = AutoreTextBox.Text,
-                        CasaEditrice = CasaEditriceTextBox.Text,
-                        ISBN = ISBNTextBox.Text,
-                        Prezzo = prezzo
-                    };
-                }
+                    Titolo = TitoloTextBox.Text,
+                    Autore = AutoreTextBox.Text,
+                    CasaEditrice = CasaEditriceTextBox.Text,
+                    ISBN = ISBNTextBox.Text,
+                    Prezzo = prezzo
+                };
 
                 _libroService.AggiungiLibro(nuovoLibro);
+                MessageBox.Show("Libro aggiunto con successo!");
                 Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Errore durante l'aggiunta del libro: " + ex.Message);
+                MessageBox.Show("Errore: " + ex.Message);
             }
         }
+
 
         private void AnnullaAggiungi_Click(object sender, RoutedEventArgs e)
         {

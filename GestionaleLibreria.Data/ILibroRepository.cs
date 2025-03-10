@@ -33,6 +33,10 @@ namespace GestionaleLibreria.Data
 
         public void AddLibro(Libro libro)
         {
+            if (_context.Libri.Any(l => l.ISBN == libro.ISBN))
+            {
+                throw new Exception($"Esiste già un libro con ISBN: {libro.ISBN}");
+            }
             _context.Libri.Add(libro);
             _context.SaveChanges();
         }

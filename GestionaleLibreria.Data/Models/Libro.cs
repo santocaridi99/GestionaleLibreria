@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace GestionaleLibreria.Data.Models
@@ -15,8 +16,9 @@ namespace GestionaleLibreria.Data.Models
         [Required]
         public string Autore { get; set; } = string.Empty;
 
-        [Required]
-        public string ISBN { get; set; } = string.Empty;
+        [Required, StringLength(13)] // Max 13 caratteri
+        [Index(IsUnique = true)] // Indice univoco
+        public string ISBN { get; set; }
 
         [Required]
         public decimal Prezzo { get; set; }
