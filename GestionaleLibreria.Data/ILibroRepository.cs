@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GestionaleLibreria.Data
 {
@@ -56,11 +57,16 @@ namespace GestionaleLibreria.Data
             {
                 if(libro.QuantitaMagazzino > 0)
                 {
-                    throw new InvalidOperationException("Impossibile eliminare un libro con quantità in magazzino, gestisci in magazzino");
+                   
+                    MessageBox.Show("Impossibile eliminare un libro con quantità in magazzino, gestisci in magazzino");
+                }
+                else
+                {
+                    _context.Libri.Remove(libro);
+                    _context.SaveChanges();
                 }
                
-                _context.Libri.Remove(libro);
-                _context.SaveChanges();
+              
             }
         }
 

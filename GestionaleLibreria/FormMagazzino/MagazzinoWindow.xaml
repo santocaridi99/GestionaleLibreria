@@ -22,6 +22,17 @@
 
         <Border Grid.Row="2" Background="White" Padding="10">
             <DataGrid x:Name="MagazzinoDataGrid" AutoGenerateColumns="False" IsReadOnly="True">
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Quantita}" Value="0">
+                                <Setter Property="Background" Value="LightCoral"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Titolo" Binding="{Binding Libro.Titolo}" Width="*"/>
                     <DataGridTextColumn Header="Autore" Binding="{Binding Libro.Autore}" Width="*"/>
