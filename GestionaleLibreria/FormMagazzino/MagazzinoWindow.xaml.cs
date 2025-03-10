@@ -21,6 +21,9 @@ namespace GestionaleLibreria.WPF
         private readonly MagazzinoService _magazzinoService;
         private List<LibroMagazzino> _libriSelezionati = new List<LibroMagazzino>();
         private List<LibroMagazzinoViewModel> _listaLibriMagazzino = new List<LibroMagazzinoViewModel>();
+        private List<LibroMagazzinoViewModel> _tuttiLibriMagazzino = new List<LibroMagazzinoViewModel>();
+
+
 
         public MagazzinoWindow()
         {
@@ -41,7 +44,7 @@ namespace GestionaleLibreria.WPF
                 .Select(lm => new LibroMagazzinoViewModel { LibroMagazzino = lm, IsSelected = false })
                 .ToList();
 
-            // Mantieni i valori selezionati dalla lista precedente
+            // Mantieni i valori selezionati
             foreach (var libro in libriMagazzino)
             {
                 var libroEsistente = _listaLibriMagazzino.FirstOrDefault(l => l.LibroMagazzino.LibroId == libro.LibroMagazzino.LibroId);
@@ -51,20 +54,24 @@ namespace GestionaleLibreria.WPF
                 }
             }
 
-            _listaLibriMagazzino = libriMagazzino; // Salva la nuova lista mantenendo la selezione
+            _tuttiLibriMagazzino = libriMagazzino; 
+            _listaLibriMagazzino = libriMagazzino;
             MagazzinoDataGrid.ItemsSource = _listaLibriMagazzino;
         }
 
         private void FiltraLibri_Click(object sender, RoutedEventArgs e)
         {
-            string filtro = FiltroLibroTextBox.Text.ToLower();
-            var risultati = _magazzinoService.GetLibriMagazzino()
-                .Where(lm => lm.Libro.Titolo.ToLower().Contains(filtro)
-                          || lm.Libro.ISBN.ToLower().Contains(filtro))
+            string filtro = FiltroLibroTextBox.Text.ToLower().Trim();
+
+           
+            var risultati = _tuttiLibriMagazzino
+                .Where(lm => lm.LibroMagazzino.Libro.Titolo.ToLower().Contains(filtro)
+                          || lm.LibroMagazzino.Libro.ISBN.ToLower().Contains(filtro))
                 .ToList();
 
             MagazzinoDataGrid.ItemsSource = risultati;
         }
+
 
         private void AggiungiStock_Click(object sender, RoutedEventArgs e)
         {
