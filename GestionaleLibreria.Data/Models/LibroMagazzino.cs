@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GestionaleLibreria.Data.Models
@@ -16,8 +17,24 @@ namespace GestionaleLibreria.Data.Models
         [ForeignKey("MagazzinoId")]
         public virtual Magazzino Magazzino { get; set; }
 
-        public int Quantita { get;  set; }
+        private int _quantita;
+        public int Quantita
+        {
+            get => _quantita;
+            set
+            {
+                _quantita = value;
+                OnPropertyChanged(nameof(Quantita));
+            }
+        }
 
+       
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         public LibroMagazzino() { }  // Costruttore vuoto per Entity Framework
 
         public LibroMagazzino(Libro libro, int quantita)

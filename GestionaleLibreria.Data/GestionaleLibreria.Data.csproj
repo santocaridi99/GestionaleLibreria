@@ -109,6 +109,14 @@
     <Compile Include="Migrations\202503071331272_LibroMagazzino.Designer.cs">
       <DependentUpon>202503071331272_LibroMagazzino.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202503101017087_SelezionaDalMagazzino.cs" />
+    <Compile Include="Migrations\202503101017087_SelezionaDalMagazzino.Designer.cs">
+      <DependentUpon>202503101017087_SelezionaDalMagazzino.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503101032566_FixSelezionaDalMagazzino.cs" />
+    <Compile Include="Migrations\202503101032566_FixSelezionaDalMagazzino.Designer.cs">
+      <DependentUpon>202503101032566_FixSelezionaDalMagazzino.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Audiobook.cs" />
     <Compile Include="Models\Cliente.cs" />
@@ -153,6 +161,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202503071331272_LibroMagazzino.resx">
       <DependentUpon>202503071331272_LibroMagazzino.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503101017087_SelezionaDalMagazzino.resx">
+      <DependentUpon>202503101017087_SelezionaDalMagazzino.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503101032566_FixSelezionaDalMagazzino.resx">
+      <DependentUpon>202503101032566_FixSelezionaDalMagazzino.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
