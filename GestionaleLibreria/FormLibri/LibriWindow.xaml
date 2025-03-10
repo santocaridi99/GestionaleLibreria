@@ -23,20 +23,16 @@
         <!-- Sezione Ricerca -->
         <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,0,0,10">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,5">
-                <Label Content="🔍 Cerca Libro:" VerticalAlignment="Center" FontWeight="Bold"/>
-                <TextBox x:Name="FiltroTextBox" Width="250" Height="30" Margin="5" 
-                        />
-                <Button Content="Cerca" Width="100" Height="30" Click="FiltraLibri_Click" 
-                        Background="#607D8B" Foreground="White"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Label Content="📌 Tipo:" VerticalAlignment="Center" FontWeight="Bold"/>
-                <ComboBox x:Name="FiltroTipoComboBox" Width="150" Height="30" Margin="5">
-                    <ComboBoxItem Content="Tutti" IsSelected="True"/>
-                    <ComboBoxItem Content="Ebook"/>
-                    <ComboBoxItem Content="Audiobook"/>
+                <Label Content="🔍 Tipo di Ricerca:" VerticalAlignment="Center" FontWeight="Bold"/>
+                <ComboBox x:Name="FiltroCriterioComboBox" Width="150" Height="30" Margin="5">
+                    <ComboBoxItem Content="Titolo" IsSelected="True"/>
+                    <ComboBoxItem Content="Autore"/>
+                    <ComboBoxItem Content="ISBN"/>
+                    <ComboBoxItem Content="Casa Editrice"/>
                 </ComboBox>
+                <TextBox x:Name="FiltroTextBox" Width="250" Height="30" Margin="5"/>
+                <Button Content="Cerca" Width="100" Height="30" Click="FiltraLibri_Click"
+                Background="#607D8B" Foreground="White"/>
             </StackPanel>
         </StackPanel>
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -47,23 +48,28 @@ namespace GestionaleLibreria.WPF
 
         private void FiltraLibri_Click(object sender, RoutedEventArgs e)
         {
-            string filtro = FiltroTextBox.Text.ToLower();
-            string tipoFiltro = ((ComboBoxItem)FiltroTipoComboBox.SelectedItem).Content.ToString();
+            string filtro = FiltroTextBox.Text.Trim();
+            string criterio = ((ComboBoxItem)FiltroCriterioComboBox.SelectedItem)?.Content.ToString();
+
+            // Se il filtro è vuoto, mostra tutti i libri
+            if (string.IsNullOrEmpty(filtro))
+            {
+                AggiornaDataGrid(_tuttiLibri);
+                return;
+            }
 
             var libriFiltrati = _tuttiLibri.Where(libro =>
-                (string.IsNullOrEmpty(filtro) ||
-                 libro.Titolo.ToLower().Contains(filtro) ||
-                 libro.Autore.ToLower().Contains(filtro) ||
-                 libro.ISBN.ToLower().Contains(filtro) ||
-                 libro.CasaEditrice.ToLower().Contains(filtro)) &&
-                (tipoFiltro == "Tutti" ||
-                 (tipoFiltro == "Ebook" && libro is Ebook) ||
-                 (tipoFiltro == "Audiobook" && libro is Audiobook))
+                (criterio == "Titolo" && libro.Titolo.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                (criterio == "Autore" && libro.Autore.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                (criterio == "Casa Editrice" && libro.CasaEditrice.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                (criterio == "ISBN" && libro.ISBN == filtro) // ISBN deve essere univoco
             ).ToList();
 
             AggiornaDataGrid(libriFiltrati);
         }
-    
+
+
+
 
         private void AggiungiLibro_Click(object sender, RoutedEventArgs e)
         {

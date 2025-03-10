@@ -13,6 +13,8 @@ using iTextSharp.text.pdf;
 using Paragraph = iTextSharp.text.Paragraph;
 using System.Windows.Controls;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
 
 namespace GestionaleLibreria.WPF
 {
@@ -59,50 +61,102 @@ namespace GestionaleLibreria.WPF
             MagazzinoDataGrid.ItemsSource = _listaLibriMagazzino;
         }
 
-        private void FiltraLibri_Click(object sender, RoutedEventArgs e)
+        private void FiltraLibriMagazzino_Click(object sender, RoutedEventArgs e)
         {
-            string filtro = FiltroLibroTextBox.Text.ToLower().Trim();
+            string filtro = FiltroMagazzinoTextBox.Text.Trim();
+            string criterio = ((ComboBoxItem)FiltroCriterioMagazzinoComboBox.SelectedItem)?.Content.ToString();
 
-           
+          
+            if (string.IsNullOrEmpty(filtro))
+            {
+                MagazzinoDataGrid.ItemsSource = _tuttiLibriMagazzino;
+                return;
+            }
+
+            int filtroQuantita = 0; // Inizializziamo la variabile per evitare l'errore
+
+            // Se il criterio è "Quantità", controlla che il valore sia numerico
+            if (criterio == "Quantità")
+            {
+                if (!int.TryParse(filtro, out filtroQuantita))
+                {
+                    MessageBox.Show("Inserisci solo numeri interi per la ricerca della quantità.", "Errore di input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+            }
+
             var risultati = _tuttiLibriMagazzino
-                .Where(lm => lm.LibroMagazzino.Libro.Titolo.ToLower().Contains(filtro)
-                          || lm.LibroMagazzino.Libro.ISBN.ToLower().Contains(filtro))
-                .ToList();
+                .Where(lm =>
+                    (criterio == "Titolo" && lm.LibroMagazzino.Libro.Titolo.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                    (criterio == "Autore" && lm.LibroMagazzino.Libro.Autore.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                    (criterio == "ISBN" && lm.LibroMagazzino.Libro.ISBN == filtro) ||
+                    (criterio == "Quantità" && lm.LibroMagazzino.Quantita == filtroQuantita) 
+                ).ToList();
 
             MagazzinoDataGrid.ItemsSource = risultati;
         }
 
 
-        private void AggiungiStock_Click(object sender, RoutedEventArgs e)
+        private void FiltroMagazzinoTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (MagazzinoDataGrid.SelectedItem is LibroMagazzino libroMagazzinoSelezionato)
+           
+            string criterio = ((ComboBoxItem)FiltroCriterioMagazzinoComboBox.SelectedItem)?.Content.ToString();
+
+            // Se il criterio è "Quantità", consenti solo numeri
+            if (criterio == "Quantità")
             {
-                var aggiungiStockWindow = new AggiungiStockWindow(_magazzinoService, libroMagazzinoSelezionato);
-                aggiungiStockWindow.ShowDialog();
-                CaricaLibri();
+                e.Handled = !Regex.IsMatch(e.Text, "^[0-9]+$");
             }
             else
             {
-                MessageBox.Show("Seleziona un libro per aggiungere quantità.");
+                e.Handled = false; // Permette lettere per Titolo, Autore e ISBN
             }
         }
+
+
+
+        private void AggiungiStock_Click(object sender, RoutedEventArgs e)
+        {
+            if (MagazzinoDataGrid.SelectedItem is LibroMagazzinoViewModel libroMagazzinoViewModel)
+            {
+              
+                var libroMagazzinoSelezionato = libroMagazzinoViewModel.LibroMagazzino;
+
+                if (libroMagazzinoSelezionato != null)
+                {
+                    var aggiungiStockWindow = new AggiungiStockWindow(_magazzinoService, libroMagazzinoSelezionato);
+                    aggiungiStockWindow.ShowDialog();
+                    CaricaLibri(); 
+                    return;
+                }
+            }
+
+            MessageBox.Show("Seleziona un libro per aggiungere quantità.");
+        }
+
 
 
         private void RimuoviStock_Click(object sender, RoutedEventArgs e)
         {
-            if (MagazzinoDataGrid.SelectedItem is LibroMagazzino libroMagazzinoSelezionato)
+            if (MagazzinoDataGrid.SelectedItem is LibroMagazzinoViewModel libroMagazzinoViewModel)
             {
-                var rimuoviStockWindow = new RimuoviStockWindow(_magazzinoService, libroMagazzinoSelezionato);
-                rimuoviStockWindow.ShowDialog();
-                CaricaLibri();
+               
+                var libroMagazzinoSelezionato = libroMagazzinoViewModel.LibroMagazzino;
+
+                if (libroMagazzinoSelezionato != null)
+                {
+                    var rimuoviStockWindow = new RimuoviStockWindow(_magazzinoService, libroMagazzinoSelezionato);
+                    rimuoviStockWindow.ShowDialog();
+                    CaricaLibri(); 
+                    return;
+                }
             }
-            else
-            {
-                MessageBox.Show("Seleziona un libro per rimuovere quantità.");
-            }
+
+            MessageBox.Show("Seleziona un libro per rimuovere quantità.");
         }
 
-        private  void GeneraPDF_Click(object sender, RoutedEventArgs e)
+
+        private void GeneraPDF_Click(object sender, RoutedEventArgs e)
         {
             _libriSelezionati = _listaLibriMagazzino
                                  .Where(l => l.IsSelected)
