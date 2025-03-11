@@ -126,6 +126,22 @@
     <Compile Include="Migrations\202503110832493_ModificaModelloCliente.Designer.cs">
       <DependentUpon>202503110832493_ModificaModelloCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202503111108341_ModelloVenditaDettaglio.cs" />
+    <Compile Include="Migrations\202503111108341_ModelloVenditaDettaglio.Designer.cs">
+      <DependentUpon>202503111108341_ModelloVenditaDettaglio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503111404325_AggiungiVenditeDettaglio.cs" />
+    <Compile Include="Migrations\202503111404325_AggiungiVenditeDettaglio.Designer.cs">
+      <DependentUpon>202503111404325_AggiungiVenditeDettaglio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503111426572_FixVenditaDettaglioRelation.cs" />
+    <Compile Include="Migrations\202503111426572_FixVenditaDettaglioRelation.Designer.cs">
+      <DependentUpon>202503111426572_FixVenditaDettaglioRelation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503111647265_fixModelloVendita.cs" />
+    <Compile Include="Migrations\202503111647265_fixModelloVendita.Designer.cs">
+      <DependentUpon>202503111647265_fixModelloVendita.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Audiobook.cs" />
     <Compile Include="Models\Cliente.cs" />
@@ -136,6 +152,7 @@
     <Compile Include="Models\LibroMagazzino.cs" />
     <Compile Include="Models\Magazzino.cs" />
     <Compile Include="Models\Utente.cs" />
+    <Compile Include="Models\VenditaDettaglio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Vendita.cs" />
   </ItemGroup>
@@ -182,6 +199,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202503110832493_ModificaModelloCliente.resx">
       <DependentUpon>202503110832493_ModificaModelloCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503111108341_ModelloVenditaDettaglio.resx">
+      <DependentUpon>202503111108341_ModelloVenditaDettaglio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503111404325_AggiungiVenditeDettaglio.resx">
+      <DependentUpon>202503111404325_AggiungiVenditeDettaglio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503111426572_FixVenditaDettaglioRelation.resx">
+      <DependentUpon>202503111426572_FixVenditaDettaglioRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503111647265_fixModelloVendita.resx">
+      <DependentUpon>202503111647265_fixModelloVendita.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

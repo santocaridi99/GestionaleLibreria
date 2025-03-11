@@ -1,56 +1,85 @@
 ﻿<Window x:Class="GestionaleLibreria.WPF.VenditaWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Registra Vendita" Height="500" Width="600" Background="#F9F9F9">
+        Title="Registra Vendita" Height="600" Width="700" Background="#F9F9F9">
+
     <Grid Margin="20">
-        <StackPanel Orientation="Vertical">
-            <TextBlock Text="Registra Vendita" FontSize="24" FontWeight="Bold" 
-                       HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#333333"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Vertical">
 
-            <!-- Sezione di ricerca del libro -->
-            <StackPanel Orientation="Horizontal" Margin="0,5">
-                <Label Content="Ricerca Libro:" Width="120" VerticalAlignment="Center"/>
-                <TextBox x:Name="RicercaLibroTextBox" Width="200" Height="25"/>
-                <Button Content="Cerca" Width="80" Height="25" Margin="5,0,0,0" Click="CercaLibro_Click"/>
+                <!-- Titolo -->
+                <TextBlock Text="Registra Vendita" FontSize="24" FontWeight="Bold" 
+                           HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#333333"/>
+
+                <!-- Sezione di ricerca del libro -->
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <Label Content="Ricerca Libro:" Width="120" VerticalAlignment="Center"/>
+                    <TextBox x:Name="RicercaLibroTextBox" Width="200" Height="25"/>
+                    <Button Content="Cerca" Width="80" Height="25" Margin="5,0,0,0" Click="CercaLibro_Click"/>
+                </StackPanel>
+
+                <!-- Lista Libri disponibili -->
+                <DataGrid x:Name="LibriVenditaDataGrid" AutoGenerateColumns="False" Height="150" Margin="0,10"
+                          SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Titolo" Binding="{Binding Titolo}" Width="*"/>
+                        <DataGridTextColumn Header="Prezzo" Binding="{Binding Prezzo}" Width="100"/>
+                        <DataGridTextColumn Header="Disponibilità" Binding="{Binding QuantitaMagazzino}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Bottoni per selezionare i libri -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="➕ Aggiungi al Carrello" Width="180" Click="AggiungiAlCarrello_Click"
+                            Background="#FF9800" Foreground="White" Margin="5"/>
+                    <Button Content="➖ Rimuovi dal Carrello" Width="180" Click="RimuoviDalCarrello_Click"
+                            Background="#FF5555" Foreground="White" Margin="5"/>
+                </StackPanel>
+
+                <!-- Carrello con i libri selezionati -->
+                <TextBlock Text="Carrello" FontSize="18" FontWeight="Bold" Margin="10,0,0,5"/>
+                <DataGrid x:Name="CarrelloDataGrid" AutoGenerateColumns="False" Height="150" Margin="0,10">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Titolo" Binding="{Binding Libro.Titolo}" Width="*"/>
+                        <DataGridTextColumn Header="Quantità" Binding="{Binding Quantita}" Width="80"/>
+                        <DataGridTextColumn Header="Prezzo Unitario" Binding="{Binding PrezzoUnitario}" Width="100"/>
+                        <DataGridTextColumn Header="Totale" Binding="{Binding Totale}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <!-- Totale Vendita -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5">
+                    <TextBlock Text="Totale: " FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="TotaleVenditaTextBlock" Text="0.00 €" FontSize="16" FontWeight="Bold" Foreground="Green"/>
+                </StackPanel>
+
+
+                <!-- Sezione Cliente -->
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <Label Content="Cliente (opzionale):" Width="120" VerticalAlignment="Center"/>
+                    <TextBox x:Name="ClienteTextBox" Width="200" Height="25" IsReadOnly="True"/>
+                    <Button Content="Seleziona Cliente" Width="140" Margin="5,0,0,0" Click="SelezionaCliente_Click"/>
+                </StackPanel>
+
+                <!-- Sezione Pagamento -->
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <Label Content="Metodo di Pagamento:" Width="120" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="MetodoPagamentoComboBox" Width="200" Height="25">
+                        <ComboBoxItem Content="Contanti"/>
+                        <ComboBoxItem Content="Carta di Credito"/>
+                        <ComboBoxItem Content="Bonifico Bancario"/>
+                        <ComboBoxItem Content="Altro"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- Bottoni finali -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                    <Button Content="💾 Registra Vendita" Width="180" Click="RegistraVendita_Click"
+                            Background="#4CAF50" Foreground="White" Margin="5"/>
+                    <Button Content="❌ Annulla" Width="120" Click="Annulla_Click"
+                            Background="#F44336" Foreground="White" Margin="5"/>
+                </StackPanel>
+
             </StackPanel>
-
-            <!-- DataGrid per selezionare il libro -->
-            <DataGrid x:Name="LibriVenditaDataGrid" AutoGenerateColumns="False" Height="150" Margin="0,10"
-                      SelectionMode="Single">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Titolo" Binding="{Binding Titolo}" Width="*" />
-                    <DataGridTextColumn Header="Prezzo" Binding="{Binding Prezzo}" Width="*" />
-                </DataGrid.Columns>
-            </DataGrid>
-
-            <Button Content="Seleziona Libro" Width="150" Margin="10,0,0,0" HorizontalAlignment="Center" 
-                    Background="#FF9800" Foreground="White" Click="SelezionaLibro_Click"/>
-
-            <!-- Sezione Cliente -->
-            <StackPanel Orientation="Horizontal" Margin="0,5">
-                <Label Content="Cliente (opzionale):" Width="120" VerticalAlignment="Center"/>
-                <TextBox x:Name="ClienteTextBox" Width="200" Height="25" IsReadOnly="True"/>
-                <Button Content="Seleziona Cliente" Width="140" Margin="5,0,0,0" Click="SelezionaCliente_Click"/>
-            </StackPanel>
-
-            <!-- Sezione Pagamento -->
-            <StackPanel Orientation="Horizontal" Margin="0,5">
-                <Label Content="Metodo di Pagamento:" Width="120" VerticalAlignment="Center"/>
-                <ComboBox x:Name="MetodoPagamentoComboBox" Width="200" Height="25">
-                    <ComboBoxItem Content="Contanti" />
-                    <ComboBoxItem Content="Carta di Credito" />
-                    <ComboBoxItem Content="Bonifico Bancario" />
-                    <ComboBoxItem Content="Altro" />
-                </ComboBox>
-            </StackPanel>
-        </StackPanel>
-
-        <!-- Bottoni per confermare o annullare la vendita -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,20,0,0">
-            <Button Content="Registra Vendita" Width="150" Margin="10" Click="RegistraVendita_Click"
-                    Background="#4CAF50" Foreground="White"/>
-            <Button Content="Annulla" Width="100" Margin="10" Click="Annulla_Click"
-                    Background="#F44336" Foreground="White"/>
-        </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>

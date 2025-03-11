@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using GestionaleLibreria.Business.Services;
+using GestionaleLibreria.Business;
+using GestionaleLibreria.Data;
+using System.Windows;
 
 namespace GestionaleLibreria.WPF
 {
@@ -37,8 +40,21 @@ namespace GestionaleLibreria.WPF
 
         private void RegistraVendita_Click(object sender, RoutedEventArgs e)
         {
-            new VenditaWindow().ShowDialog();
+            var context = new LibraryContext();
+            var libroRepository = new LibroRepository();
+            var clienteRepository = new ClienteRepository();
+            var magazzinoRepository = new MagazzinoRepository(context);
+            var venditaRepository = new VenditaRepository(); 
+
+            var libroService = new LibroService(libroRepository, magazzinoRepository);
+            var clienteService = new ClienteService(clienteRepository);
+            var venditaService = new VenditaService(venditaRepository, magazzinoRepository, libroRepository);
+          
+
+            var venditaWindow = new VenditaWindow(libroService, clienteService, venditaService);
+            venditaWindow.ShowDialog();
         }
+
 
         private void GeneraReport_Click(object sender, RoutedEventArgs e)
         {

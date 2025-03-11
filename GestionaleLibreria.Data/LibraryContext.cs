@@ -23,6 +23,7 @@ namespace GestionaleLibreria.Data
         public DbSet<LibroMagazzino> LibriMagazzino { get; set; }
         public DbSet<Magazzino> Magazzini { get; set; }
         public DbSet<Utente> Utenti { get; set; }
+        public DbSet<VenditaDettaglio> VenditaDettagli { get; set;  }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -45,6 +46,19 @@ namespace GestionaleLibreria.Data
                 .HasMany(m => m.LibriMagazzino)
                 .WithRequired(lm => lm.Magazzino)
                 .HasForeignKey(lm => lm.MagazzinoId);
+
+            // Relazione tra Vendita e VenditaDettaglio (evitiamo il DELETE CASCADE)
+                modelBuilder.Entity<VenditaDettaglio>()
+           .HasRequired(vd => vd.Libro)
+           .WithMany()
+           .HasForeignKey(vd => vd.LibroId)
+           .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Vendita>()
+                .HasOptional(v => v.Cliente)
+                .WithMany()
+                .HasForeignKey(v => v.ClienteId)
+                .WillCascadeOnDelete(false);
 
 
         }

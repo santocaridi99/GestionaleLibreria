@@ -82,6 +82,36 @@ namespace GestionaleLibreria.Business.Services
           
         }
 
+        public List<Libro> CercaLibri(string filtro)
+        {
+            string nomeMetodo = nameof(CercaLibri);
+            try
+            {
+                Logger.LogInfo(nomeClasse, nomeMetodo, $"Ricerca libri con filtro: {filtro}");
+
+                if (string.IsNullOrWhiteSpace(filtro))
+                {
+                    return _libroRepository.GetAllLibri(); 
+                }
+
+                var libriFiltrati = _libroRepository.GetAllLibri().Where(libro =>
+                    libro.Titolo.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    libro.Autore.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    libro.CasaEditrice.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    libro.ISBN.Equals(filtro, StringComparison.OrdinalIgnoreCase) 
+                ).ToList();
+
+                Logger.LogInfo(nomeClasse, nomeMetodo, $"Trovati {libriFiltrati.Count} libri corrispondenti al filtro.");
+                return libriFiltrati;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(nomeClasse, nomeMetodo, ex);
+                throw;
+            }
+        }
+
+
         public void EliminaLibro(int id)
         {
             _libroRepository.DeleteLibro(id);
