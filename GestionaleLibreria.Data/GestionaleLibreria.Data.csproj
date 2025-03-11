@@ -122,6 +122,10 @@
     <Compile Include="Migrations\202503101444165_CorreggiISBN.Designer.cs">
       <DependentUpon>202503101444165_CorreggiISBN.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202503110832493_ModificaModelloCliente.cs" />
+    <Compile Include="Migrations\202503110832493_ModificaModelloCliente.Designer.cs">
+      <DependentUpon>202503110832493_ModificaModelloCliente.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Audiobook.cs" />
     <Compile Include="Models\Cliente.cs" />
@@ -175,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202503101444165_CorreggiISBN.resx">
       <DependentUpon>202503101444165_CorreggiISBN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503110832493_ModificaModelloCliente.resx">
+      <DependentUpon>202503110832493_ModificaModelloCliente.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
