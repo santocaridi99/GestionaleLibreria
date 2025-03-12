@@ -12,6 +12,8 @@ using iTextSharp.text;
 using System.Diagnostics;
 using System.IO;
 using System.Globalization;
+using System.Threading;
+using System.Windows.Markup;
 
 namespace GestionaleLibreria.WPF
 {
@@ -31,6 +33,7 @@ namespace GestionaleLibreria.WPF
             _clienteService = clienteService;
             _venditaService = venditaService;
             _carrello = new List<VenditaDettaglio>();
+            this.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name);
 
             CaricaLibri();
         }
@@ -49,7 +52,6 @@ namespace GestionaleLibreria.WPF
                 .Where(l => l.Titolo.ToLower().Contains(filtro) && l.QuantitaMagazzino > 0)
                 .ToList();
         }
-
         private void AggiungiAlCarrello_Click(object sender, RoutedEventArgs e)
         {
             if (LibriVenditaDataGrid.SelectedItem is Libro libro)
@@ -61,27 +63,30 @@ namespace GestionaleLibreria.WPF
                 }
 
                 var esistente = _carrello.FirstOrDefault(c => c.LibroId == libro.Id);
-                int quantitaNelCarrello = esistente?.Quantita ?? 0;
-
-                // Verifica che la quantità totale nel carrello non superi la disponibilità
-                if (quantitaNelCarrello >= libro.QuantitaMagazzino)
-                {
-                    MessageBox.Show($"Hai già selezionato tutte le copie disponibili di \"{libro.Titolo}\".", "Attenzione", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
 
                 if (esistente != null)
                 {
-                    esistente.Quantita++;
+                    // Se il libro è già nel carrello, aumenta la quantità
+                    if (esistente.Quantita < libro.QuantitaMagazzino)
+                    {
+                        esistente.Quantita++;
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Non ci sono più copie disponibili di \"{libro.Titolo}\".", "Attenzione", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
                 }
                 else
                 {
+                    // Aggiunge il libro con prezzo originale e prezzo scontato
                     _carrello.Add(new VenditaDettaglio
                     {
                         LibroId = libro.Id,
                         Libro = libro,
                         Quantita = 1,
-                        PrezzoUnitario = libro.CalcolaPrezzo()
+                        PrezzoOriginale = libro.Prezzo, // Prezzo senza sconto
+                        PrezzoUnitario = libro.CalcolaPrezzo(), // Prezzo con sconto
                     });
                 }
 
@@ -101,13 +106,25 @@ namespace GestionaleLibreria.WPF
 
         private void AggiornaCarrello()
         {
-            CarrelloDataGrid.ItemsSource = null;
-            CarrelloDataGrid.ItemsSource = _carrello;
+            CarrelloDataGrid.ItemsSource = null; // Forza l'aggiornamento UI
+
+            CarrelloDataGrid.ItemsSource = _carrello.Select(item => new
+            {
+                Titolo = item.Libro.Titolo,
+                Tipo = item.Libro.Tipo,
+                Sconto = $"{item.Libro.Sconto * 100:0.##}%",
+                Quantita = item.Quantita,
+                PrezzoOriginale = item.Libro.Prezzo,
+                PrezzoScontato = item.Libro.CalcolaPrezzo(), // Prezzo dopo sconto
+                Totale = item.Quantita * item.Libro.CalcolaPrezzo() // Prezzo totale
+            }).ToList();
 
             // Calcola il totale della vendita
-            decimal totale = _carrello.Sum(item => item.Quantita * item.PrezzoUnitario);
+            decimal totale = _carrello.Sum(item => item.Quantita * item.Libro.CalcolaPrezzo());
             TotaleVenditaTextBlock.Text = string.Format(new CultureInfo("it-IT"), "{0:C}", totale);
         }
+
+
 
 
         private void AumentaQuantita_Click(object sender, RoutedEventArgs e)
@@ -194,7 +211,7 @@ namespace GestionaleLibreria.WPF
             {
                 LibroId = d.LibroId,
                 Quantita = d.Quantita,
-                PrezzoUnitario = d.Libro.CalcolaPrezzo(),
+                
                
             }).ToList();
 
@@ -243,57 +260,58 @@ namespace GestionaleLibreria.WPF
                     document.Add(title);
                     document.Add(new Paragraph(" ")); // Spazio vuoto
 
-                    // **Dettagli Cliente**
-                    var bodyFont = FontFactory.GetFont(FontFactory.HELVETICA, 12);
-                    if (_clienteSelezionato != null)
-                    {
-                        document.Add(new Paragraph($"Cliente: {_clienteSelezionato.Nome} {_clienteSelezionato.Cognome}", bodyFont));
-                        document.Add(new Paragraph($"Email: {_clienteSelezionato.Email}", bodyFont));
-                        document.Add(new Paragraph(" "));
-                    }
-                    else
-                    {
-                        document.Add(new Paragraph("Cliente: NON REGISTRATO", bodyFont));
-                    }
-
                     // **Metodo di pagamento**
-                    document.Add(new Paragraph($"Metodo di pagamento: {vendita.MetodoPagamento}", bodyFont));
+                    document.Add(new Paragraph($"Metodo di pagamento: {vendita.MetodoPagamento}", FontFactory.GetFont(FontFactory.HELVETICA, 12)));
                     document.Add(new Paragraph(" ")); // Spazio
 
                     // **Tabella dei libri venduti**
-                    PdfPTable table = new PdfPTable(4);
+                    PdfPTable table = new PdfPTable(6);
                     table.WidthPercentage = 100;
-                    table.SetWidths(new float[] { 40, 20, 20, 20 });
+                    table.SetWidths(new float[] { 30, 15, 15, 15, 15, 10 });
 
                     table.AddCell(new PdfPCell(new Phrase("Titolo", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12))) { BackgroundColor = BaseColor.LIGHT_GRAY });
+                    table.AddCell(new PdfPCell(new Phrase("Tipo", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12))) { BackgroundColor = BaseColor.LIGHT_GRAY });
+                    table.AddCell(new PdfPCell(new Phrase("Prezzo Base", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12))) { BackgroundColor = BaseColor.LIGHT_GRAY });
+                    table.AddCell(new PdfPCell(new Phrase("Sconto", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12))) { BackgroundColor = BaseColor.LIGHT_GRAY });
+                    table.AddCell(new PdfPCell(new Phrase("Prezzo Scontato", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12))) { BackgroundColor = BaseColor.LIGHT_GRAY });
                     table.AddCell(new PdfPCell(new Phrase("Quantità", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12))) { BackgroundColor = BaseColor.LIGHT_GRAY });
-                    table.AddCell(new PdfPCell(new Phrase("Prezzo Unitario", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12))) { BackgroundColor = BaseColor.LIGHT_GRAY });
-                    table.AddCell(new PdfPCell(new Phrase("Totale", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12))) { BackgroundColor = BaseColor.LIGHT_GRAY });
 
                     decimal totaleVendita = 0;
+
                     foreach (var item in _carrello)
                     {
-                        decimal prezzoCalcolato = item.PrezzoUnitario; 
+                        decimal prezzoBase = item.Libro.Prezzo;
+                        decimal prezzoScontato = item.Libro.CalcolaPrezzo();
+                        string scontoDescrizione = $"{item.Libro.Sconto * 100:0.##}%";
 
-                        table.AddCell(new PdfPCell(new Phrase(item.Libro.Titolo, bodyFont)));
-                        table.AddCell(new PdfPCell(new Phrase(item.Quantita.ToString(), bodyFont)));
-                        table.AddCell(new PdfPCell(new Phrase($"{prezzoCalcolato:C}", bodyFont)));
-                        table.AddCell(new PdfPCell(new Phrase($"{(prezzoCalcolato * item.Quantita):C}", bodyFont)));
+                        if (item.Libro is Ebook)
+                        {
+                            scontoDescrizione += " + Sconto 50% (Ebook)";
+                        }
+                        else if (item.Libro is Audiobook)
+                        {
+                            scontoDescrizione += " + Supplemento 5€ (Audiobook)";
+                        }
 
-                        totaleVendita += prezzoCalcolato * item.Quantita;
+                        table.AddCell(new PdfPCell(new Phrase(item.Libro.Titolo, FontFactory.GetFont(FontFactory.HELVETICA, 12))));
+                        table.AddCell(new PdfPCell(new Phrase(item.Libro.Tipo, FontFactory.GetFont(FontFactory.HELVETICA, 12))));
+                        table.AddCell(new PdfPCell(new Phrase($"{prezzoBase:C}", FontFactory.GetFont(FontFactory.HELVETICA, 12))));
+                        table.AddCell(new PdfPCell(new Phrase(scontoDescrizione, FontFactory.GetFont(FontFactory.HELVETICA, 12))));
+                        table.AddCell(new PdfPCell(new Phrase($"{prezzoScontato:C}", FontFactory.GetFont(FontFactory.HELVETICA, 12))));
+                        table.AddCell(new PdfPCell(new Phrase(item.Quantita.ToString(), FontFactory.GetFont(FontFactory.HELVETICA, 12))));
+
+                        totaleVendita += prezzoScontato * item.Quantita;
                     }
 
                     document.Add(table);
-                    document.Add(new Paragraph(" ")); // Spazio
+                    document.Add(new Paragraph(" "));
 
-                    // **Totale della vendita**
                     var totalFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14);
                     document.Add(new Paragraph($"Totale: {totaleVendita:C}", totalFont));
 
                     document.Close();
                 }
 
-                // Apri automaticamente il PDF
                 Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
 
                 MessageBox.Show("PDF generato con successo!", "Successo", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -303,6 +321,8 @@ namespace GestionaleLibreria.WPF
                 MessageBox.Show($"Errore durante la generazione del PDF: {ex.Message}", "Errore", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+
 
         private void Annulla_Click(object sender, RoutedEventArgs e)
         {

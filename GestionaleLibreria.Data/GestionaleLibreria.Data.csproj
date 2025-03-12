@@ -158,6 +158,14 @@
     <Compile Include="Migrations\202503121123507_ModifciaModelloLibroscontofix.Designer.cs">
       <DependentUpon>202503121123507_ModifciaModelloLibroscontofix.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202503121440539_ModificaVenditaDettaglio.cs" />
+    <Compile Include="Migrations\202503121440539_ModificaVenditaDettaglio.Designer.cs">
+      <DependentUpon>202503121440539_ModificaVenditaDettaglio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503121459154_ModificaVenditaDettagliofix.cs" />
+    <Compile Include="Migrations\202503121459154_ModificaVenditaDettagliofix.Designer.cs">
+      <DependentUpon>202503121459154_ModificaVenditaDettagliofix.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Audiobook.cs" />
     <Compile Include="Models\Cliente.cs" />
@@ -239,6 +247,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202503121123507_ModifciaModelloLibroscontofix.resx">
       <DependentUpon>202503121123507_ModifciaModelloLibroscontofix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503121440539_ModificaVenditaDettaglio.resx">
+      <DependentUpon>202503121440539_ModificaVenditaDettaglio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503121459154_ModificaVenditaDettagliofix.resx">
+      <DependentUpon>202503121459154_ModificaVenditaDettagliofix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

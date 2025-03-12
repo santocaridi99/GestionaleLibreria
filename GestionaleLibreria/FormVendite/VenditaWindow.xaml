@@ -20,33 +20,56 @@
 
                 <!-- Lista Libri disponibili -->
                 <DataGrid x:Name="LibriVenditaDataGrid" AutoGenerateColumns="False" Height="150" Margin="0,10"
-                          SelectionMode="Single">
+          SelectionMode="Single">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Titolo" Binding="{Binding Titolo}" Width="*"/>
-                        <DataGridTextColumn Header="Prezzo" Binding="{Binding Prezzo}" Width="100"/>
-                        <DataGridTextColumn Header="Disponibilità" Binding="{Binding QuantitaMagazzino}" Width="100"/>
+                        <DataGridTextColumn Header="Titolo" Binding="{Binding Titolo ,Mode=OneWay}" Width="*"/>
+                        <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo ,Mode=OneWay}" Width="100"/>
+                        <DataGridTextColumn Header="Prezzo" Binding="{Binding Prezzo, StringFormat=\{0:C\},Mode=OneWay}" Width="100">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="{Binding Prezzo, StringFormat=\{0:C\}, ConverterCulture=it-IT,Mode=OneWay}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Disponibilità" Binding="{Binding QuantitaMagazzino,Mode=OneWay}" Width="100"/>
                     </DataGrid.Columns>
                 </DataGrid>
+
 
                 <!-- Bottoni per selezionare i libri -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Content="➕ Aggiungi al Carrello" Width="180" Click="AggiungiAlCarrello_Click"
                             Background="#FF9800" Foreground="White" Margin="5"/>
-                    <Button Content="➖ Rimuovi dal Carrello" Width="180" Click="RimuoviDalCarrello_Click"
-                            Background="#FF5555" Foreground="White" Margin="5"/>
                 </StackPanel>
 
                 <!-- Carrello con i libri selezionati -->
                 <TextBlock Text="Carrello" FontSize="18" FontWeight="Bold" Margin="10,0,0,5"/>
+                <!-- AVVISO PER GLI EBOOK -->
+                <TextBlock Text="⚠️ Gli Ebook hanno un ulteriore sconto che dimezza il prezzo." 
+           FontSize="14" Foreground="Red" FontWeight="Bold"
+           Margin="10,0,0,5"/>
+
+                <!-- AVVISO PER GLI AUDIOBOOK -->
+                <TextBlock Text="🔊 Gli Audiobook hanno un costo aggiuntivo di 5€." 
+           FontSize="14" Foreground="Blue" FontWeight="Bold"
+           Margin="10,0,0,5"/>
                 <DataGrid x:Name="CarrelloDataGrid" AutoGenerateColumns="False" Height="150" Margin="0,10">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Titolo" Binding="{Binding Libro.Titolo}" Width="*"/>
+                        <DataGridTextColumn Header="Titolo" Binding="{Binding Titolo}" Width="*"/>
+                        <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo}" Width="80"/>
+                        <DataGridTextColumn Header="Sconto" Binding="{Binding Sconto}" Width="80"/>
                         <DataGridTextColumn Header="Quantità" Binding="{Binding Quantita}" Width="80"/>
-                        <DataGridTextColumn Header="Prezzo Unitario" Binding="{Binding PrezzoUnitario,  StringFormat=\{0:C\}}" Width="100"/>
+                        <DataGridTextColumn Header="Prezzo Or." Binding="{Binding PrezzoOriginale, StringFormat=\{0:C\}}" Width="100"/>
+                        <DataGridTextColumn Header="Prezzo Scontato" Binding="{Binding PrezzoScontato, StringFormat=\{0:C\}}" Width="100"/>
                         <DataGridTextColumn Header="Totale" Binding="{Binding Totale, StringFormat=\{0:C\}}" Width="100"/>
-
                     </DataGrid.Columns>
                 </DataGrid>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+                    <Button Content="➖ Rimuovi dal Carrello" Width="180" Click="RimuoviDalCarrello_Click"
+              Background="#FF5555" Foreground="White" Margin="5"/>
+                </StackPanel>
                 <!-- Totale Vendita -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5">
                     <TextBlock Text="Totale: " FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>

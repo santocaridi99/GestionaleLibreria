@@ -18,8 +18,9 @@ namespace GestionaleLibreria.Data.Models
 
         public int Quantita { get; set; }
 
-        public decimal PrezzoUnitario { get; set; }
+        public decimal PrezzoOriginale { get; set; } // Prezzo base senza sconto
+        public decimal PrezzoUnitario { get; set; } // Prezzo scontato
 
-        public decimal Totale { get { return Quantita * PrezzoUnitario; } }
+        public decimal Totale => PrezzoUnitario * Quantita; 
     }
 }
