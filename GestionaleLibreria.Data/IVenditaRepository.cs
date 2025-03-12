@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using GestionaleLibreria.Data.Logging;
 using GestionaleLibreria.Data.Models;
@@ -10,13 +11,15 @@ namespace GestionaleLibreria.Data
     {
         List<Vendita> GetAllVendite();
         void AddVendita(Vendita vendita);
-        void SaveChanges(); 
+        void SaveChanges();
+        List<Vendita> GetVenditePerPeriodo(DateTime dataInizio, DateTime dataFine);
 
     }
     public class VenditaRepository : IVenditaRepository
     {
         private readonly List<Vendita> _vendite = new List<Vendita>();
         private readonly LibraryContext _context;
+       
 
         public VenditaRepository()
         {
@@ -51,6 +54,35 @@ namespace GestionaleLibreria.Data
             // Ora possiamo aggiungere la vendita
             _context.Vendite.Add(vendita);
         }
+        public List<Vendita> GetVenditePerPeriodo(DateTime dataInizio, DateTime dataFine)
+        {
+            string nomeMetodo = nameof(GetVenditePerPeriodo);
+            try
+            {
+                Logger.LogInfo(nameof(VenditaRepository), nomeMetodo,
+                    $"Recupero vendite dal {dataInizio:yyyy-MM-dd HH:mm:ss} al {dataFine:yyyy-MM-dd HH:mm:ss}");
+
+                using (var context = new LibraryContext())
+                {
+                    var vendite = context.Vendite
+                        .Where(v => v.DataVendita >= dataInizio && v.DataVendita <= dataFine)
+                        .Include(v => v.Cliente)
+                        .ToList();
+
+                    Logger.LogInfo(nameof(VenditaRepository), nomeMetodo,
+                        $"Trovate {vendite.Count} vendite nel periodo selezionato.");
+
+                    return vendite;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(nameof(VenditaRepository), nomeMetodo, ex);
+                throw;
+            }
+        }
+
+
 
 
         public void SaveChanges()

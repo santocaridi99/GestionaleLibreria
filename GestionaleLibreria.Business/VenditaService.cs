@@ -113,5 +113,21 @@ namespace GestionaleLibreria.Business
         {
             return _venditaRepository.GetAllVendite();
         }
+
+        public List<Vendita> GetVenditePerPeriodo(DateTime dataInizio, DateTime dataFine)
+        {
+            string nomeMetodo = nameof(GetVenditePerPeriodo);
+            try
+            {
+                Logger.LogInfo(nameof(VenditaService), nomeMetodo, $"Richiesta vendite dal {dataInizio:dd/MM/yyyy} al {dataFine:dd/MM/yyyy}");
+                return _venditaRepository.GetVenditePerPeriodo(dataInizio, dataFine);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(nameof(VenditaService), nomeMetodo, ex);
+                throw;
+            }
+        }
+
     }
 }

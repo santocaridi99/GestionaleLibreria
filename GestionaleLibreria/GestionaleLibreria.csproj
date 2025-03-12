@@ -126,6 +126,9 @@
     <Compile Include="FormMagazzino\RimuoviStockWindow.xaml.cs">
       <DependentUpon>RimuoviStockWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FormReportistica\ReportVenditeWindow.xaml.cs">
+      <DependentUpon>ReportVenditeWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FormVendite\SelezionaClienteWindow.xaml.cs">
       <DependentUpon>SelezionaClienteWindow.xaml</DependentUpon>
     </Compile>
@@ -169,6 +172,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FormMagazzino\RimuoviStockWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FormReportistica\ReportVenditeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

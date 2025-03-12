@@ -2,6 +2,8 @@
 using GestionaleLibreria.Business;
 using GestionaleLibreria.Data;
 using System.Windows;
+using GestionaleLibreria.WPF.FormReportistica;
+using System.Runtime.Remoting.Contexts;
 
 namespace GestionaleLibreria.WPF
 {
@@ -58,7 +60,12 @@ namespace GestionaleLibreria.WPF
 
         private void GeneraReport_Click(object sender, RoutedEventArgs e)
         {
-            // implementazione futura
+            var context = new LibraryContext();
+            var libroRepository = new LibroRepository();
+            var magazzinoRepository = new MagazzinoRepository(context);
+            var venditaRepository = new VenditaRepository();
+            var venditaService = new VenditaService(venditaRepository, magazzinoRepository, libroRepository);
+            new ReportVenditeWindow(venditaService).ShowDialog();
         }
 
         private void GestioneMagazzino_Click(object sender, RoutedEventArgs e)
