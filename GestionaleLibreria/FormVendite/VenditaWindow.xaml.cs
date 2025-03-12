@@ -211,8 +211,10 @@ namespace GestionaleLibreria.WPF
             {
                 LibroId = d.LibroId,
                 Quantita = d.Quantita,
-                
-               
+                PrezzoUnitario = d.PrezzoUnitario,
+                PrezzoOriginale = d.Libro.Prezzo,
+
+
             }).ToList();
 
             try

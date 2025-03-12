@@ -37,7 +37,8 @@ namespace GestionaleLibreria.Business
                 using (var context = new LibraryContext())
                 {
                     vendita.DataVendita = DateTime.Now;
-                    vendita.Totale = dettagliVendita.Sum(d => d.Totale);
+                    vendita.Totale = dettagliVendita.Sum(d => d.Quantita * d.PrezzoUnitario);
+                    vendita.QuantitaVenduta = dettagliVendita.Sum(d => d.Quantita);
 
                     foreach (var dettaglio in dettagliVendita)
                     {
@@ -48,7 +49,8 @@ namespace GestionaleLibreria.Business
                             throw new Exception($"Errore: Il libro con ID {dettaglio.LibroId} non esiste nel database.");
                         }
 
-                        
+                        dettaglio.Quantita = dettaglio.Quantita;
+
                         var libroMagazzino = context.LibriMagazzino.SingleOrDefault(lm => lm.LibroId == dettaglio.LibroId);
                         if (libroMagazzino != null)
                         {
@@ -60,8 +62,11 @@ namespace GestionaleLibreria.Business
                             libroMagazzino.Quantita -= dettaglio.Quantita;
                             context.Entry(libroMagazzino).State = System.Data.Entity.EntityState.Modified;
                         }
+                       
                         dettaglio.Libro = null; 
                         dettaglio.Vendita = vendita;
+                        context.Entry(dettaglio).State = System.Data.Entity.EntityState.Added;
+
                     }
 
                     context.Vendite.Add(vendita);
