@@ -48,7 +48,8 @@
                     <DataGridTextColumn Header="ISBN" Binding="{Binding ISBN}" Width="*"/>
                     <DataGridTextColumn Header="Casa Editrice" Binding="{Binding CasaEditrice}" Width="*"/>
                     <DataGridTextColumn Header="Prezzo (€)" Binding="{Binding Prezzo}" Width="*"/>
-                    <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo, Mode=OneWay}" Width="*"/>
+                    <DataGridTextColumn Header="Sconto" Binding="{Binding Sconto}" Width="80"/>
+                    <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo}" Width="*"/>
                     <DataGridTextColumn Header="Quantità Magazzino" Binding="{Binding QuantitaMagazzino, Mode=OneWay}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>

@@ -10,6 +10,7 @@ namespace GestionaleLibreria.Data.Models
     {
         public double DurataOre { get; set; }
         public string Narratore { get; set; } = string.Empty;
+        public override string Tipo => "Audiobook";
 
         public override decimal CalcolaPrezzo()
         {

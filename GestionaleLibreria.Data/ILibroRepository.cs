@@ -78,12 +78,27 @@ namespace GestionaleLibreria.Data
                 var existing = _context.Libri.FirstOrDefault(l => l.Id == libro.Id);
                 if (existing != null)
                 {
+                    // **Aggiorniamo i campi comuni**
                     existing.Titolo = libro.Titolo;
                     existing.Autore = libro.Autore;
                     existing.ISBN = libro.ISBN;
                     existing.Prezzo = libro.Prezzo;
-                    _context.SaveChanges();
+                    existing.Sconto = libro.Sconto;
 
+                    //  campi specifici per Ebook**
+                    if (libro is Ebook ebook && existing is Ebook existingEbook)
+                    {
+                        existingEbook.Formato = ebook.Formato;
+                        existingEbook.DimensioneFile = ebook.DimensioneFile;
+                    }
+                    // campi specifici per Audiobook**
+                    else if (libro is Audiobook audiobook && existing is Audiobook existingAudiobook)
+                    {
+                        existingAudiobook.DurataOre = audiobook.DurataOre;
+                        existingAudiobook.Narratore = audiobook.Narratore;
+                    }
+
+                    _context.SaveChanges();
                     Logger.LogInfo(NomeClasse, nomeMetodo, $"Libro aggiornato con successo: {libro.Titolo}");
                 }
                 else
@@ -97,6 +112,7 @@ namespace GestionaleLibreria.Data
                 throw;
             }
         }
+
 
         public void DeleteLibro(int id)
         {

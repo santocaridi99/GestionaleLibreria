@@ -30,11 +30,7 @@ namespace GestionaleLibreria.Business.Services
             try
             {
                 Logger.LogInfo(nomeClasse, nameMetodo , $"Inizio aggiunta libro: {libro.Titolo}");
-                _libroRepository.AddLibro(libro);
-
-                // Se il libro è cartaceo, lo aggiunge in magazzino con quantità zero
-                if (!(libro is Ebook) && !(libro is Audiobook))
-                {
+                _libroRepository.AddLibro(libro);  
                     // Verifica se esiste un magazzino, altrimenti ne crea uno
                     var magazzino = _magazzinoRepository.GetMagazzinoPrincipale();
                     if (magazzino == null)
@@ -52,7 +48,7 @@ namespace GestionaleLibreria.Business.Services
                     };
                     _magazzinoRepository.AggiungiLibroMagazzino(libroMagazzino);
                     Logger.LogInfo(nomeClasse, nameMetodo, $"Libro aggiunto con successo: {libro.Titolo}");
-                }
+                
             }
             catch (Exception ex)
             {

@@ -51,12 +51,6 @@ namespace GestionaleLibreria.WPF
                 Logger.LogInfo(NomeClasse, nomeMetodo, "Caricamento libri in corso.");
 
                 _tuttiLibri = _libroService.GetAllLibri();
-
-                foreach (var libro in _tuttiLibri)
-                {
-                    libro.Prezzo = libro.CalcolaPrezzo();
-                }
-
                 AggiornaDataGrid(_tuttiLibri);
 
                 Logger.LogInfo(NomeClasse, nomeMetodo, $"Caricati {_tuttiLibri.Count} libri.");

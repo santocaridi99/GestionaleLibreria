@@ -21,19 +21,23 @@ namespace GestionaleLibreria.Data.Models
         public string ISBN { get; set; }
 
         [Required]
+        public string CasaEditrice { get; set; } = string.Empty;
+        [Required]
         public decimal Prezzo { get; set; }
 
-        [Required]
-        public string CasaEditrice { get; set; } = string.Empty;
 
-        public string Tipo => this is Ebook ? "Ebook" : this is Audiobook ? "Audiobook" : "Libro Cartaceo";
+
+        public double Sconto { get; set; } = 0;
+
+        public virtual string Tipo => "Libro Cartaceo";
+
 
         public int QuantitaMagazzino => LibriMagazzino?.Sum(lm => lm.Quantita) ?? 0;
         // Relazione: un libro può essere presente in uno o più record di LibroMagazzino
         public virtual ICollection<LibroMagazzino> LibriMagazzino { get; set; } = new List<LibroMagazzino>();
 
         // Metodo virtual per consentire l'override nelle classi derivate
-        public virtual decimal CalcolaPrezzo() => Prezzo;
+        public virtual decimal CalcolaPrezzo() => Prezzo - (Prezzo * (decimal)Sconto);
     }
 
 

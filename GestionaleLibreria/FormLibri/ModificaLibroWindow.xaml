@@ -1,54 +1,73 @@
 ﻿<Window x:Class="GestionaleLibreria.WPF.ModificaLibroWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Modifica Libro" Height="420" Width="420" Background="#ECEFF1"
+        Title="Modifica Libro" Height="500" Width="420" Background="#ECEFF1"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
 
     <Grid Margin="20">
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
 
-            <!-- Intestazione -->
             <TextBlock Text="✏️ Modifica Libro" FontSize="24" FontWeight="Bold" 
                        HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#37474F"/>
 
-            <!-- Contenitore con bordo arrotondato -->
             <Border Background="White" Padding="20" CornerRadius="10" BorderBrush="#B0BEC5" BorderThickness="1">
                 <StackPanel Orientation="Vertical" Width="300">
 
-                    <!-- Campo per Titolo -->
                     <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <Label Content="📖 Titolo:" Width="100" VerticalAlignment="Center"/>
-                        <TextBox x:Name="TitoloTextBox" Width="180" Height="30"/>
+                        <Label Content="📖 Titolo:" Width="100"/>
+                        <TextBox x:Name="TitoloTextBox" Width="180"/>
                     </StackPanel>
 
-                    <!-- Campo per Autore -->
                     <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <Label Content="✍️ Autore:" Width="100" VerticalAlignment="Center"/>
-                        <TextBox x:Name="AutoreTextBox" Width="180" Height="30"/>
+                        <Label Content="✍️ Autore:" Width="100"/>
+                        <TextBox x:Name="AutoreTextBox" Width="180"/>
                     </StackPanel>
 
-                    <!-- Campo per ISBN -->
                     <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <Label Content="🔢 ISBN:" Width="100" VerticalAlignment="Center"/>
-                        <TextBox x:Name="ISBNTextBox" Width="180" Height="30"/>
+                        <Label Content="🔢 ISBN:" Width="100"/>
+                        <TextBox x:Name="ISBNTextBox" Width="180"/>
                     </StackPanel>
 
-                    <!-- Campo per Prezzo -->
                     <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <Label Content="💰 Prezzo:" Width="100" VerticalAlignment="Center"/>
-                        <TextBox x:Name="PrezzoTextBox" Width="180" Height="30"/>
+                        <Label Content="💰 Prezzo:" Width="100"/>
+                        <TextBox x:Name="PrezzoTextBox" Width="180"/>
+                    </StackPanel>
+                    
+                    
+                    <StackPanel x:Name="ScontoPanel" Orientation="Horizontal" Margin="0,5">
+                        <Label Content="📉 Sconto (%):" Width="100"/>
+                        <TextBox x:Name="ScontoTextBox" Width="180"/>
+                    </StackPanel>
+
+                    <!-- Per Ebook -->
+                    <StackPanel x:Name="FormatoEbookPanel" Orientation="Horizontal" Margin="0,5" Visibility="Collapsed">
+                        <Label Content="📄 Formato:" Width="100"/>
+                        <TextBox x:Name="FormatoEbookTextBox" Width="180"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="DimensioneEbookPanel" Orientation="Horizontal" Margin="0,5" Visibility="Collapsed">
+                        <Label Content="💾 Dimensione (MB):" Width="100"/>
+                        <TextBox x:Name="DimensioneEbookTextBox" Width="180"/>
+                    </StackPanel>
+
+
+                    <!-- Per Audiobook -->
+                    <StackPanel x:Name="DurataPanel" Orientation="Horizontal" Margin="0,5" Visibility="Collapsed">
+                        <Label Content="⏳ Durata (h):" Width="100"/>
+                        <TextBox x:Name="DurataTextBox" Width="180"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="NarratorePanel" Orientation="Horizontal" Margin="0,5" Visibility="Collapsed">
+                        <Label Content="🎙️ Narratore:" Width="100"/>
+                        <TextBox x:Name="NarratoreTextBox" Width="180"/>
                     </StackPanel>
 
                 </StackPanel>
             </Border>
 
-            <!-- Bottoni per Salva e Annulla -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-                <Button Content="💾 Salva" Width="110" Height="40" Margin="10" Click="Salva_Click"
-                        Background="#4CAF50" Foreground="White" FontSize="14" FontWeight="Bold" Cursor="Hand"/>
-
-                <Button Content="❌ Annulla" Width="110" Height="40" Margin="10" Click="Annulla_Click"
-                        Background="#F44336" Foreground="White" FontSize="14" FontWeight="Bold" Cursor="Hand"/>
+                <Button Content="💾 Salva" Width="110" Click="Salva_Click" Background="#4CAF50" Foreground="White"/>
+                <Button Content="❌ Annulla" Width="110" Click="Annulla_Click" Background="#F44336" Foreground="White"/>
             </StackPanel>
 
         </StackPanel>

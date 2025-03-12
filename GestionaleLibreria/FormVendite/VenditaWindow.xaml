@@ -42,8 +42,9 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Titolo" Binding="{Binding Libro.Titolo}" Width="*"/>
                         <DataGridTextColumn Header="Quantità" Binding="{Binding Quantita}" Width="80"/>
-                        <DataGridTextColumn Header="Prezzo Unitario" Binding="{Binding PrezzoUnitario}" Width="100"/>
-                        <DataGridTextColumn Header="Totale" Binding="{Binding Totale}" Width="100"/>
+                        <DataGridTextColumn Header="Prezzo Unitario" Binding="{Binding PrezzoUnitario,  StringFormat=\{0:C\}}" Width="100"/>
+                        <DataGridTextColumn Header="Totale" Binding="{Binding Totale, StringFormat=\{0:C\}}" Width="100"/>
+
                     </DataGrid.Columns>
                 </DataGrid>
                 <!-- Totale Vendita -->

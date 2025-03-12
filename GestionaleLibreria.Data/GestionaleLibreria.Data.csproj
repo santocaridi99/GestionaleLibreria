@@ -142,6 +142,22 @@
     <Compile Include="Migrations\202503111647265_fixModelloVendita.Designer.cs">
       <DependentUpon>202503111647265_fixModelloVendita.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202503120936396_FixModelloLibroTipo.cs" />
+    <Compile Include="Migrations\202503120936396_FixModelloLibroTipo.Designer.cs">
+      <DependentUpon>202503120936396_FixModelloLibroTipo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503120954180_AggiuntaDiscriminatore.cs" />
+    <Compile Include="Migrations\202503120954180_AggiuntaDiscriminatore.Designer.cs">
+      <DependentUpon>202503120954180_AggiuntaDiscriminatore.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503121041441_ModifciaModelloLibroSconto.cs" />
+    <Compile Include="Migrations\202503121041441_ModifciaModelloLibroSconto.Designer.cs">
+      <DependentUpon>202503121041441_ModifciaModelloLibroSconto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503121123507_ModifciaModelloLibroscontofix.cs" />
+    <Compile Include="Migrations\202503121123507_ModifciaModelloLibroscontofix.Designer.cs">
+      <DependentUpon>202503121123507_ModifciaModelloLibroscontofix.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Audiobook.cs" />
     <Compile Include="Models\Cliente.cs" />
@@ -211,6 +227,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202503111647265_fixModelloVendita.resx">
       <DependentUpon>202503111647265_fixModelloVendita.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503120936396_FixModelloLibroTipo.resx">
+      <DependentUpon>202503120936396_FixModelloLibroTipo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503120954180_AggiuntaDiscriminatore.resx">
+      <DependentUpon>202503120954180_AggiuntaDiscriminatore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503121041441_ModifciaModelloLibroSconto.resx">
+      <DependentUpon>202503121041441_ModifciaModelloLibroSconto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503121123507_ModifciaModelloLibroscontofix.resx">
+      <DependentUpon>202503121123507_ModifciaModelloLibroscontofix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

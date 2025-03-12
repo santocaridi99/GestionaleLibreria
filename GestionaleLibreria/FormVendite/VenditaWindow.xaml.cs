@@ -11,6 +11,7 @@ using iTextSharp.text.pdf;
 using iTextSharp.text;
 using System.Diagnostics;
 using System.IO;
+using System.Globalization;
 
 namespace GestionaleLibreria.WPF
 {
@@ -24,6 +25,7 @@ namespace GestionaleLibreria.WPF
 
         public VenditaWindow(LibroService libroService, ClienteService clienteService, VenditaService venditaService)
         {
+            Logger.LogInfo(nameof(VenditaWindow), "Costruttore", "Apertura finestra Vendita");
             InitializeComponent();
             _libroService = libroService;
             _clienteService = clienteService;
@@ -79,7 +81,7 @@ namespace GestionaleLibreria.WPF
                         LibroId = libro.Id,
                         Libro = libro,
                         Quantita = 1,
-                        PrezzoUnitario = libro.Prezzo
+                        PrezzoUnitario = libro.CalcolaPrezzo()
                     });
                 }
 
@@ -104,7 +106,7 @@ namespace GestionaleLibreria.WPF
 
             // Calcola il totale della vendita
             decimal totale = _carrello.Sum(item => item.Quantita * item.PrezzoUnitario);
-            TotaleVenditaTextBlock.Text = $"{totale:0.00} €";
+            TotaleVenditaTextBlock.Text = string.Format(new CultureInfo("it-IT"), "{0:C}", totale);
         }
 
 
@@ -192,7 +194,7 @@ namespace GestionaleLibreria.WPF
             {
                 LibroId = d.LibroId,
                 Quantita = d.Quantita,
-                PrezzoUnitario = d.PrezzoUnitario,
+                PrezzoUnitario = d.Libro.CalcolaPrezzo(),
                
             }).ToList();
 
@@ -271,12 +273,14 @@ namespace GestionaleLibreria.WPF
                     decimal totaleVendita = 0;
                     foreach (var item in _carrello)
                     {
+                        decimal prezzoCalcolato = item.PrezzoUnitario; 
+
                         table.AddCell(new PdfPCell(new Phrase(item.Libro.Titolo, bodyFont)));
                         table.AddCell(new PdfPCell(new Phrase(item.Quantita.ToString(), bodyFont)));
-                        table.AddCell(new PdfPCell(new Phrase($"{item.PrezzoUnitario:C}", bodyFont)));
-                        table.AddCell(new PdfPCell(new Phrase($"{(item.PrezzoUnitario * item.Quantita):C}", bodyFont)));
+                        table.AddCell(new PdfPCell(new Phrase($"{prezzoCalcolato:C}", bodyFont)));
+                        table.AddCell(new PdfPCell(new Phrase($"{(prezzoCalcolato * item.Quantita):C}", bodyFont)));
 
-                        totaleVendita += item.PrezzoUnitario * item.Quantita;
+                        totaleVendita += prezzoCalcolato * item.Quantita;
                     }
 
                     document.Add(table);

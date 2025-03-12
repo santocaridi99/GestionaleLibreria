@@ -35,6 +35,12 @@ namespace GestionaleLibreria.Data
             );
 
 
+            modelBuilder.Entity<Libro>()
+            .Map<Libro>(m => m.Requires("Discriminator").HasValue("Libro Cartaceo"))
+            .Map<Ebook>(m => m.Requires("Discriminator").HasValue("Ebook"))
+            .Map<Audiobook>(m => m.Requires("Discriminator").HasValue("Audiobook"));
+
+
             // Configurazione della relazione: Un libro ha molti LibroMagazzino
             modelBuilder.Entity<Libro>()
                 .HasMany(l => l.LibriMagazzino)

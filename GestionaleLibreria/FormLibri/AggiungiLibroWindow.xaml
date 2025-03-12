@@ -48,6 +48,12 @@
                     <TextBox x:Name="PrezzoTextBox" Width="280" Height="30" Background="White"/>
                 </StackPanel>
 
+                <StackPanel Orientation="Vertical" Margin="0,5">
+                    <Label Content="Sconto (%)" FontWeight="Bold"/>
+                    <TextBox x:Name="ScontoTextBox" Width="280" Height="30" Background="White"/>
+                </StackPanel>
+
+
                 <!-- Sezione Ebook -->
                 <StackPanel x:Name="EbookFields" Visibility="Collapsed">
                     <StackPanel Orientation="Vertical" Margin="0,5">
@@ -58,10 +64,7 @@
                         <Label Content="Dimensione File (MB)" FontWeight="Bold"/>
                         <TextBox x:Name="DimensioneEbookTextBox" Width="280" Height="30" Background="White"/>
                     </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="0,5">
-                        <Label Content="Sconto (%)" FontWeight="Bold"/>
-                        <TextBox x:Name="ScontoEbookTextBox" Width="280" Height="30" Background="White"/>
-                    </StackPanel>
+                    
                 </StackPanel>
 
                 <!-- Sezione Audiobook -->

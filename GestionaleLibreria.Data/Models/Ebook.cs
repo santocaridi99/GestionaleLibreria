@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace GestionaleLibreria.Data.Models
     {
         public string Formato { get; set; } // Es. PDF, EPUB
         public double DimensioneFile { get; set; } // In MB
-        public double Sconto { get; set; } // Percentuale di sconto, ad esempio 0.1 = 10%
-        public override decimal CalcolaPrezzo() => Prezzo - (Prezzo * (decimal)Sconto);
+        public override string Tipo => "Ebook";
+        public override decimal CalcolaPrezzo() => (Prezzo - (Prezzo * (decimal)Sconto))/2;
     }
 }

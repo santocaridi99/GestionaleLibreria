@@ -71,8 +71,6 @@ namespace GestionaleLibreria.WPF
             {
                 Logger.LogInfo(NomeClasse, nomeMetodo, "Tentativo di aggiunta di un nuovo libro.");
 
-                string tipoSelezionato = (TipoLibroComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
-
                 if (string.IsNullOrWhiteSpace(TitoloTextBox.Text) || string.IsNullOrWhiteSpace(AutoreTextBox.Text))
                 {
                     Logger.LogInfo(NomeClasse, nomeMetodo, "Errore: alcuni campi obbligatori sono vuoti.");
@@ -87,14 +85,60 @@ namespace GestionaleLibreria.WPF
                     return;
                 }
 
-                Libro nuovoLibro = new Libro
+                double sconto = 0;
+                if (!string.IsNullOrWhiteSpace(ScontoTextBox.Text) && !double.TryParse(ScontoTextBox.Text, out sconto))
                 {
-                    Titolo = TitoloTextBox.Text,
-                    Autore = AutoreTextBox.Text,
-                    CasaEditrice = CasaEditriceTextBox.Text,
-                    ISBN = ISBNTextBox.Text,
-                    Prezzo = prezzo
-                };
+                    Logger.LogInfo(NomeClasse, nomeMetodo, "Errore: lo sconto inserito non è valido.");
+                    MessageBox.Show("Sconto non valido. Inserire un numero.");
+                    return;
+                }
+
+                sconto = sconto / 100; 
+
+                string tipoSelezionato = (TipoLibroComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+
+                Libro nuovoLibro;
+
+                if (tipoSelezionato == "Ebook")
+                {
+                    nuovoLibro = new Ebook
+                    {
+                        Titolo = TitoloTextBox.Text,
+                        Autore = AutoreTextBox.Text,
+                        CasaEditrice = CasaEditriceTextBox.Text,
+                        ISBN = ISBNTextBox.Text,
+                        Prezzo = prezzo,
+                        Sconto = sconto,
+                        Formato = FormatoEbookTextBox.Text,
+                        DimensioneFile = double.TryParse(DimensioneEbookTextBox.Text, out double dimensione) ? dimensione : 0
+                    };
+                }
+                else if (tipoSelezionato == "Audiobook")
+                {
+                    nuovoLibro = new Audiobook
+                    {
+                        Titolo = TitoloTextBox.Text,
+                        Autore = AutoreTextBox.Text,
+                        CasaEditrice = CasaEditriceTextBox.Text,
+                        ISBN = ISBNTextBox.Text,
+                        Prezzo = prezzo,
+                        Sconto = sconto,
+                        DurataOre = double.TryParse(DurataAudiobookTextBox.Text, out double durata) ? durata : 0,
+                        Narratore = NarratoreAudiobookTextBox.Text
+                    };
+                }
+                else
+                {
+                    nuovoLibro = new Libro
+                    {
+                        Titolo = TitoloTextBox.Text,
+                        Autore = AutoreTextBox.Text,
+                        CasaEditrice = CasaEditriceTextBox.Text,
+                        ISBN = ISBNTextBox.Text,
+                        Prezzo = prezzo,
+                        Sconto = sconto
+                    };
+                }
 
                 _libroService.AggiungiLibro(nuovoLibro);
 
@@ -109,6 +153,7 @@ namespace GestionaleLibreria.WPF
                 MessageBox.Show("Errore: " + ex.Message);
             }
         }
+
 
         private void AnnullaAggiungi_Click(object sender, RoutedEventArgs e)
         {
