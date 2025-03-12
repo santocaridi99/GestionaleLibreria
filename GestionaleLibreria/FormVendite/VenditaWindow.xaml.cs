@@ -59,6 +59,15 @@ namespace GestionaleLibreria.WPF
                 }
 
                 var esistente = _carrello.FirstOrDefault(c => c.LibroId == libro.Id);
+                int quantitaNelCarrello = esistente?.Quantita ?? 0;
+
+                // Verifica che la quantità totale nel carrello non superi la disponibilità
+                if (quantitaNelCarrello >= libro.QuantitaMagazzino)
+                {
+                    MessageBox.Show($"Hai già selezionato tutte le copie disponibili di \"{libro.Titolo}\".", "Attenzione", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 if (esistente != null)
                 {
                     esistente.Quantita++;
@@ -77,6 +86,7 @@ namespace GestionaleLibreria.WPF
                 AggiornaCarrello();
             }
         }
+
 
         private void RimuoviDalCarrello_Click(object sender, RoutedEventArgs e)
         {
