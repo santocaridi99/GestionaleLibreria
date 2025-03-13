@@ -33,7 +33,7 @@
                 <Button Content="📄 Genera Report" Width="160" Click="GeneraReport_Click"
                         Background="#4CAF50" Foreground="White" FontSize="14" FontWeight="Bold"/>
 
-                <Button Content="❌ Annulla" Width="100" Click="Annulla_Click"
+                <Button Content="❌ Annulla" Width="150" Click="Annulla_Click"
                         Background="#F44336" Foreground="White" FontSize="14" FontWeight="Bold" Margin="10,0,0,0"/>
             </StackPanel>
 

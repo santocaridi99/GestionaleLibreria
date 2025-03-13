@@ -1,0 +1,38 @@
+﻿<Window x:Class="GestionaleLibreria.WPF.FormReportistica.ReportMagazzinoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Report Magazzino" Height="600" Width="850" Background="#F9F9F9"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanResize">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="20">
+            <StackPanel Orientation="Vertical">
+
+                <TextBlock Text="📦 Report Magazzino" FontSize="26" FontWeight="Bold" 
+                           HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#333333"/>
+
+                <!-- Contenitore per la tabella con scrolling -->
+                <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="5" Padding="5">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="400">
+                        <DataGrid x:Name="MagazzinoDataGrid" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Titolo" Binding="{Binding Libro.Titolo}" Width="*"/>
+                                <DataGridTextColumn Header="Autore" Binding="{Binding Libro.Autore}" Width="200"/>
+                                <DataGridTextColumn Header="Quantità" Binding="{Binding Quantita}" Width="120"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- Bottoni sempre visibili -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                    <Button Content="📄 Esporta PDF" Width="200" Height="45" Click="EsportaPDF_Click"
+                            Background="#4CAF50" Foreground="White" FontSize="16" FontWeight="Bold" Margin="10"/>
+                    <Button Content="❌ Chiudi" Width="150" Height="45" Click="Chiudi_Click"
+                            Background="#F44336" Foreground="White" FontSize="16" FontWeight="Bold" Margin="10"/>
+                </StackPanel>
+
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Window>

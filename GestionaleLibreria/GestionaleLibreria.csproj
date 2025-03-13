@@ -126,8 +126,17 @@
     <Compile Include="FormMagazzino\RimuoviStockWindow.xaml.cs">
       <DependentUpon>RimuoviStockWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FormReportistica\ReportClientiWindow.xaml.cs">
+      <DependentUpon>ReportClientiWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FormReportistica\ReportMagazzinoWindow.xaml.cs">
+      <DependentUpon>ReportMagazzinoWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FormReportistica\ReportVenditeWindow.xaml.cs">
       <DependentUpon>ReportVenditeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FormReportistica\SelezioneReportWindow.xaml.cs">
+      <DependentUpon>SelezioneReportWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="FormVendite\SelezionaClienteWindow.xaml.cs">
       <DependentUpon>SelezionaClienteWindow.xaml</DependentUpon>
@@ -175,7 +184,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="FormReportistica\ReportClientiWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FormReportistica\ReportMagazzinoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FormReportistica\ReportVenditeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FormReportistica\SelezioneReportWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

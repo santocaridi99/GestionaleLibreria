@@ -21,6 +21,15 @@ namespace GestionaleLibreria.Business.Services
             return _magazzinoRepository.GetAllLibriInMagazzino();
         }
 
+
+        public List<LibroMagazzino> GetReportMagazzino()
+        {
+            return _magazzinoRepository.GetAllLibriInMagazzino()
+                .OrderByDescending(lm => lm.Quantita)
+                .ToList();
+        }
+
+
         public void AggiungiScorte(int libroId, int quantita)
         {
             var libroMagazzino = _magazzinoRepository.GetLibroMagazzinoById(libroId);

@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure.Annotations;
 using System.Linq;
 using GestionaleLibreria.Data.Models;
 
+
 namespace GestionaleLibreria.Data
 {
     public class LibraryContext : DbContext

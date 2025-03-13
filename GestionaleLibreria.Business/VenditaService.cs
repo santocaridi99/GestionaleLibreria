@@ -114,6 +114,29 @@ namespace GestionaleLibreria.Business
             return _venditaRepository.GetAllVendite();
         }
 
+        public int GetNumeroAcquistiCliente(int clienteId)
+        {
+            int numeroAcquisti = GetVendite()
+                .Where(v => v.ClienteId == clienteId)
+                .Count();
+
+            Console.WriteLine($"📊 Cliente ID {clienteId} - Numero Acquisti: {numeroAcquisti}");
+            return numeroAcquisti;
+        }
+
+
+        public decimal GetTotaleSpesoCliente(int clienteId)
+        {
+            decimal totaleSpeso = GetVendite()
+                .Where(v => v.ClienteId == clienteId)
+                .Sum(v => v.Totale);
+
+            Console.WriteLine($"💰 Cliente ID {clienteId} - Totale Speso: {totaleSpeso}");
+            return totaleSpeso;
+        }
+
+
+
         public List<Vendita> GetVenditePerPeriodo(DateTime dataInizio, DateTime dataFine)
         {
             string nomeMetodo = nameof(GetVenditePerPeriodo);

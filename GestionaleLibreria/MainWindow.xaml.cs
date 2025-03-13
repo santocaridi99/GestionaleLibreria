@@ -64,9 +64,13 @@ namespace GestionaleLibreria.WPF
             var libroRepository = new LibroRepository();
             var magazzinoRepository = new MagazzinoRepository(context);
             var venditaRepository = new VenditaRepository();
+
             var venditaService = new VenditaService(venditaRepository, magazzinoRepository, libroRepository);
-            new ReportVenditeWindow(venditaService).ShowDialog();
+            var magazzinoService = new MagazzinoService(magazzinoRepository, libroRepository);
+
+            new SelezioneReportWindow(venditaService, magazzinoService).ShowDialog();
         }
+
 
         private void GestioneMagazzino_Click(object sender, RoutedEventArgs e)
         {

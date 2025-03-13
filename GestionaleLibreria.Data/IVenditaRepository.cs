@@ -5,6 +5,7 @@ using System.Linq;
 using GestionaleLibreria.Data.Logging;
 using GestionaleLibreria.Data.Models;
 
+
 namespace GestionaleLibreria.Data
 {
     public interface IVenditaRepository
@@ -28,7 +29,13 @@ namespace GestionaleLibreria.Data
 
         public List<Vendita> GetAllVendite()
         {
-            return _vendite;
+            using (var context = new LibraryContext())
+            {
+                return context.Vendite
+                    .Include(v => v.Cliente)
+                   .Include("DettagliVendita.Libro")
+                    .ToList();
+            }
         }
 
         public void AddVendita(Vendita vendita)
