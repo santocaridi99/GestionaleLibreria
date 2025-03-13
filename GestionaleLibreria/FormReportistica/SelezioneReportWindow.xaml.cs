@@ -26,9 +26,14 @@ namespace GestionaleLibreria.WPF.FormReportistica
         }
         private void GeneraGrafici()
         {
-            GraficoVendite.Source = GeneraGraficoVendite();
-            GraficoLibriVenduti.Source = GeneraGraficoLibri();
-            GraficoClientiAttivi.Source = GeneraGraficoClienti();
+            GraficoVendite.Source = DisegnaGrafico(GetDatiVendite(), "Vendite Mensili");
+           
+
+            GraficoLibriVenduti.Source = DisegnaGrafico(GetDatiLibri(), "Libri più venduti");
+            GraficoLibriVendutiTorta.Source = DisegnaGraficoTorta(GetDatiLibri(), "Distribuzione Libri");
+
+            GraficoClientiAttivi.Source = DisegnaGrafico(GetDatiClienti(), "Clienti più attivi");
+           
         }
 
         private void ApriReportMagazzino_Click(object sender, RoutedEventArgs e)
@@ -55,56 +60,50 @@ namespace GestionaleLibreria.WPF.FormReportistica
             GeneraGrafici();
         }
 
-        private BitmapSource GeneraGraficoVendite()
+
+        private List<DatiGrafico> GetDatiVendite()
         {
             var vendite = _venditaService.GetVenditePerPeriodo(DateTime.Now.AddMonths(-6), DateTime.Now);
-            var datiGrafico = vendite
-                .GroupBy(v => v.DataVendita.Month)
-                .Select(g => new DatiGrafico { Mese = g.Key, Totale = (decimal)(double)g.Sum(v => v.Totale) })
-                .OrderBy(g => g.Mese)
+            return vendite.GroupBy(v => v.DataVendita.Month)
+                .Select(g => new DatiGrafico { Nome = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(g.Key), Totale = g.Sum(v => v.Totale) })
                 .ToList();
-
-            return DisegnaGrafico(datiGrafico, "Vendite");
         }
 
-        private BitmapSource GeneraGraficoLibri()
+        private List<DatiGrafico> GetDatiLibri()
         {
-            var libriVenduti = _venditaService.GetVendite()
+            return _venditaService.GetVendite()
                 .SelectMany(v => v.DettagliVendita)
                 .GroupBy(d => d.Libro.Titolo)
-                .Select(g => new DatiGrafico { Mese = 0, Totale = (decimal)g.Sum(d => (double)d.Quantita), Nome = g.Key })
+                .Select(g => new DatiGrafico { Nome = g.Key, Totale = g.Sum(d => d.Quantita) })
                 .OrderByDescending(g => g.Totale)
                 .Take(5)
                 .ToList();
-
-            return DisegnaGrafico(libriVenduti, "Libri Venduti");
         }
 
-        private BitmapSource GeneraGraficoClienti()
+        private List<DatiGrafico> GetDatiClienti()
         {
-            var clienti = _venditaService.GetVendite()
+            return _venditaService.GetVendite()
                 .Where(v => v.Cliente != null)
                 .GroupBy(v => v.Cliente.Nome + " " + v.Cliente.Cognome)
-                .Select(g => new DatiGrafico { Mese = 0, Totale = g.Count(), Nome = g.Key })
+                .Select(g => new DatiGrafico { Nome = g.Key, Totale = g.Count() })
                 .OrderByDescending(g => g.Totale)
                 .Take(5)
                 .ToList();
-
-            return DisegnaGrafico(clienti, "Clienti Attivi");
         }
+
+
 
         private BitmapSource DisegnaGrafico(List<DatiGrafico> dati, string titolo)
         {
-            int width = 400, height = 250;
+            int width = 500, height = 300;
             DrawingVisual dv = new DrawingVisual();
 
-            // Se dati è vuoto, ritorna un'immagine vuota con messaggio
-            if (dati == null || dati.Count == 0)
+            using (DrawingContext dc = dv.RenderOpen())
             {
-                using (DrawingContext dc = dv.RenderOpen())
-                {
-                    dc.DrawRectangle(Brushes.White, new Pen(Brushes.Black, 2), new Rect(0, 0, width, height));
+                dc.DrawRectangle(Brushes.White, new Pen(Brushes.Black, 2), new Rect(0, 0, width, height));
 
+                if (dati == null || dati.Count == 0)
+                {
                     FormattedText messaggio = new FormattedText(
                         "Nessun dato disponibile",
                         CultureInfo.CurrentCulture,
@@ -115,20 +114,10 @@ namespace GestionaleLibreria.WPF.FormReportistica
                     );
 
                     dc.DrawText(messaggio, new Point(width / 4, height / 2));
+                    return RenderVisual(dv, width, height);
                 }
 
-                RenderTargetBitmap bitmapVuoto = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
-                bitmapVuoto.Render(dv);
-                return bitmapVuoto;
-            }
-
-            using (DrawingContext dc = dv.RenderOpen())
-            {
-                dc.DrawRectangle(Brushes.White, new Pen(Brushes.Black, 2), new Rect(0, 0, width, height));
-
                 double maxVal = (double)dati.Max(d => d.Totale);
-                if (maxVal == 0) maxVal = 1; // Evita divisione per zero
-
                 double scaleFactor = (height - 50) / maxVal;
                 double barWidth = width / (dati.Count + 1);
 
@@ -137,11 +126,10 @@ namespace GestionaleLibreria.WPF.FormReportistica
                     double x = (i + 1) * barWidth;
                     double barHeight = (double)dati[i].Totale * scaleFactor;
 
-                    dc.DrawRectangle(Brushes.Blue, null, new Rect(x, height - barHeight, barWidth - 10, barHeight));
+                    dc.DrawRectangle(Brushes.DodgerBlue, null, new Rect(x, height - barHeight, barWidth - 15, barHeight));
 
-                    // Aggiungi etichetta sotto ogni barra
-                    FormattedText mese = new FormattedText(
-                        dati[i].Nome ?? CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(dati[i].Mese),
+                    FormattedText etichetta = new FormattedText(
+                        dati[i].Nome,
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         new Typeface("Arial"),
@@ -149,16 +137,82 @@ namespace GestionaleLibreria.WPF.FormReportistica
                         Brushes.Black
                     );
 
-                    dc.DrawText(mese, new Point(x, height - 20));
+                    dc.DrawText(etichetta, new Point(x, height - 20));
                 }
             }
 
+            return RenderVisual(dv, width, height);
+        }
+
+        private BitmapSource DisegnaGraficoTorta(List<DatiGrafico> dati, string titolo)
+        {
+            int width = 400, height = 300;
+            DrawingVisual dv = new DrawingVisual();
+
+            using (DrawingContext dc = dv.RenderOpen())
+            {
+                dc.DrawRectangle(Brushes.White, new Pen(Brushes.Black, 2), new Rect(0, 0, width, height));
+
+                if (dati == null || dati.Count == 0)
+                {
+                    FormattedText messaggio = new FormattedText(
+                        "Nessun dato disponibile",
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        new Typeface("Arial"),
+                        16,
+                        Brushes.Red
+                    );
+
+                    dc.DrawText(messaggio, new Point(width / 4, height / 2));
+                    return RenderVisual(dv, width, height);
+                }
+
+                double totale = dati.Sum(d => (double)d.Totale);
+                double angoloIniziale = 0;
+                Brush[] colori = { Brushes.Blue, Brushes.Red, Brushes.Green, Brushes.Purple, Brushes.Orange };
+                int coloriIndex = 0;
+
+                foreach (var item in dati)
+                {
+                    double percentuale = (double)item.Totale / totale;
+                    double angoloFinale = angoloIniziale + (percentuale * 360);
+                    Brush colore = colori[coloriIndex % colori.Length];
+                    coloriIndex++;
+
+                    // Disegno il settore della torta
+                    dc.DrawGeometry(colore, new Pen(Brushes.Black, 1), CreatePieSliceGeometry(width / 2, height / 2, 100, angoloIniziale, angoloFinale));
+
+                    angoloIniziale = angoloFinale;
+                }
+            }
+
+            return RenderVisual(dv, width, height);
+        }
+
+        private BitmapSource RenderVisual(DrawingVisual dv, int width, int height)
+        {
             RenderTargetBitmap bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
             bitmap.Render(dv);
             return bitmap;
         }
 
-    }
+        private Geometry CreatePieSliceGeometry(double centerX, double centerY, double radius, double startAngle, double endAngle)
+        {
+            StreamGeometry geometry = new StreamGeometry();
+            using (StreamGeometryContext ctx = geometry.Open())
+            {
+                ctx.BeginFigure(new Point(centerX, centerY), true, true);
+                ctx.LineTo(new Point(centerX + radius * Math.Cos(startAngle * Math.PI / 180), centerY - radius * Math.Sin(startAngle * Math.PI / 180)), true, false);
+                ctx.ArcTo(new Point(centerX + radius * Math.Cos(endAngle * Math.PI / 180), centerY - radius * Math.Sin(endAngle * Math.PI / 180)), new Size(radius, radius), 0, endAngle - startAngle > 180, SweepDirection.Counterclockwise, true, false);
+                ctx.LineTo(new Point(centerX, centerY), true, false);
+            }
+            return geometry;
+        }
+    
+
+
+}
 
 
 
