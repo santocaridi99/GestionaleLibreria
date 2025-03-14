@@ -126,11 +126,6 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\ClienteRepositoryTests.cs" />
-    <Compile Include="Repository\LibroRepositoryTests.cs" />
-    <Compile Include="Repository\MagazzinoRepositoryTests.cs" />
-    <Compile Include="Repository\VenditaRepositoryTests.cs" />
-    <Compile Include="Services\ClienteRepositoryTests.cs" />
     <Compile Include="Services\LibroServiceTests.cs" />
     <Compile Include="Services\MagazzinoServiceTests.cs" />
     <Compile Include="Services\VenditeServiceTests.cs" />

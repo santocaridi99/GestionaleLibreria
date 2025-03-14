@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure.Annotations;
 using System.Linq;
@@ -88,5 +89,15 @@ namespace GestionaleLibreria.Data
             }
         }
     }
+
+    public class TestLibraryContext : LibraryContext
+    {
+        public TestLibraryContext(DbConnection connection)
+            : base() // costruttore di DbContext
+        {
+            // Eventuali inizializzazioni
+        }
+    }
+
 }
 
