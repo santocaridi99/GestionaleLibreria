@@ -26,6 +26,11 @@ namespace GestionaleLibreria.Data
             _context = new LibraryContext();
         }
 
+        public LibroRepository(LibraryContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
         public List<Libro> GetAllLibri()
         {
             string nomeMetodo = nameof(GetAllLibri);

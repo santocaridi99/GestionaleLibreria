@@ -120,7 +120,7 @@ namespace GestionaleLibreria.Business
                 .Where(v => v.ClienteId == clienteId)
                 .Count();
 
-            Console.WriteLine($"📊 Cliente ID {clienteId} - Numero Acquisti: {numeroAcquisti}");
+            
             return numeroAcquisti;
         }
 
@@ -131,7 +131,7 @@ namespace GestionaleLibreria.Business
                 .Where(v => v.ClienteId == clienteId)
                 .Sum(v => v.Totale);
 
-            Console.WriteLine($"💰 Cliente ID {clienteId} - Totale Speso: {totaleSpeso}");
+            
             return totaleSpeso;
         }
 

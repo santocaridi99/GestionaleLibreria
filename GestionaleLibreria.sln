@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestionaleLibreria", "Gesti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestionaleLibreria.Data", "GestionaleLibreria.Data\GestionaleLibreria.Data.csproj", "{5B2954BE-D7C9-43C3-95E3-7F638E764236}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestionaleLibreria.Tests", "GestionaleLibreria.Tests\GestionaleLibreria.Tests.csproj", "{3760F657-B08F-4F7F-88B1-11F46BD0FD25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestionaleLibreria.Tests", "GestionaleLibreria.Tests\GestionaleLibreria.Tests.csproj", "{B1A603AB-354B-41C9-8172-274C38B8C4BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{5B2954BE-D7C9-43C3-95E3-7F638E764236}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B2954BE-D7C9-43C3-95E3-7F638E764236}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B2954BE-D7C9-43C3-95E3-7F638E764236}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3760F657-B08F-4F7F-88B1-11F46BD0FD25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3760F657-B08F-4F7F-88B1-11F46BD0FD25}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3760F657-B08F-4F7F-88B1-11F46BD0FD25}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3760F657-B08F-4F7F-88B1-11F46BD0FD25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1A603AB-354B-41C9-8172-274C38B8C4BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1A603AB-354B-41C9-8172-274C38B8C4BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1A603AB-354B-41C9-8172-274C38B8C4BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1A603AB-354B-41C9-8172-274C38B8C4BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
