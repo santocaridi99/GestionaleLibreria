@@ -55,13 +55,13 @@
            Margin="10,0,0,5"/>
                 <DataGrid x:Name="CarrelloDataGrid" AutoGenerateColumns="False" Height="150" Margin="0,10">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Titolo" Binding="{Binding Titolo}" Width="*"/>
-                        <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo}" Width="80"/>
-                        <DataGridTextColumn Header="Sconto" Binding="{Binding Sconto}" Width="80"/>
-                        <DataGridTextColumn Header="Quantità" Binding="{Binding Quantita}" Width="80"/>
-                        <DataGridTextColumn Header="Prezzo Or." Binding="{Binding PrezzoOriginale, StringFormat=\{0:C\}}" Width="100"/>
-                        <DataGridTextColumn Header="Prezzo Scontato" Binding="{Binding PrezzoScontato, StringFormat=\{0:C\}}" Width="100"/>
-                        <DataGridTextColumn Header="Totale" Binding="{Binding Totale, StringFormat=\{0:C\}}" Width="100"/>
+                        <DataGridTextColumn Header="Titolo" Binding="{Binding Titolo,Mode=OneWay}" Width="*"/>
+                        <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo,Mode=OneWay}" Width="80"/>
+                        <DataGridTextColumn Header="Sconto" Binding="{Binding Sconto,Mode=OneWay}" Width="80"/>
+                        <DataGridTextColumn Header="Quantità" Binding="{Binding Quantita,Mode=OneWay}" Width="80"/>
+                        <DataGridTextColumn Header="Prezzo Or." Binding="{Binding PrezzoOriginale, Mode=OneWay,StringFormat=\{0:C\}}" Width="100"/>
+                        <DataGridTextColumn Header="Prezzo Scontato" Binding="{Binding PrezzoScontato,Mode=OneWay, StringFormat=\{0:C\}}" Width="100"/>
+                        <DataGridTextColumn Header="Totale" Binding="{Binding Totale,Mode=OneWay, StringFormat=\{0:C\}}" Width="100"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
