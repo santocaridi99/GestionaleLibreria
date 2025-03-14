@@ -89,7 +89,7 @@ namespace GestionaleLibreria.Data
                     existing.ISBN = libro.ISBN;
                     existing.Prezzo = libro.Prezzo;
                     existing.Sconto = libro.Sconto;
-
+                    existing.CasaEditrice = libro.CasaEditrice;
                     //  campi specifici per Ebook**
                     if (libro is Ebook ebook && existing is Ebook existingEbook)
                     {

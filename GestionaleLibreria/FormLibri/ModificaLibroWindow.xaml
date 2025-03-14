@@ -39,6 +39,12 @@
                         <TextBox x:Name="ScontoTextBox" Width="180"/>
                     </StackPanel>
 
+                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                        <Label Content="🏠 Casa Editrice:" Width="100"/>
+                        <TextBox x:Name="CasaEditriceTextBox" Width="180"/>
+                    </StackPanel>
+
+
                     <!-- Per Ebook -->
                     <StackPanel x:Name="FormatoEbookPanel" Orientation="Horizontal" Margin="0,5" Visibility="Collapsed">
                         <Label Content="📄 Formato:" Width="100"/>

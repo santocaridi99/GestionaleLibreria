@@ -34,7 +34,7 @@ namespace GestionaleLibreria.WPF
                 ISBNTextBox.Text = _libro.ISBN;
                 PrezzoTextBox.Text = _libro.Prezzo.ToString();
                 ScontoTextBox.Text = (_libro.Sconto * 100).ToString(); // Convertiamo lo sconto in percentuale (es. 0.10 -> 10)
-
+                CasaEditriceTextBox.Text = _libro.CasaEditrice;
                 // **Gestione interfaccia per Ebook o Audiobook**
                 if (_libro is Ebook ebook)
                 {
@@ -87,7 +87,7 @@ namespace GestionaleLibreria.WPF
                 _libro.Autore = AutoreTextBox.Text;
                 _libro.ISBN = ISBNTextBox.Text;
                 _libro.Prezzo = decimal.Parse(PrezzoTextBox.Text);
-
+                _libro.CasaEditrice = CasaEditriceTextBox.Text;
                 // **Convertiamo lo sconto in percentuale**
                 if (double.TryParse(ScontoTextBox.Text, out double sconto))
                 {
