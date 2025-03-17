@@ -3,6 +3,7 @@ using GestionaleLibreria.Data;
 using GestionaleLibreria.Data.Logging;
 using GestionaleLibreria.Data.Models;
 using System;
+using System.Linq;
 using System.Windows;
 
 namespace GestionaleLibreria.WPF
@@ -28,6 +29,7 @@ namespace GestionaleLibreria.WPF
                 _libroService = new LibroService(libroRepository, magazzinoRepository);
                 _libro = libro;
 
+                CaricaCategorie();
                 // **Popoliamo i campi con i dati del libro**
                 TitoloTextBox.Text = _libro.Titolo;
                 AutoreTextBox.Text = _libro.Autore;
@@ -35,6 +37,10 @@ namespace GestionaleLibreria.WPF
                 PrezzoTextBox.Text = _libro.Prezzo.ToString();
                 ScontoTextBox.Text = (_libro.Sconto * 100).ToString(); // Convertiamo lo sconto in percentuale (es. 0.10 -> 10)
                 CasaEditriceTextBox.Text = _libro.CasaEditrice;
+                if (_libro.CategoriaId != null)
+                {
+                    CategoriaComboBox.SelectedValue = _libro.CategoriaId;
+                }
                 // **Gestione interfaccia per Ebook o Audiobook**
                 if (_libro is Ebook ebook)
                 {
@@ -82,38 +88,25 @@ namespace GestionaleLibreria.WPF
             {
                 Logger.LogInfo(NomeClasse, nomeMetodo, $"Modifica libro avviata per ISBN: {_libro.ISBN}");
 
-                // **Aggiorniamo i campi comuni**
+                // Aggiorniamo i campi comuni
                 _libro.Titolo = TitoloTextBox.Text;
                 _libro.Autore = AutoreTextBox.Text;
                 _libro.ISBN = ISBNTextBox.Text;
                 _libro.Prezzo = decimal.Parse(PrezzoTextBox.Text);
                 _libro.CasaEditrice = CasaEditriceTextBox.Text;
-                // **Convertiamo lo sconto in percentuale**
+
                 if (double.TryParse(ScontoTextBox.Text, out double sconto))
                 {
-                    _libro.Sconto = sconto / 100; // Convertiamo da 10 (percentuale) a 0.10
+                    _libro.Sconto = sconto / 100;
                 }
 
-                // **Gestione modifiche per Ebook**
-                if (_libro is Ebook ebook)
+                // Assegna la categoria selezionata
+                if (CategoriaComboBox.SelectedValue != null)
                 {
-                    ebook.Formato = FormatoEbookTextBox.Text;
-                    if (double.TryParse(DimensioneEbookTextBox.Text, out double dimensione))
-                    {
-                        ebook.DimensioneFile = dimensione;
-                    }
-                }
-                // **Gestione modifiche per Audiobook**
-                else if (_libro is Audiobook audiobook)
-                {
-                    if (double.TryParse(DurataTextBox.Text, out double durata))
-                    {
-                        audiobook.DurataOre = durata;
-                    }
-                    audiobook.Narratore = NarratoreTextBox.Text;
+                    _libro.CategoriaId = (int)CategoriaComboBox.SelectedValue;
                 }
 
-                // **Salviamo le modifiche**
+                // Salviamo le modifiche
                 _libroService.ModificaLibro(_libro);
                 Logger.LogInfo(NomeClasse, nomeMetodo, $"Libro modificato con successo: {_libro.Titolo} (ISBN: {_libro.ISBN})");
 
@@ -133,5 +126,15 @@ namespace GestionaleLibreria.WPF
             Logger.LogInfo(NomeClasse, nomeMetodo, "Modifica annullata.");
             Close();
         }
+
+        private void CaricaCategorie()
+        {
+            using (var context = new LibraryContext())
+            {
+                var categorie = context.Categorie.ToList();
+                CategoriaComboBox.ItemsSource = categorie;
+            }
+        }
+
     }
 }

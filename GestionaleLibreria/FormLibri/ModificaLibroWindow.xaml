@@ -44,6 +44,12 @@
                         <TextBox x:Name="CasaEditriceTextBox" Width="180"/>
                     </StackPanel>
 
+                    <StackPanel Orientation="Vertical" Margin="0,5">
+                        <Label Content="Categoria" FontWeight="Bold"/>
+                        <ComboBox x:Name="CategoriaComboBox" Width="280" Height="30" DisplayMemberPath="Nome" SelectedValuePath="Id"/>
+                    </StackPanel>
+
+
 
                     <!-- Per Ebook -->
                     <StackPanel x:Name="FormatoEbookPanel" Orientation="Horizontal" Margin="0,5" Visibility="Collapsed">

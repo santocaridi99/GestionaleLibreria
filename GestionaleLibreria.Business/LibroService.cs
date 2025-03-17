@@ -21,7 +21,14 @@ namespace GestionaleLibreria.Business.Services
 
         public List<Libro> GetAllLibri()
         {
-            return _libroRepository.GetAllLibri();
+            //return _libroRepository.GetAllLibri();
+            using (var context = new LibraryContext())
+            {
+                return context.Libri
+                    .Include("Categoria")
+                    .Include("LibriMagazzino")
+                    .ToList();
+            }
         }
 
         public void AggiungiLibro(Libro libro)
@@ -94,7 +101,9 @@ namespace GestionaleLibreria.Business.Services
                     libro.Titolo.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
                     libro.Autore.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
                     libro.CasaEditrice.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    libro.ISBN.Equals(filtro, StringComparison.OrdinalIgnoreCase) 
+                    libro.ISBN.Equals(filtro, StringComparison.OrdinalIgnoreCase) ||
+                    (libro.Categoria != null && libro.Categoria.Nome.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0) // Filtro per categoria
+            
                 ).ToList();
 
                 Logger.LogInfo(nomeClasse, nomeMetodo, $"Trovati {libriFiltrati.Count} libri corrispondenti al filtro.");

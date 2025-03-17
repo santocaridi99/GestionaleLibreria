@@ -4,6 +4,7 @@ using GestionaleLibreria.Data;
 using GestionaleLibreria.Data.Logging;
 using GestionaleLibreria.Data.Models;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -30,6 +31,8 @@ namespace GestionaleLibreria.WPF
                 MagazzinoService magazzinoService = new MagazzinoService(magazzinoRepository, libroRepository);
                 _libroService = new LibroService(libroRepository, magazzinoRepository);
 
+                CaricaCategorie();
+
                 Logger.LogInfo(NomeClasse, nomeMetodo, "Inizializzazione completata.");
             }
             catch (Exception ex)
@@ -38,6 +41,18 @@ namespace GestionaleLibreria.WPF
                 throw;
             }
         }
+
+        private void CaricaCategorie()
+        {
+            using (var context = new LibraryContext())
+            {
+                var categorie = context.Categorie.OrderBy(c => c.Nome).ToList();
+                CategoriaComboBox.ItemsSource = categorie;
+                CategoriaComboBox.DisplayMemberPath = "Nome";  // Mostra il nome
+                CategoriaComboBox.SelectedValuePath = "Id";   // Seleziona l'ID
+            }
+        }
+
 
         private void TipoLibroComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -93,9 +108,16 @@ namespace GestionaleLibreria.WPF
                     return;
                 }
 
-                sconto = sconto / 100; 
+                sconto = sconto / 100;  // Convertiamo lo sconto in percentuale
 
                 string tipoSelezionato = (TipoLibroComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+                int categoriaId = (int)CategoriaComboBox.SelectedValue;
+
+                if (categoriaId == null)
+                {
+                    MessageBox.Show("Seleziona una categoria.");
+                    return;
+                }
 
                 Libro nuovoLibro;
 
@@ -110,7 +132,8 @@ namespace GestionaleLibreria.WPF
                         Prezzo = prezzo,
                         Sconto = sconto,
                         Formato = FormatoEbookTextBox.Text,
-                        DimensioneFile = double.TryParse(DimensioneEbookTextBox.Text, out double dimensione) ? dimensione : 0
+                        DimensioneFile = double.TryParse(DimensioneEbookTextBox.Text, out double dimensione) ? dimensione : 0,
+                        CategoriaId = categoriaId
                     };
                 }
                 else if (tipoSelezionato == "Audiobook")
@@ -124,7 +147,8 @@ namespace GestionaleLibreria.WPF
                         Prezzo = prezzo,
                         Sconto = sconto,
                         DurataOre = double.TryParse(DurataAudiobookTextBox.Text, out double durata) ? durata : 0,
-                        Narratore = NarratoreAudiobookTextBox.Text
+                        Narratore = NarratoreAudiobookTextBox.Text,
+                        CategoriaId = categoriaId
                     };
                 }
                 else
@@ -136,7 +160,8 @@ namespace GestionaleLibreria.WPF
                         CasaEditrice = CasaEditriceTextBox.Text,
                         ISBN = ISBNTextBox.Text,
                         Prezzo = prezzo,
-                        Sconto = sconto
+                        Sconto = sconto,
+                        CategoriaId = categoriaId
                     };
                 }
 
@@ -153,6 +178,7 @@ namespace GestionaleLibreria.WPF
                 MessageBox.Show("Errore: " + ex.Message);
             }
         }
+
 
 
         private void AnnullaAggiungi_Click(object sender, RoutedEventArgs e)

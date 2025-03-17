@@ -87,7 +87,8 @@ namespace GestionaleLibreria.WPF
                     (criterio == "Titolo" && libro.Titolo.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0) ||
                     (criterio == "Autore" && libro.Autore.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0) ||
                     (criterio == "Casa Editrice" && libro.CasaEditrice.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0) ||
-                    (criterio == "ISBN" && libro.ISBN == filtro) // ISBN deve essere univoco
+                    (criterio == "ISBN" && libro.ISBN == filtro) ||
+                    (criterio == "Categoria" && libro.Categoria != null && libro.Categoria.Nome.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0)
                 ).ToList();
 
                 AggiornaDataGrid(libriFiltrati);

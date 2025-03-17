@@ -14,6 +14,7 @@ namespace GestionaleLibreria.Data
         void UpdateLibro(Libro libro);
         void DeleteLibro(int id);
         Libro GetLibroById(int id);
+        List<Libro> GetLibriByCategoria(int categoriaId);
     }
 
     public class LibroRepository : ILibroRepository
@@ -37,7 +38,9 @@ namespace GestionaleLibreria.Data
             try
             {
                 Logger.LogInfo(NomeClasse, nomeMetodo, "Recupero di tutti i libri dal database.");
-                var libri = _context.Libri.ToList();
+
+                var libri = _context.Libri.Include("Categoria").ToList();
+
                 Logger.LogInfo(NomeClasse, nomeMetodo, $"Recuperati {libri.Count} libri.");
                 return libri;
             }
@@ -47,6 +50,7 @@ namespace GestionaleLibreria.Data
                 throw;
             }
         }
+
 
         public void AddLibro(Libro libro)
         {
@@ -62,6 +66,14 @@ namespace GestionaleLibreria.Data
                     throw new Exception(errore);
                 }
 
+                // Verifica se la categoria esiste
+                if (libro.CategoriaId != null && !_context.Categorie.Any(c => c.Id == libro.CategoriaId))
+                {
+                    string errore = $"La categoria con ID {libro.CategoriaId} non esiste.";
+                    Logger.LogError(NomeClasse, nomeMetodo, new Exception(errore));
+                    throw new Exception(errore);
+                }
+
                 _context.Libri.Add(libro);
                 _context.SaveChanges();
                 Logger.LogInfo(NomeClasse, nomeMetodo, $"Libro aggiunto con successo: {libro.Titolo}");
@@ -73,6 +85,7 @@ namespace GestionaleLibreria.Data
             }
         }
 
+
         public void UpdateLibro(Libro libro)
         {
             string nomeMetodo = nameof(UpdateLibro);
@@ -83,20 +96,24 @@ namespace GestionaleLibreria.Data
                 var existing = _context.Libri.FirstOrDefault(l => l.Id == libro.Id);
                 if (existing != null)
                 {
-                    // **Aggiorniamo i campi comuni**
                     existing.Titolo = libro.Titolo;
                     existing.Autore = libro.Autore;
                     existing.ISBN = libro.ISBN;
                     existing.Prezzo = libro.Prezzo;
                     existing.Sconto = libro.Sconto;
                     existing.CasaEditrice = libro.CasaEditrice;
-                    //  campi specifici per Ebook**
+
+                    // Aggiorna la categoria
+                    if (libro.CategoriaId != null && _context.Categorie.Any(c => c.Id == libro.CategoriaId))
+                    {
+                        existing.CategoriaId = libro.CategoriaId;
+                    }
+
                     if (libro is Ebook ebook && existing is Ebook existingEbook)
                     {
                         existingEbook.Formato = ebook.Formato;
                         existingEbook.DimensioneFile = ebook.DimensioneFile;
                     }
-                    // campi specifici per Audiobook**
                     else if (libro is Audiobook audiobook && existing is Audiobook existingAudiobook)
                     {
                         existingAudiobook.DurataOre = audiobook.DurataOre;
@@ -117,6 +134,7 @@ namespace GestionaleLibreria.Data
                 throw;
             }
         }
+
 
 
         public void DeleteLibro(int id)
@@ -179,5 +197,28 @@ namespace GestionaleLibreria.Data
                 throw;
             }
         }
+
+        public List<Libro> GetLibriByCategoria(int categoriaId)
+        {
+            string nomeMetodo = nameof(GetLibriByCategoria);
+            try
+            {
+                Logger.LogInfo(NomeClasse, nomeMetodo, $"Recupero libri per categoria ID: {categoriaId}");
+
+                var libri = _context.Libri
+                    .Include("Categoria")  // Assicura che la categoria sia caricata
+                    .Where(l => l.CategoriaId == categoriaId)
+                    .ToList();
+
+                Logger.LogInfo(NomeClasse, nomeMetodo, $"Trovati {libri.Count} libri per la categoria {categoriaId}.");
+                return libri;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(NomeClasse, nomeMetodo, ex);
+                throw;
+            }
+        }
+
     }
 }

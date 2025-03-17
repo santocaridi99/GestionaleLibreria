@@ -36,8 +36,15 @@ namespace GestionaleLibreria.Data.Models
         // Relazione: un libro può essere presente in uno o più record di LibroMagazzino
         public virtual ICollection<LibroMagazzino> LibriMagazzino { get; set; } = new List<LibroMagazzino>();
 
+        // Relazione con Categoria
+        [ForeignKey("Categoria")]
+        public int CategoriaId { get; set; }
+        public virtual Categoria Categoria { get; set; }
+
         // Metodo virtual per consentire l'override nelle classi derivate
         public virtual decimal CalcolaPrezzo() => Prezzo - (Prezzo * (decimal)Sconto);
+
+
     }
 
 

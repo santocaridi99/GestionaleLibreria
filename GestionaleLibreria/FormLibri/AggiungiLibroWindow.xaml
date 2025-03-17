@@ -53,6 +53,8 @@
                     <TextBox x:Name="ScontoTextBox" Width="280" Height="30" Background="White"/>
                 </StackPanel>
 
+                <Label Content="Categoria:" VerticalAlignment="Center"/>
+                <ComboBox x:Name="CategoriaComboBox" Width="200" Height="30" Margin="5"/>
 
                 <!-- Sezione Ebook -->
                 <StackPanel x:Name="EbookFields" Visibility="Collapsed">

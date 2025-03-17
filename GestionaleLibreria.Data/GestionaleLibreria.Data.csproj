@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseSeeder.cs" />
     <Compile Include="IClienteRepository.cs" />
     <Compile Include="ILibroRepository.cs" />
     <Compile Include="IMagazzinoRepository.cs" />
@@ -166,8 +167,25 @@
     <Compile Include="Migrations\202503121459154_ModificaVenditaDettagliofix.Designer.cs">
       <DependentUpon>202503121459154_ModificaVenditaDettagliofix.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202503171009207_AggiungiCategorie.cs" />
+    <Compile Include="Migrations\202503171009207_AggiungiCategorie.Designer.cs">
+      <DependentUpon>202503171009207_AggiungiCategorie.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503171017511_AggiungiCategoriedue.cs" />
+    <Compile Include="Migrations\202503171017511_AggiungiCategoriedue.Designer.cs">
+      <DependentUpon>202503171017511_AggiungiCategoriedue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503171019013_AggiungiCategorietre.cs" />
+    <Compile Include="Migrations\202503171019013_AggiungiCategorietre.Designer.cs">
+      <DependentUpon>202503171019013_AggiungiCategorietre.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503171026405_seederCategoria.cs" />
+    <Compile Include="Migrations\202503171026405_seederCategoria.Designer.cs">
+      <DependentUpon>202503171026405_seederCategoria.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Audiobook.cs" />
+    <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="LibraryContext.cs" />
     <Compile Include="Models\Ebook.cs" />
@@ -253,6 +271,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202503121459154_ModificaVenditaDettagliofix.resx">
       <DependentUpon>202503121459154_ModificaVenditaDettagliofix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503171009207_AggiungiCategorie.resx">
+      <DependentUpon>202503171009207_AggiungiCategorie.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503171017511_AggiungiCategoriedue.resx">
+      <DependentUpon>202503171017511_AggiungiCategoriedue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503171019013_AggiungiCategorietre.resx">
+      <DependentUpon>202503171019013_AggiungiCategorietre.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503171026405_seederCategoria.resx">
+      <DependentUpon>202503171026405_seederCategoria.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

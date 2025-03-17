@@ -29,6 +29,7 @@
                     <ComboBoxItem Content="Autore"/>
                     <ComboBoxItem Content="ISBN"/>
                     <ComboBoxItem Content="Casa Editrice"/>
+                    <ComboBoxItem Content="Categoria"/>
                 </ComboBox>
                 <TextBox x:Name="FiltroTextBox" Width="250" Height="30" Margin="5"/>
                 <Button Content="Cerca" Width="100" Height="30" Click="FiltraLibri_Click"
@@ -47,6 +48,7 @@
                     <DataGridTextColumn Header="Autore" Binding="{Binding Autore}" Width="*"/>
                     <DataGridTextColumn Header="ISBN" Binding="{Binding ISBN}" Width="*"/>
                     <DataGridTextColumn Header="Casa Editrice" Binding="{Binding CasaEditrice}" Width="*"/>
+                    <DataGridTextColumn Header="Categoria" Binding="{Binding Categoria.Nome}" Width="*"/>
                     <DataGridTextColumn Header="Prezzo (€)" Binding="{Binding Prezzo}" Width="*"/>
                     <DataGridTextColumn Header="Sconto" Binding="{Binding Sconto}" Width="80"/>
                     <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo}" Width="*"/>
