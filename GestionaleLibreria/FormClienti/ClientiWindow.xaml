@@ -1,11 +1,23 @@
 ﻿<Window x:Class="GestionaleLibreria.WPF.ClientiWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Gestione Clienti" Height="450" Width="600" Background="#F9F9F9">
+        Title="Gestione Clienti" Height="450" Width="650" Background="#F9F9F9">
     <Grid Margin="20">
         <StackPanel Orientation="Vertical">
             <TextBlock Text="Gestione Clienti" FontSize="24" FontWeight="Bold" 
                        HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#333333"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+                <Label Content="🔍 Filtra per:" VerticalAlignment="Center" FontWeight="Bold"/>
+                <ComboBox x:Name="FiltroCriterioComboBox" Width="150" Height="30" Margin="5">
+                    <ComboBoxItem Content="Nome" IsSelected="True"/>
+                    <ComboBoxItem Content="Cognome"/>
+                    <ComboBoxItem Content="Email"/>
+                </ComboBox>
+                <TextBox x:Name="FiltroTextBox" Width="250" Height="30" Margin="5"/>
+                <Button Content="Cerca" Width="100" Height="30" Click="FiltraClienti_Click"
+            Background="#607D8B" Foreground="White"/>
+            </StackPanel>
+
             <DataGrid x:Name="ClientiDataGrid" AutoGenerateColumns="False" Height="250" Margin="10"
                       SelectionMode="Single">
                 <DataGrid.Columns>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using GestionaleLibreria.Business.Services;
 using GestionaleLibreria.Data;
 using GestionaleLibreria.Data.Logging;
@@ -35,14 +37,50 @@ namespace GestionaleLibreria.WPF
             }
         }
 
+        private void FiltraClienti_Click(object sender, RoutedEventArgs e)
+        {
+            string nomeMetodo = nameof(FiltraClienti_Click);
+            try
+            {
+                string filtro = FiltroTextBox.Text.Trim();
+                string criterio = ((ComboBoxItem)FiltroCriterioComboBox.SelectedItem)?.Content.ToString();
+
+                Logger.LogInfo(NomeClasse, nomeMetodo, $"Ricerca clienti con filtro: {filtro}, criterio: {criterio}");
+
+                // Se il filtro è vuoto, mostra tutti i clienti
+                if (string.IsNullOrEmpty(filtro))
+                {
+                    ClientiDataGrid.ItemsSource = _clienti;
+                    return;
+                }
+
+                var clientiFiltrati = _clienti.Where(cliente =>
+                    (criterio == "Nome" && cliente.Nome.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                    (criterio == "Cognome" && cliente.Cognome.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                    (criterio == "Email" && cliente.Email.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0)
+                ).ToList();
+
+                ClientiDataGrid.ItemsSource = clientiFiltrati;
+
+                Logger.LogInfo(NomeClasse, nomeMetodo, $"Trovati {clientiFiltrati.Count} clienti corrispondenti.");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(NomeClasse, nomeMetodo, ex);
+                MessageBox.Show("Errore durante la ricerca dei clienti.", "Errore", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
         private void CaricaClienti()
         {
             string nomeMetodo = nameof(CaricaClienti);
             try
             {
                 Logger.LogInfo(NomeClasse, nomeMetodo, "Caricamento lista clienti.");
-                _clienti = _clienteService.GetAllClienti();
-                ClientiDataGrid.ItemsSource = _clienti;
+
+                _clienti = _clienteService.GetAllClienti(); 
+                ClientiDataGrid.ItemsSource = _clienti; 
                 Logger.LogInfo(NomeClasse, nomeMetodo, $"Caricati {_clienti.Count} clienti.");
             }
             catch (Exception ex)
