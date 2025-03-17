@@ -61,29 +61,6 @@ namespace GestionaleLibreria.Business.Services
             return false;
         }
 
-        public void AggiungiLibroFisico(Libro libro, int quantita)
-        {
-            var libroMagazzino = _magazzinoRepository.GetLibroMagazzinoById(libro.Id);
-            if (libroMagazzino != null)
-            {
-                libroMagazzino.AggiungiScorte(quantita);
-                _magazzinoRepository.AggiornaLibroMagazzino(libroMagazzino);
-            }
-            else
-            {
-                _magazzinoRepository.AggiungiLibroMagazzino(new LibroMagazzino(libro, quantita));
-            }
-        }
-
-        public void RimuoviLibroFisico(int libroId, int quantita)
-        {
-            var libroMagazzino = _magazzinoRepository.GetLibroMagazzinoById(libroId);
-            if (libroMagazzino != null && libroMagazzino.Quantita >= quantita)
-            {
-                libroMagazzino.RimuoviScorte(quantita);
-                _magazzinoRepository.AggiornaLibroMagazzino(libroMagazzino);
-            }
-        }
 
         public int OttieniQuantitaLibro(int libroId)
         {
