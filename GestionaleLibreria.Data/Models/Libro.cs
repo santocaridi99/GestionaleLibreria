@@ -13,14 +13,14 @@ namespace GestionaleLibreria.Data.Models
         [Required, MaxLength(200)]
         public string Titolo { get; set; } = string.Empty;
 
-        [Required]
+        [Required, MaxLength(200)]
         public string Autore { get; set; } = string.Empty;
 
         [Required, StringLength(13)] // Max 13 caratteri
         [Index(IsUnique = true)] // Indice univoco
         public string ISBN { get; set; }
 
-        [Required]
+        [Required, MaxLength(200)]
         public string CasaEditrice { get; set; } = string.Empty;
         [Required]
         public decimal Prezzo { get; set; }

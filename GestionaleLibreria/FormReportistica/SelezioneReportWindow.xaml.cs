@@ -146,12 +146,14 @@ namespace GestionaleLibreria.WPF.FormReportistica
 
         private BitmapSource DisegnaGraficoTorta(List<DatiGrafico> dati, string titolo)
         {
-            int width = 400, height = 300;
+            int width = 500, height = 350;
+            int legendWidth = 150; // Larghezza della legenda
             DrawingVisual dv = new DrawingVisual();
 
             using (DrawingContext dc = dv.RenderOpen())
             {
-                dc.DrawRectangle(Brushes.White, new Pen(Brushes.Black, 2), new Rect(0, 0, width, height));
+                // Disegno dello sfondo
+                dc.DrawRectangle(Brushes.White, new Pen(Brushes.Black, 2), new Rect(0, 0, width + legendWidth, height));
 
                 if (dati == null || dati.Count == 0)
                 {
@@ -165,7 +167,7 @@ namespace GestionaleLibreria.WPF.FormReportistica
                     );
 
                     dc.DrawText(messaggio, new Point(width / 4, height / 2));
-                    return RenderVisual(dv, width, height);
+                    return RenderVisual(dv, width + legendWidth, height);
                 }
 
                 double totale = dati.Sum(d => (double)d.Totale);
@@ -173,22 +175,48 @@ namespace GestionaleLibreria.WPF.FormReportistica
                 Brush[] colori = { Brushes.Blue, Brushes.Red, Brushes.Green, Brushes.Purple, Brushes.Orange };
                 int coloriIndex = 0;
 
-                foreach (var item in dati)
+                double centerX = width / 2;
+                double centerY = height / 2;
+                double radius = 100;
+
+                // Disegna i segmenti del grafico a torta
+                for (int i = 0; i < dati.Count; i++)
                 {
-                    double percentuale = (double)item.Totale / totale;
+                    double percentuale = (double)dati[i].Totale / totale;
                     double angoloFinale = angoloIniziale + (percentuale * 360);
                     Brush colore = colori[coloriIndex % colori.Length];
-                    coloriIndex++;
 
-                    // Disegno il settore della torta
-                    dc.DrawGeometry(colore, new Pen(Brushes.Black, 1), CreatePieSliceGeometry(width / 2, height / 2, 100, angoloIniziale, angoloFinale));
+                    // Disegna il segmento della torta
+                    dc.DrawGeometry(colore, new Pen(Brushes.Black, 1),
+                        CreatePieSliceGeometry(centerX, centerY, radius, angoloIniziale, angoloFinale));
 
                     angoloIniziale = angoloFinale;
+
+                    // **Aggiungere la legenda**
+                    double legendX = width + 20; // Posizione della legenda a destra del grafico
+                    double legendY = 30 + (i * 20); // Spaziatura verticale tra le voci della legenda
+
+                    // Disegna il rettangolo colorato per la legenda
+                    dc.DrawRectangle(colore, null, new Rect(legendX, legendY, 15, 15));
+
+                    // Testo della legenda
+                    FormattedText legenda = new FormattedText(
+                        dati[i].Nome,
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        new Typeface("Arial"),
+                        12,
+                        Brushes.Black
+                    );
+
+                    dc.DrawText(legenda, new Point(legendX + 20, legendY));
+                    coloriIndex++;
                 }
             }
 
-            return RenderVisual(dv, width, height);
+            return RenderVisual(dv, width + legendWidth, height);
         }
+
 
         private BitmapSource RenderVisual(DrawingVisual dv, int width, int height)
         {

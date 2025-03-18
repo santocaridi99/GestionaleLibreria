@@ -183,6 +183,14 @@
     <Compile Include="Migrations\202503171026405_seederCategoria.Designer.cs">
       <DependentUpon>202503171026405_seederCategoria.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202503171457462_lunghezzeStringe.cs" />
+    <Compile Include="Migrations\202503171457462_lunghezzeStringe.Designer.cs">
+      <DependentUpon>202503171457462_lunghezzeStringe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503171511575_lunghezzeStringhe.cs" />
+    <Compile Include="Migrations\202503171511575_lunghezzeStringhe.Designer.cs">
+      <DependentUpon>202503171511575_lunghezzeStringhe.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Audiobook.cs" />
     <Compile Include="Models\Categoria.cs" />
@@ -283,6 +291,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202503171026405_seederCategoria.resx">
       <DependentUpon>202503171026405_seederCategoria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503171457462_lunghezzeStringe.resx">
+      <DependentUpon>202503171457462_lunghezzeStringe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503171511575_lunghezzeStringhe.resx">
+      <DependentUpon>202503171511575_lunghezzeStringhe.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
