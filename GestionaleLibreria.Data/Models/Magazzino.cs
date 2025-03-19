@@ -12,6 +12,5 @@ namespace GestionaleLibreria.Data.Models
         public string Nome { get; set; } = "Magazzino Principale";
         // Un magazzino contiene molti record di LibroMagazzino
         public virtual ICollection<LibroMagazzino> LibriMagazzino { get; set; } = new List<LibroMagazzino>();
-        public List<LibroMagazzino> OttieniLibriFisici() => new List<LibroMagazzino>(LibriMagazzino);
     }
 }
