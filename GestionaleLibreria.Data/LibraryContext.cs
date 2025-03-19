@@ -62,10 +62,10 @@ namespace GestionaleLibreria.Data
 
             // Relazione tra Vendita e VenditaDettaglio (evitiamo il DELETE CASCADE)
             modelBuilder.Entity<VenditaDettaglio>()
-       .HasRequired(vd => vd.Libro)
-       .WithMany()
-       .HasForeignKey(vd => vd.LibroId)
-       .WillCascadeOnDelete(false);
+           .HasRequired(vd => vd.Libro)
+           .WithMany()
+           .HasForeignKey(vd => vd.LibroId)
+           .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Vendita>()
                 .HasOptional(v => v.Cliente)
@@ -83,6 +83,15 @@ namespace GestionaleLibreria.Data
                 .Property(c => c.Nome)
                 .IsRequired()
                 .HasMaxLength(100);
+
+            modelBuilder.Entity<Cliente>()
+                  .Property(c => c.Email)
+                  .HasMaxLength(255)  
+                  .IsRequired();
+
+            modelBuilder.Entity<Cliente>()
+                .HasIndex(c => c.Email)
+                .IsUnique();
 
 
         }

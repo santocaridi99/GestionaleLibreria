@@ -191,6 +191,10 @@
     <Compile Include="Migrations\202503171511575_lunghezzeStringhe.Designer.cs">
       <DependentUpon>202503171511575_lunghezzeStringhe.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202503191021324_AggiornaClienteEmail.cs" />
+    <Compile Include="Migrations\202503191021324_AggiornaClienteEmail.Designer.cs">
+      <DependentUpon>202503191021324_AggiornaClienteEmail.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Audiobook.cs" />
     <Compile Include="Models\Categoria.cs" />
@@ -297,6 +301,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202503171511575_lunghezzeStringhe.resx">
       <DependentUpon>202503171511575_lunghezzeStringhe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503191021324_AggiornaClienteEmail.resx">
+      <DependentUpon>202503191021324_AggiornaClienteEmail.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
