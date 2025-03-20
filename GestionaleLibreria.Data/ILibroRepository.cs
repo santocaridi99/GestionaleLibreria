@@ -39,7 +39,10 @@ namespace GestionaleLibreria.Data
             {
                 Logger.LogInfo(NomeClasse, nomeMetodo, "Recupero di tutti i libri dal database.");
 
-                var libri = _context.Libri.Include("Categoria").ToList();
+                var libri = _context.Libri
+                    .Include("Categoria")
+                    .Include("LibriMagazzino")
+                    .ToList();
 
                 Logger.LogInfo(NomeClasse, nomeMetodo, $"Recuperati {libri.Count} libri.");
                 return libri;

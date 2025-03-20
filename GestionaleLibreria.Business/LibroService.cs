@@ -12,25 +12,16 @@ namespace GestionaleLibreria.Business.Services
         private readonly ILibroRepository _libroRepository;
         private readonly IMagazzinoRepository _magazzinoRepository;
         public  static string nomeClasse = nameof(LibroService);
-
         public LibroService(ILibroRepository libroRepository, IMagazzinoRepository magazzinoRepository)
         {
             _libroRepository = libroRepository;
             _magazzinoRepository = magazzinoRepository;
         }
-
         public List<Libro> GetAllLibri()
         {
-            //return _libroRepository.GetAllLibri();
-            using (var context = new LibraryContext())
-            {
-                return context.Libri
-                    .Include("Categoria")
-                    .Include("LibriMagazzino")
-                    .ToList();
-            }
+            List<Libro> libri = _libroRepository.GetAllLibri();
+            return libri;
         }
-
         public void AggiungiLibro(Libro libro)
         {
             string nameMetodo = nameof(AggiungiLibro);
@@ -64,8 +55,6 @@ namespace GestionaleLibreria.Business.Services
             }
            
         }
-
-
 
         public void ModificaLibro(Libro libro)
         {
@@ -115,8 +104,6 @@ namespace GestionaleLibreria.Business.Services
                 throw;
             }
         }
-
-
         public void EliminaLibro(int id)
         {
             _libroRepository.DeleteLibro(id);
