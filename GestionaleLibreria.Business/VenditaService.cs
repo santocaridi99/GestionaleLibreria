@@ -30,7 +30,6 @@ namespace GestionaleLibreria.Business
 
         public void RegistraVendita(Vendita vendita, List<VenditaDettaglio> dettagliVendita)
         {
-            // Adesso delego tutto al repository
             _venditaRepository.RegisterSale(vendita, dettagliVendita);
         }
 
