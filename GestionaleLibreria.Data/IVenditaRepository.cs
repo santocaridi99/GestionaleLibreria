@@ -14,6 +14,7 @@ namespace GestionaleLibreria.Data
         void AddVendita(Vendita vendita);
         void SaveChanges();
         List<Vendita> GetVenditePerPeriodo(DateTime dataInizio, DateTime dataFine);
+        void RegisterSale(Vendita vendita, List<VenditaDettaglio> dettagliVendita);
 
     }
     public class VenditaRepository : IVenditaRepository
@@ -37,6 +38,65 @@ namespace GestionaleLibreria.Data
                     .ToList();
             }
         }
+
+        public void RegisterSale(Vendita vendita, List<VenditaDettaglio> dettagliVendita)
+        {
+            string nomeMetodo = nameof(RegisterSale);
+            try
+            {
+                Logger.LogInfo(nameof(VenditaRepository), nomeMetodo, "Registrazione vendita iniziata");
+
+                using (var context = new LibraryContext())
+                {
+                    vendita.DataVendita = DateTime.Now;
+                    vendita.Totale = dettagliVendita.Sum(d => d.Quantita * d.PrezzoUnitario);
+                    vendita.QuantitaVenduta = dettagliVendita.Sum(d => d.Quantita);
+
+                    foreach (var dettaglio in dettagliVendita)
+                    {
+                        // Trovo il libro
+                        var libro = context.Libri.SingleOrDefault(l => l.Id == dettaglio.LibroId);
+                        if (libro == null)
+                        {
+                            throw new Exception($"Errore: Il libro con ID {dettaglio.LibroId} non esiste nel database.");
+                        }
+
+                        // Trovo la scorta in magazzino
+                        var libroMagazzino = context.LibriMagazzino.SingleOrDefault(lm => lm.LibroId == dettaglio.LibroId);
+                        if (libroMagazzino != null)
+                        {
+                            if (libroMagazzino.Quantita < dettaglio.Quantita)
+                            {
+                                throw new Exception($"Quantità insufficiente per il libro {libro.Titolo}. Disponibile: {libroMagazzino.Quantita}");
+                            }
+
+                            libroMagazzino.Quantita -= dettaglio.Quantita;
+                            context.Entry(libroMagazzino).State = EntityState.Modified;
+                        }
+
+                        // Assegno la relazione con Vendita
+                        dettaglio.Libro = null; // per evitare conflitti con EF tracking
+                        dettaglio.Vendita = vendita;
+                        context.Entry(dettaglio).State = EntityState.Added;
+                    }
+
+                   
+                    context.Vendite.Add(vendita);
+                    context.VenditaDettagli.AddRange(dettagliVendita);
+
+                 
+                    context.SaveChanges();
+                }
+
+                Logger.LogInfo(nameof(VenditaRepository), nomeMetodo, "Vendita registrata con successo");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(nameof(VenditaRepository), nomeMetodo, ex);
+                throw;
+            }
+        }
+
 
         public void AddVendita(Vendita vendita)
         {

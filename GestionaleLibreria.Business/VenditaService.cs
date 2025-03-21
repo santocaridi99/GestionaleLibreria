@@ -27,68 +27,12 @@ namespace GestionaleLibreria.Business
         {
             _venditaRepository = venditaRepository;
         }
+
         public void RegistraVendita(Vendita vendita, List<VenditaDettaglio> dettagliVendita)
         {
-            string nomeMetodo = nameof(RegistraVendita);
-            try
-            {
-                Logger.LogInfo(nameof(VenditaService), nomeMetodo, "Registrazione vendita iniziata");
-
-                using (var context = new LibraryContext())
-                {
-                    vendita.DataVendita = DateTime.Now;
-                    vendita.Totale = dettagliVendita.Sum(d => d.Quantita * d.PrezzoUnitario);
-                    vendita.QuantitaVenduta = dettagliVendita.Sum(d => d.Quantita);
-
-                    foreach (var dettaglio in dettagliVendita)
-                    {
-                      
-                        var libro = context.Libri.SingleOrDefault(l => l.Id == dettaglio.LibroId);
-                        if (libro == null)
-                        {
-                            throw new Exception($"Errore: Il libro con ID {dettaglio.LibroId} non esiste nel database.");
-                        }
-
-                        dettaglio.Quantita = dettaglio.Quantita;
-
-                        var libroMagazzino = context.LibriMagazzino.SingleOrDefault(lm => lm.LibroId == dettaglio.LibroId);
-                        if (libroMagazzino != null)
-                        {
-                            if (libroMagazzino.Quantita < dettaglio.Quantita)
-                            {
-                                throw new Exception($"Quantità insufficiente per il libro {libro.Titolo}. Disponibile: {libroMagazzino.Quantita}");
-                            }
-
-                            libroMagazzino.Quantita -= dettaglio.Quantita;
-                            context.Entry(libroMagazzino).State = System.Data.Entity.EntityState.Modified;
-                        }
-                       
-                        dettaglio.Libro = null; 
-                        dettaglio.Vendita = vendita;
-                        context.Entry(dettaglio).State = System.Data.Entity.EntityState.Added;
-
-                    }
-
-                    context.Vendite.Add(vendita);
-                    context.VenditaDettagli.AddRange(dettagliVendita);
-                    context.SaveChanges();
-                }
-
-                Logger.LogInfo(nameof(VenditaService), nomeMetodo, "Vendita registrata con successo");
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(nameof(VenditaService), nomeMetodo, ex);
-                throw;
-            }
+            // Adesso delego tutto al repository
+            _venditaRepository.RegisterSale(vendita, dettagliVendita);
         }
-
-
-
-
-
-
-
 
 
         public int GetQuantitaDisponibile(int libroId)
