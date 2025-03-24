@@ -219,18 +219,32 @@ namespace GestionaleLibreria.WPF
                         pdfDoc.Add(new Paragraph("Lista Libri Selezionati", titleFont) { Alignment = Element.ALIGN_CENTER, SpacingAfter = 10 });
                         pdfDoc.Add(new Paragraph(" "));
 
-                        PdfPTable table = new PdfPTable(3) { WidthPercentage = 100 };
-                        table.SetWidths(new float[] { 40, 30, 30 });
+                        PdfPTable table = new PdfPTable(2) { WidthPercentage = 100 };
+                        table.SetWidths(new float[] { 40, 30});
+                        table.AddCell(new PdfPCell(new Phrase("Titolo", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12)))
+                        {
+                            BackgroundColor = BaseColor.LIGHT_GRAY,
+                            HorizontalAlignment = Element.ALIGN_CENTER
+                        });
 
-                        table.AddCell(new PdfPCell(new Phrase("Titolo", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12))) { BackgroundColor = BaseColor.LIGHT_GRAY, HorizontalAlignment = Element.ALIGN_CENTER });
-                        table.AddCell(new PdfPCell(new Phrase("ISBN", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12))) { BackgroundColor = BaseColor.LIGHT_GRAY, HorizontalAlignment = Element.ALIGN_CENTER });
-                        table.AddCell(new PdfPCell(new Phrase("Quantità", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12))) { BackgroundColor = BaseColor.LIGHT_GRAY, HorizontalAlignment = Element.ALIGN_CENTER });
+                        table.AddCell(new PdfPCell(new Phrase("ISBN", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12)))
+                        {
+                            BackgroundColor = BaseColor.LIGHT_GRAY,
+                            HorizontalAlignment = Element.ALIGN_CENTER
+                        });
+
 
                         foreach (var libro in _libriSelezionati)
                         {
-                            table.AddCell(new PdfPCell(new Phrase(libro.Libro.Titolo, FontFactory.GetFont(FontFactory.HELVETICA, 11))) { HorizontalAlignment = Element.ALIGN_CENTER });
-                            table.AddCell(new PdfPCell(new Phrase(libro.Libro.ISBN, FontFactory.GetFont(FontFactory.HELVETICA, 11))) { HorizontalAlignment = Element.ALIGN_CENTER });
-                            table.AddCell(new PdfPCell(new Phrase(libro.Quantita.ToString(), FontFactory.GetFont(FontFactory.HELVETICA, 11))) { HorizontalAlignment = Element.ALIGN_CENTER });
+                            table.AddCell(new PdfPCell(new Phrase(libro.Libro.Titolo, FontFactory.GetFont(FontFactory.HELVETICA, 11)))
+                            {
+                                HorizontalAlignment = Element.ALIGN_CENTER
+                            });
+
+                            table.AddCell(new PdfPCell(new Phrase(libro.Libro.ISBN, FontFactory.GetFont(FontFactory.HELVETICA, 11)))
+                            {
+                                HorizontalAlignment = Element.ALIGN_CENTER
+                            });
                         }
 
                         pdfDoc.Add(table);

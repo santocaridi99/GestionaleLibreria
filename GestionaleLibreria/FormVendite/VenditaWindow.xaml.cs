@@ -159,9 +159,6 @@ namespace GestionaleLibreria.WPF
             }
         }
 
-
-
-
         private void SelezionaCliente_Click(object sender, RoutedEventArgs e)
         {
             var finestraClienti = new SelezionaClienteWindow(_clienteService);

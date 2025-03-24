@@ -51,7 +51,6 @@ namespace GestionaleLibreria.Business
             return libroMagazzino.Quantita;
         }
 
-
         public List<Vendita> GetVendite()
         {
             return _venditaRepository.GetAllVendite();
@@ -67,7 +66,6 @@ namespace GestionaleLibreria.Business
             return numeroAcquisti;
         }
 
-
         public decimal GetTotaleSpesoCliente(int clienteId)
         {
             decimal totaleSpeso = GetVendite()
@@ -77,8 +75,6 @@ namespace GestionaleLibreria.Business
             
             return totaleSpeso;
         }
-
-
 
         public List<Vendita> GetVenditePerPeriodo(DateTime dataInizio, DateTime dataFine)
         {
