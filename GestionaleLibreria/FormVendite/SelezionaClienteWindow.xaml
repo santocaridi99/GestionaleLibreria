@@ -8,8 +8,8 @@
                        HorizontalAlignment="Center" Margin="0,0,0,10"/>
             <DataGrid x:Name="ClientiDataGrid" AutoGenerateColumns="False" Height="250">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="*"/>
-                    <DataGridTextColumn Header="Cognome" Binding="{Binding Cognome}" Width="*"/>
+                    <DataGridTextColumn Header="Nome" Binding="{Binding Nome, Mode=OneWay}" Width="*"/>
+                    <DataGridTextColumn Header="Cognome" Binding="{Binding Cognome, Mode=OneWay}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
             <Button Content="Seleziona" Width="100" Margin="10" Click="Seleziona_Click"/>

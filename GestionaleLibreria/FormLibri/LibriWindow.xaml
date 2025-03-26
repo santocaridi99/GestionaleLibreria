@@ -44,14 +44,14 @@
                       AutoGenerateColumns="False" Height="350" BorderThickness="0" 
                       RowBackground="White" AlternatingRowBackground="#ECEFF1">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Titolo" Binding="{Binding Titolo}" Width="*"/>
-                    <DataGridTextColumn Header="Autore" Binding="{Binding Autore}" Width="*"/>
-                    <DataGridTextColumn Header="ISBN" Binding="{Binding ISBN}" Width="*"/>
-                    <DataGridTextColumn Header="Casa Editrice" Binding="{Binding CasaEditrice}" Width="*"/>
-                    <DataGridTextColumn Header="Categoria" Binding="{Binding Categoria.Nome}" Width="*"/>
-                    <DataGridTextColumn Header="Prezzo (€)" Binding="{Binding Prezzo}" Width="*"/>
-                    <DataGridTextColumn Header="Sconto" Binding="{Binding Sconto}" Width="80"/>
-                    <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo}" Width="*"/>
+                    <DataGridTextColumn Header="Titolo" Binding="{Binding Titolo , Mode=OneWay}" Width="*"/>
+                    <DataGridTextColumn Header="Autore" Binding="{Binding Autore , Mode=OneWay}" Width="*"/>
+                    <DataGridTextColumn Header="ISBN" Binding="{Binding ISBN , Mode=OneWay}" Width="*"/>
+                    <DataGridTextColumn Header="Casa Editrice" Binding="{Binding CasaEditrice , Mode=OneWay}" Width="*"/>
+                    <DataGridTextColumn Header="Categoria" Binding="{Binding Categoria.Nome , Mode=OneWay}" Width="*"/>
+                    <DataGridTextColumn Header="Prezzo (€)" Binding="{Binding Prezzo, Mode=OneWay}" Width="*"/>
+                    <DataGridTextColumn Header="Sconto" Binding="{Binding Sconto, Mode=OneWay}" Width="80"/>
+                    <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo, Mode=OneWay}" Width="*"/>
                     <DataGridTextColumn Header="Quantità Magazzino" Binding="{Binding QuantitaMagazzino, Mode=OneWay}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>

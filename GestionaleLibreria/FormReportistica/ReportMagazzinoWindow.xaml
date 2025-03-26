@@ -16,9 +16,9 @@
                     <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="400">
                         <DataGrid x:Name="MagazzinoDataGrid" AutoGenerateColumns="False">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Titolo" Binding="{Binding Libro.Titolo}" Width="*"/>
-                                <DataGridTextColumn Header="Autore" Binding="{Binding Libro.Autore}" Width="200"/>
-                                <DataGridTextColumn Header="Quantità" Binding="{Binding Quantita}" Width="120"/>
+                                <DataGridTextColumn Header="Titolo" Binding="{Binding Libro.Titolo, Mode=OneWay}" Width="*"/>
+                                <DataGridTextColumn Header="Autore" Binding="{Binding Libro.Autore, Mode=OneWay}" Width="200"/>
+                                <DataGridTextColumn Header="Quantità" Binding="{Binding Quantita, Mode=OneWay}" Width="120"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </ScrollViewer>

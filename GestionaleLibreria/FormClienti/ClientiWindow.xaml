@@ -21,10 +21,10 @@
             <DataGrid x:Name="ClientiDataGrid" AutoGenerateColumns="False" Height="250" Margin="10"
                       SelectionMode="Single">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="*"/>
-                    <DataGridTextColumn Header="Cognome" Binding="{Binding Cognome}" Width="*"/>
-                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
-                    <DataGridTextColumn Header="Telefono" Binding="{Binding Telefono}" Width="*"/>
+                    <DataGridTextColumn Header="Nome" Binding="{Binding Nome, Mode=OneWay}" Width="*"/>
+                    <DataGridTextColumn Header="Cognome" Binding="{Binding Cognome, Mode=OneWay}" Width="*"/>
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email, Mode=OneWay}" Width="*"/>
+                    <DataGridTextColumn Header="Telefono" Binding="{Binding Telefono, Mode=OneWay}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>

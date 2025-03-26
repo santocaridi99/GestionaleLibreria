@@ -85,10 +85,10 @@
 
 
 
-                    <DataGridTextColumn Header="Titolo" Binding="{Binding LibroMagazzino.Libro.Titolo}" Width="*"/>
-                    <DataGridTextColumn Header="Autore" Binding="{Binding LibroMagazzino.Libro.Autore}" Width="*"/>
-                    <DataGridTextColumn Header="ISBN" Binding="{Binding LibroMagazzino.Libro.ISBN}" Width="*"/>
-                    <DataGridTextColumn Header="Quantità" Binding="{Binding LibroMagazzino.Quantita}" Width="*"/>
+                    <DataGridTextColumn Header="Titolo" Binding="{Binding LibroMagazzino.Libro.Titolo, Mode=OneWay}" Width="*"/>
+                    <DataGridTextColumn Header="Autore" Binding="{Binding LibroMagazzino.Libro.Autore, Mode=OneWay}" Width="*"/>
+                    <DataGridTextColumn Header="ISBN" Binding="{Binding LibroMagazzino.Libro.ISBN, Mode=OneWay}" Width="*"/>
+                    <DataGridTextColumn Header="Quantità" Binding="{Binding LibroMagazzino.Quantita, Mode=OneWay}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
 
