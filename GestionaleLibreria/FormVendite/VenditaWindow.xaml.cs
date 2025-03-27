@@ -106,18 +106,9 @@ namespace GestionaleLibreria.WPF
 
         private void AggiornaCarrello()
         {
-            CarrelloDataGrid.ItemsSource = null; // Forza l'aggiornamento UI
+            CarrelloDataGrid.ItemsSource = null;
+            CarrelloDataGrid.ItemsSource = _carrello;
 
-            CarrelloDataGrid.ItemsSource = _carrello.Select(item => new
-            {
-                Titolo = item.Libro.Titolo,
-                Tipo = item.Libro.Tipo,
-                Sconto = $"{item.Libro.Sconto * 100:0.##}%",
-                Quantita = item.Quantita,
-                PrezzoOriginale = item.Libro.Prezzo,
-                PrezzoScontato = item.Libro.CalcolaPrezzo(), // Prezzo dopo sconto
-                Totale = item.Quantita * item.Libro.CalcolaPrezzo() // Prezzo totale
-            }).ToList();
 
             // Calcola il totale della vendita
             decimal totale = _carrello.Sum(item => item.Quantita * item.Libro.CalcolaPrezzo());
